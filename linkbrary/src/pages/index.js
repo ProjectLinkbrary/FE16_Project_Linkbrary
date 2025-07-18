@@ -1,8 +1,3 @@
 export default function Home() {
-  return (
-    <>
-      <Head></Head>
-      <></>
-    </>
-  );
+  return <div>Linkbrary 프로젝트</div>;
 }
