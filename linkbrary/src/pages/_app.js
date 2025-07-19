@@ -1,14 +1,11 @@
-import Header from "@/components/header";
-import GlobalStyles from "@/styles/Globalstyles";
 import { ThemeProvider } from "@emotion/react";
-import { theme } from "../styles/theme";
-// import "@/styles/global.css";
+import GlobalStyle from "../styles/GlobalStyles.jsx";
+import theme from "../styles/theme";
 
 export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <Header />
+      <GlobalStyle />
       <Component {...pageProps} />
     </ThemeProvider>
   );
