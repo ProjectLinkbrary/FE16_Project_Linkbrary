@@ -1,8 +1,10 @@
+import Header from "../components/common/Header.jsx";
+
 export default function Home() {
   return (
     <>
-      <Head></Head>
-      <></>
+      <Header />
+      <div>Linkbrary 프로dd젝트</div>
     </>
   );
 }
