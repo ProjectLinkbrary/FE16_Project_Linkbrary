@@ -3,6 +3,7 @@ import Logo from "./Logo.jsx";
 import { SecondaryButton } from "./Button.jsx";
 
 const HeaderContainer = styled.header`
+  width: 100%;
   position: absolute;
   padding: 16px 32px;
   background-color: #000;

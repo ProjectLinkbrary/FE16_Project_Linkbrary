@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
-import BannerSection from "./BannerSection";
-import SearchBar from "./SearchBar";
-import CategoryFilter from "./CategoryFilter";
-import ContentSection from "./ContentSection";
-import Header from "@/components/Header";
+import styled from "@emotion/styled";
+import TopSection from "../components/linkpage/TopSection";
+import SearchBar from "../components/linkpage/SearchBar";
+import CategoryFilter from "../components/linkpage/CategoryFilter";
+import ContentSection from "../components/linkpage/ContentSection";
+import Header from "components/common/Header";
 
-const LinkpageStyle = css`
+const LinkpageStyle = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -14,11 +14,12 @@ const LinkpageStyle = css`
 
 export default function LinkPage() {
   return (
-    <div css={LinkpageStyle}>
-      <BannerSection />
+    <LinkpageStyle>
+      <Header />
+      <TopSection />
       <SearchBar />
       <CategoryFilter />
       <ContentSection />
-    </div>
+    </LinkpageStyle>
   );
 }

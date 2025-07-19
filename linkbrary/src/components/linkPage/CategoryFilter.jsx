@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import { PrimaryButton } from "components/common/Button";
 
 const categories = [
   "전체",
@@ -29,7 +30,7 @@ const CategoryItems = styled.ul`
 `;
 
 const CategoryItem = styled.li`
-  border: 1px solid #d9d9d9;
+  border: 1px solid ${({ theme }) => theme.color.primary};
   border-radius: 50px;
   padding: 8px 12px;
 `;
@@ -53,7 +54,7 @@ export default function CategoryFilter() {
             <CategoryItem key={item}>{item}</CategoryItem>
           ))}
         </CategoryItems>
-        <AddButton>+ 폴더 추가하기</AddButton>
+        <PrimaryButton> Primary 버튼</PrimaryButton>
       </CategoryWrapper>
     </CategorySection>
   );
