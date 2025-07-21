@@ -12,6 +12,11 @@ const FooterContent = styled.div`
   justify-content: space-between;
   padding: 32px 28px;
   margin: 0 auto;
+
+  @media (min-width: 1280px) {
+    width: 1040px;
+    padding: 32px 0;
+  }
 `;
 
 const Copyright = styled.div`
