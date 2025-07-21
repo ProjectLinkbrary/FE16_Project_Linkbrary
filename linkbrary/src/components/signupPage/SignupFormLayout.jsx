@@ -76,18 +76,16 @@ const StyledForm = styled.form`
 // 헤더 (로고/제목) 스타일
 const Header = styled.h1`
   font-size: ${theme.fontSize.fz32};
-  margin-bottom: 40px;
+  margin-bottom: 16px;
   color: ${theme.color.white};
-  font-weight: 700;
+  font-weight: bolder;
 
   ${media.tablet} {
     font-size: ${theme.fontSize.fz36 || "36px"};
-    margin-bottom: 50px;
   }
 
   ${media.desktop} {
     font-size: ${theme.fontSize.fz42};
-    margin-bottom: 60px;
   }
 `;
 

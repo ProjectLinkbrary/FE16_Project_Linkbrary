@@ -152,9 +152,9 @@ const InputField = ({
         {isPasswordField && showToggle && (
           <StyledTogglePasswordButton type="button" onClick={onToggle}>
             {showPassword ? (
-              <img src="/images/ic_eyes-on.svg" alt="비밀번호 숨기기" />
+              <img src="/images/ic_eyes_on.svg" alt="비밀번호 숨기기" />
             ) : (
-              <img src="/images/ic_eyes-off.svg" alt="비밀번호 보이기" />
+              <img src="/images/ic_eyes_off.svg" alt="비밀번호 보이기" />
             )}
           </StyledTogglePasswordButton>
         )}
