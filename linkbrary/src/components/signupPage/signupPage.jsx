@@ -9,10 +9,11 @@ const SubmitButton = styled.button`
   padding: 15px;
   background-color: ${theme.color.gray20};
   color: ${theme.color.black};
-  border-radius: 8px;
+  border-radius: 28px;
   font-size: ${theme.fontSize.fz18};
   cursor: pointer;
   margin-top: 20px;
+
   &:hover {
     background-color: ${theme.color.gray30};
   }

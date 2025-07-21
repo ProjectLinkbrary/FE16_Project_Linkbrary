@@ -33,6 +33,16 @@ export const theme = {
     lh140: "140%",
     lh120: "120%",
   },
+
+  breakpoint: {
+    tablet: "768px",
+    desktop: "1024px",
+  },
+
+  media: {
+    tablet: `@media(min-width:768px)`,
+    desktop: `@media(min-width:1024px)`,
+  },
 };
 
 export default theme;

@@ -1,16 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme.js";
-
-const breakpoints = {
-  tablet: "768px",
-  desktop: "1024px",
-};
-
-const media = {
-  tablet: `@media (min-width: ${breakpoints.tablet})`,
-  desktop: `@media (min-width: ${breakpoints.desktop})`,
-};
+import Link from "next/link";
 
 // 페이지 전체 컨테이너 스타일 (모바일에서는 폼이 화면을 꽉 채우도록 조정)
 const PageContainer = styled.div`
@@ -28,8 +19,8 @@ const PageContainer = styled.div`
   background-image: none; /* 모바일에서는 배경 이미지 제거 */
 
   /* 태블릿 (768px 이상) - 배경 이미지를 적용하고 폼이 중앙에 뜨도록 */
-  ${media.tablet} {
-    background-image: url("/images/signup-bg.png"); /* 태블릿 이상에서 배경 이미지 적용 */
+  ${theme.media.tablet} {
+    background-image: url("/images/bg_signup.png"); /* 태블릿 이상에서 배경 이미지 적용 */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -55,9 +46,9 @@ const StyledForm = styled.form`
   justify-content: flex-start; /* 모바일에서 폼 내부 요소를 상단에 정렬하여 시안처럼 보이도록 */
 
   /* 태블릿 (768px 이상) - 폼이 카드 형태로 중앙에 뜨도록 다시 설정 */
-  ${media.tablet} {
+  ${theme.media.tablet} {
     width: 100%;
-    max-width: 500px; /* 태블릿에서 폼의 최대 너비 다시 적용 */
+    max-width: 480px; /* 태블릿에서 폼의 최대 너비 다시 적용 */
     padding: 40px 32px;
     border-radius: 12px; /* 태블릿 이상에서 모서리 둥글기 다시 적용 */
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); /* 태블릿 이상에서 그림자 다시 적용 */
@@ -67,42 +58,50 @@ const StyledForm = styled.form`
   }
 
   /* 데스크탑 (1024px 이상) */
-  ${media.desktop} {
-    max-width: 540px;
+  ${theme.media.desktop} {
+    max-width: 480px;
     padding: 50px 40px;
   }
 `;
 
 // 헤더 (로고/제목) 스타일
-const Header = styled.h1`
-  font-size: ${theme.fontSize.fz32};
-  margin-bottom: 16px;
-  color: ${theme.color.white};
-  font-weight: bolder;
-
-  ${media.tablet} {
-    font-size: ${theme.fontSize.fz36 || "36px"};
+const LogoImageContainer = styled.div`
+  margin-bottom: 40px; /* 모바일 기본 */
+  width: 133px; /* 로고 이미지의 너비 (시안에 맞춰 조절) */
+  height: auto; /* 로고 이미지의 높이 자동 조절 */
+  display: flex; /* 이미지 중앙 정렬을 위해 추가 */
+  justify-content: center; /* 이미지 중앙 정렬을 위해 추가 */
+  align-items: center; /* 이미지 중앙 정렬을 위해 추가 */
+  cursor: pointer;
+  & img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* img 태그에 display: block 적용 */
   }
 
-  ${media.desktop} {
-    font-size: ${theme.fontSize.fz42};
+  ${theme.media.tablet} {
+    margin-bottom: 16px; /* 시안처럼 태블릿에서 마진 조절 */
+    width: 167px; /* 태블릿에서 로고 이미지 너비 조절 */
+  }
+
+  ${theme.media.desktop} {
+    margin-bottom: 24px; /* 데스크탑에서 로고 이미지 마진 조절 */
+    width: 200px; /* 데스크탑에서 로고 이미지 너비 조절 */
   }
 `;
 
 // 서브 텍스트 (회원 여부 질문) 스타일
 const SubText = styled.p`
   font-size: ${theme.fontSize.fz16};
-  margin-bottom: 30px;
+  margin-bottom: 32px;
   color: ${theme.color.gray40};
 
-  ${media.tablet} {
+  ${theme.media.tablet} {
     font-size: ${theme.fontSize.fz18};
-    margin-bottom: 35px;
   }
 
-  ${media.desktop} {
+  ${theme.media.desktop} {
     font-size: ${theme.fontSize.fz20};
-    margin-bottom: 40px;
   }
 `;
 
@@ -111,21 +110,31 @@ const LinkText = styled.span`
   color: ${theme.color.primary};
   cursor: pointer;
   margin-left: 5px;
+  text-decoration: underline;
+
   &:hover {
-    text-decoration: underline;
+    color: #6d6afe;
   }
 `;
+//hover 시, 어떻게 할지 이야기 나눠보기
 
 const SignupFormLayout = ({ onSubmit, children }) => {
   return (
     <PageContainer>
       <StyledForm onSubmit={onSubmit}>
-        <Header>Linkbrary</Header>
+        <Link href="/">
+          <LogoImageContainer>
+            <img src="/images/logo.svg" alt="Linkbrary Logo" />{" "}
+            {/* 실제 로고 이미지 경로로 변경하세요 */}
+          </LogoImageContainer>
+        </Link>
         <SubText>
           이미 회원이신가요?
-          <LinkText onClick={() => console.log("로그인하기 클릭")}>
-            로그인하기
-          </LinkText>
+          <Link href="/login">
+            <LinkText onClick={() => console.log("로그인하기 클릭")}>
+              로그인하기
+            </LinkText>
+          </Link>
         </SubText>
         {children}
       </StyledForm>
