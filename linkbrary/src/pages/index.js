@@ -1,8 +1,11 @@
 import Link from "next/link";
+import Footer from "../components/common/Footer.jsx";
+import Header from "../components/common/Header.jsx";
 
 export default function Home() {
   return (
     <>
+      <Header />
       <div>Linkbrary 프로젝트</div>
       <Link
         href="/signup"
@@ -19,7 +22,8 @@ export default function Home() {
         }}
       >
         회원가입 페이지로 이동
-      </Link>{" "}
+      </Link>
+      <Footer />
     </>
   );
 }
