@@ -59,7 +59,7 @@ const StyledInput = styled.input`
 const StyledCheckButton = styled.button`
   position: absolute;
   right: 16px;
-  top: 32%;
+  top: 50%;
   transform: translateY(-50%);
   padding: 6px 12px;
   background-color: ${theme.color.white};
