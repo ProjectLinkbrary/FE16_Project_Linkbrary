@@ -6,7 +6,6 @@ const HeaderContainer = styled.header`
   width: 100%;
   position: absolute;
   padding: 16px 32px;
-  background-color: #000;
 
   @media (min-width: 768px) {
     padding: 45px 0;

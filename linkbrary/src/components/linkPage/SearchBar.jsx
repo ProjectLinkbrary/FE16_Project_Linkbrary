@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import theme from "styles/theme";
 
 const SearchBarSection = styled.section`
   display: flex;
@@ -9,7 +10,7 @@ const SearchBarSection = styled.section`
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 327px;
+  width: 100%;
   height: 52px;
 `;
 
@@ -23,7 +24,7 @@ const StyledInput = styled.input`
   font-size: 1rem;
 
   color: #757575;
-  background-color: #f5f5f5;
+  background-color: ${({ theme }) => theme.color.gray10};
 `;
 
 const LinkIcon = styled.img`

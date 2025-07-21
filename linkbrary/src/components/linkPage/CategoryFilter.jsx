@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import { PrimaryButton } from "components/common/Button";
+import theme from "styles/theme";
 
 const categories = [
   "전체",
@@ -12,7 +12,6 @@ const categories = [
 ];
 
 const CategorySection = styled.section`
-  margin: 0 25px;
   display: flex;
   justify-content: center;
 `;
@@ -21,6 +20,13 @@ const CategoryWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
+
+  ${theme.media.tablet} {
+    height: 50px;
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 const CategoryItems = styled.ul`
@@ -30,14 +36,27 @@ const CategoryItems = styled.ul`
 `;
 
 const CategoryItem = styled.li`
-  border: 1px solid ${({ theme }) => theme.color.primary};
+  border: 1px solid ${({ theme }) => theme.color.gray30};
   border-radius: 50px;
   padding: 8px 12px;
+
+  ${theme.media.tablet} {
+    display: flex;
+    align-items: center;
+    height: 50px;
+  }
+
+  ${theme.media.desktop} {
+    display: flex;
+    align-items: center;
+    height: 50px;
+  }
 `;
 
-const AddButton = styled.button`
-  background-color: #2c2c2c;
+const SecondaryButton = styled.button`
+  background-color: ${({ theme }) => theme.color.gray80};
   color: #ffffff;
+  height: 50px;
   padding: 8px 20px;
   border-radius: 50px;
 
@@ -54,7 +73,7 @@ export default function CategoryFilter() {
             <CategoryItem key={item}>{item}</CategoryItem>
           ))}
         </CategoryItems>
-        <PrimaryButton> Primary 버튼</PrimaryButton>
+        <SecondaryButton>+ 폴더 추가하기</SecondaryButton>
       </CategoryWrapper>
     </CategorySection>
   );

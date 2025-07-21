@@ -1,13 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import { useState } from "react";
+import theme from "styles/theme";
 
 const TopSectionWrapper = styled.section`
-  background: url("/images/linkpagebg.png") no-repeat center / cover;
+  background: url("/images/linkpagebg.png") no-repeat center center / cover;
   height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 25px;
+  overflow: hidden;
+
+  width: 100%;
+
+  ${theme.media.tablet} {
+    height: 368px;
+  }
 `;
 
 const LinkWrapper = styled.section`
@@ -15,19 +24,37 @@ const LinkWrapper = styled.section`
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
+
+  ${theme.media.tablet} {
+    gap: 2.5rem;
+  }
 `;
 
 const Title = styled.h1`
   font-size: 24px;
   font-weight: 700;
   color: #ffffff;
+
+  ${theme.media.tablet} {
+    font-size: 32px;
+  }
 `;
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 327px;
+  width: 20.438rem;
   height: 52px;
+
+  ${theme.media.tablet} {
+    width: 35.563rem;
+    height: 70px;
+  }
+
+  ${theme.media.desktop} {
+    width: 40rem;
+  }
 `;
+
 const LinkIcon = styled.img`
   position: absolute;
   top: 50%;
@@ -42,16 +69,16 @@ const LinkInput = styled.input`
   height: 100%;
   padding: 0.5rem 3rem 0.5rem 3rem;
 
-  border-radius: 25px;
+  border-radius: 100px;
   border: none;
   font-size: 1rem;
 
   color: #b3b3b3;
   background-color: transparent;
-  border: 1px solid #b3b3b3;
+  border: 1px solid ${({ theme }) => theme.color.gray50};
 `;
 
-const AddButton = styled.button`
+const LightButton = styled.button`
   position: absolute;
   top: 50%;
   right: 0.5rem;
@@ -105,9 +132,9 @@ export default function TopSection() {
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />
-          <AddButton type="button" onClick={handleAddLink}>
+          <LightButton type="button" onClick={handleAddLink}>
             추가하기
-          </AddButton>
+          </LightButton>
         </InputWrapper>
       </LinkWrapper>
     </TopSectionWrapper>
