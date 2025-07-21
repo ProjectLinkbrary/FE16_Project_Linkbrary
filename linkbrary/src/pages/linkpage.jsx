@@ -3,8 +3,6 @@ import styled from "@emotion/styled";
 import theme from "styles/theme";
 
 import TopSection from "../components/linkpage/TopSection";
-import SearchBar from "../components/linkpage/SearchBar";
-import CategoryFilter from "../components/linkpage/CategoryFilter";
 import ContentSection from "../components/linkpage/ContentSection";
 import Header from "components/common/Header";
 
@@ -20,11 +18,15 @@ const PageContainer = styled.div`
   ${theme.media.tablet} {
     padding: 0 1.875rem;
   }
+  ${theme.media.desktop} {
+    padding: 0 1.875rem;
+  }
 `;
 
 export default function LinkPage() {
   return (
     <>
+      <Header />
       <TopSection />
       <PageContainer>
         <ContentSection />

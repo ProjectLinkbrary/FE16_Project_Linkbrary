@@ -5,7 +5,15 @@ import theme from "styles/theme";
 const SearchBarSection = styled.section`
   display: flex;
   justify-content: center;
-  margin: 1.3rem 0;
+  margin: 1.25rem 0 1.5rem 0;
+
+  ${theme.media.tablet} {
+    margin: 3rem 0 2.5rem 0;
+  }
+
+  ${theme.media.desktop} {
+    margin: 4rem 0 3rem 0;
+  }
 `;
 
 const InputWrapper = styled.div`

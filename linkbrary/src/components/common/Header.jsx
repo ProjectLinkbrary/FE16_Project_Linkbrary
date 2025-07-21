@@ -31,7 +31,7 @@ const Nav = styled.nav`
   align-items: center;
 
   @media (min-width: 768px) {
-    width: 1040px;
+    width: 100%;
   }
 `;
 

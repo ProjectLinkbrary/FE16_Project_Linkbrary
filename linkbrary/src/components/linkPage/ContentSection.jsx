@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-
+import theme from "styles/theme.js";
 import { useState, useEffect } from "react";
 import ContentList from "./ContentList.jsx";
 import NoLinks from "./Nolink.jsx";
@@ -15,6 +15,14 @@ const ContentSectionWrapper = styled.section`
 const ContentWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  margin: 1.5rem 0 1rem 0;
+
+  ${theme.media.tablet} {
+    margin: 2.5rem 0 1.5rem 0;
+  }
+  ${theme.media.desktop} {
+    margin: 3rem 0 2rem 0;
+  }
 `;
 
 const TitleBox = styled.div`
@@ -72,7 +80,7 @@ const cardData = [
 
 export default function ContentSection() {
   // const [page, setPage] = useState(1);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(cardData);
 
   useEffect(() => {
     console.log("list 상태:", list);
