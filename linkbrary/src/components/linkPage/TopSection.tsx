@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme";
 
 const TopSectionWrapper = styled.section`
-  background: url("/images/linkpagebg.png") no-repeat center center / cover;
+  background: url("/images/bg_linkpage.png") no-repeat center center / cover;
   height: 250px;
   display: flex;
   justify-content: center;
@@ -13,7 +12,7 @@ const TopSectionWrapper = styled.section`
 
   width: 100%;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     height: 368px;
   }
 `;
@@ -24,7 +23,7 @@ const LinkWrapper = styled.section`
   align-items: center;
   gap: 1.5rem;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     gap: 2.5rem;
   }
 `;
@@ -34,7 +33,7 @@ const Title = styled.h1`
   font-weight: 700;
   color: #ffffff;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     font-size: 32px;
   }
 `;
@@ -44,12 +43,12 @@ const InputWrapper = styled.div`
   width: 100%;
   height: 52px;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     width: 35.563rem;
     height: 70px;
   }
 
-  ${theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     width: 40rem;
   }
 `;
@@ -92,7 +91,7 @@ const LightButton = styled.button`
   background-color: #ffffff;
   cursor: pointer;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     height: 3.125rem;
     padding: 8px 30px;
   }

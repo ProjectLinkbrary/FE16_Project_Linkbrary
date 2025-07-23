@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme";
-import Header from "components/common/Header";
-import Footer from "components/common/Footer";
 
-import TopSection from "../components/linkpage/TopSection";
-import ContentSection from "../components/linkpage/ContentSection";
+// import Header from "components/common/Header";
+// import Footer from "components/common/Footer";
+
+import TopSection from "../components/linkPage/TopSection";
+import ContentSection from "../components/linkPage/ContentSection";
 
 const PageContainer = styled.div`
   width: 100%;
@@ -16,10 +16,10 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     padding: 0 1.875rem;
   }
-  ${theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     padding: 0 1.875rem;
   }
 `;
@@ -27,12 +27,10 @@ const PageContainer = styled.div`
 export default function LinkPage() {
   return (
     <>
-      <Header />
       <TopSection />
       <PageContainer>
         <ContentSection />
       </PageContainer>
-      <Footer />
     </>
   );
 }

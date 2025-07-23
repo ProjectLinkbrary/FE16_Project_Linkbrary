@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import Logo from "./Logo.jsx";
-import { SecondaryButton } from "./Button.jsx";
+import Logo from "./Logo";
+import { SecondaryButton } from "./Button";
 
 const HeaderContainer = styled.header`
   width: 100%;

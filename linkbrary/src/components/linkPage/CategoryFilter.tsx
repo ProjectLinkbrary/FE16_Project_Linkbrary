@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme";
 
 const categories = [
   "전체",
@@ -22,7 +21,7 @@ const CategoryWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     height: 50px;
     flex-direction: row;
     align-items: center;
@@ -40,13 +39,13 @@ const CategoryItem = styled.li`
   border-radius: 50px;
   padding: 8px 12px;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     display: flex;
     align-items: center;
     height: 50px;
   }
 
-  ${theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     display: flex;
     align-items: center;
     height: 50px;

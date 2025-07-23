@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme";
 
 const ContentListSection = styled.section`
   margin-top: 16px;
@@ -12,7 +11,7 @@ const CardList = styled.div`
   flex-direction: column;
   gap: 1.5rem;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -28,11 +27,11 @@ const Card = styled.div`
 
   width: 100%;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     width: calc(50% - 0.75rem);
   }
 
-  ${theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     width: calc(33.333% - 1rem);
   }
 `;
@@ -80,7 +79,19 @@ const NoFavortiesTitle = styled.h1`
   padding: 8rem 0;
 `;
 
-export default function ContentList({ list = [] }) {
+type CardItem = {
+  id: number;
+  thumbnail: string;
+  title: string;
+  description: string;
+  timeAgo: string;
+  date: string;
+};
+type ContentListProps = {
+  list: CardItem[];
+};
+
+export default function ContentList({ list = [] }: ContentListProps) {
   return (
     <ContentListSection>
       <CardList>
