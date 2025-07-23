@@ -2,32 +2,25 @@ import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme.js";
 
-const breakpoints = {
-  tablet: "768px",
-  desktop: "1024px",
-};
-
-const media = {
-  tablet: `@media (min-width: ${breakpoints.tablet})`,
-  desktop: `@media (min-width: ${breakpoints.desktop})`,
-};
-
 const InputGroup = styled.div`
   width: 100%;
   margin-bottom: 20px;
 
-  ${media.tablet} {
+  ${theme.media.tablet} {
+    width: 100%;
     margin-bottom: 25px;
   }
 `;
 
 const Label = styled.label`
+  padding: 0 0;
   display: block;
   font-size: ${theme.fontSize.fz14};
   margin-bottom: 8px;
+
   color: ${theme.color.white};
 
-  ${media.tablet} {
+  ${theme.media.tablet} {
     font-size: ${theme.fontSize.fz15 || "15px"};
     margin-bottom: 10px;
   }
@@ -36,16 +29,18 @@ const Label = styled.label`
 const InputContainer = styled.div`
   position: relative;
   width: 100%;
+  margin-bottom: 24px;
 `;
 
 const StyledInput = styled.input`
-  width: calc(100% - 20px);
-  padding: 12px 10px;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
   border: 1px solid
     ${(props) => {
       if (props.isInvalid) return "red";
       if (props.isValid) return "green";
-      return theme.color.gray60;
+      return theme.color.white;
     }};
   border-radius: 8px;
   background-color: ${theme.color.gray80};
@@ -55,26 +50,29 @@ const StyledInput = styled.input`
     border-color: ${theme.color.primary};
   }
 
-  ${media.tablet} {
-    padding: 14px 12px;
+  ${theme.media.tablet} {
+    padding: 0 16px;
     font-size: ${theme.fontSize.fz17 || "17px"};
   }
 `;
 
 const StyledCheckButton = styled.button`
   position: absolute;
-  right: 30px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
-  padding: 5px 5px;
+  padding: 6px 12px;
   background-color: ${theme.color.white};
   color: ${theme.color.black};
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: ${theme.fontSize.fz14};
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
 
-  ${media.tablet} {
+  ${theme.media.tablet} {
     padding: 10px 14px;
     font-size: ${theme.fontSize.fz15 || "15px"};
   }
@@ -82,7 +80,7 @@ const StyledCheckButton = styled.button`
 
 const StyledTogglePasswordButton = styled.button`
   position: absolute;
-  right: 30px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
@@ -92,25 +90,26 @@ const StyledTogglePasswordButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
   & img {
-    width: 100%;
-    height: 100%;
+    width: 16px;
+    height: 16px;
     object-fit: contain;
+    filter: brightness(0) invert(1);
   }
-  ${media.tablet} {
+  ${theme.media.tablet} {
     width: 28px;
-    height: 28px;
+    height: 28px; 
+    & img {
+      width: 20px; /* 태블릿에서 이미지 크기 조정 */
+      height: 20px;
   }
 `;
 
 const ErrorMessage = styled.p`
   color: #ff3235;
   font-size: ${theme.fontSize.fz14};
-  margin-top: 5px; /* 양수 값으로 조정하여 텍스트가 아래로 보이도록 함 */
-  margin-bottom: 0; /* 필요 없으면 0으로 설정 */
+  margin-top: 8px;
   align-self: flex-start;
-  margin-left: 10px;
 `;
 
 const InputField = ({
@@ -152,14 +151,14 @@ const InputField = ({
         {isPasswordField && showToggle && (
           <StyledTogglePasswordButton type="button" onClick={onToggle}>
             {showPassword ? (
-              <img src="/images/ic_eyes-on.svg" alt="비밀번호 숨기기" />
+              <img src="/images/ic_eyes_on.svg" alt="비밀번호 숨기기" />
             ) : (
-              <img src="/images/ic_eyes-off.svg" alt="비밀번호 보이기" />
+              <img src="/images/ic_eyes_off.svg" alt="비밀번호 보이기" />
             )}
           </StyledTogglePasswordButton>
         )}
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </InputContainer>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </InputGroup>
   );
 };
