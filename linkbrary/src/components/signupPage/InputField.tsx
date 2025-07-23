@@ -1,6 +1,24 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { theme } from "../../styles/theme.js";
+import { theme } from "../../styles/theme";
+
+// InputField 컴포넌트가 받을 props의 타입을 정의합니다.
+interface InputFieldProps {
+  label: string;
+  type: string;
+  id: string;
+  placeholder: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // HTMLInputElement의 change 이벤트
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // HTMLInputElement의 focus 이벤트 (blur는 FocusEvent)
+  isValid?: boolean; // 유효성 상태 (선택적)
+  isInvalid?: boolean; // 유효성 상태 (선택적)
+  onCheck?: () => void; // 중복 확인 버튼 클릭 핸들러 (선택적)
+  showToggle?: boolean; // 비밀번호 토글 버튼 표시 여부 (선택적)
+  onToggle?: () => void; // 비밀번호 토글 버튼 클릭 핸들러 (선택적)
+  showPassword?: boolean; // 비밀번호 표시 상태 (선택적)
+  errorMessage?: string | null; // 에러 메시지 (선택적, 문자열 또는 null)
+}
 
 const InputGroup = styled.div`
   width: 100%;
@@ -13,15 +31,14 @@ const InputGroup = styled.div`
 `;
 
 const Label = styled.label`
-  padding: 0 0;
+  padding: 0 16px; /* <-- 단위 'px' 추가되었는지 다시 확인 */
   display: block;
   font-size: ${theme.fontSize.fz14};
   margin-bottom: 8px;
-
   color: ${theme.color.white};
 
   ${theme.media.tablet} {
-    font-size: ${theme.fontSize.fz15 || "15px"};
+    font-size: ${theme.fontSize.fz14};
     margin-bottom: 10px;
   }
 `;
@@ -29,18 +46,20 @@ const Label = styled.label`
 const InputContainer = styled.div`
   position: relative;
   width: 100%;
-  margin-bottom: 24px;
+  /* InputContainer의 margin-bottom은 제거하는 것을 권장합니다 (InputGroup에서 간격 제어) */
+  /* margin-bottom: 24px; <-- 이 줄을 삭제하거나 0으로 설정하세요 */
 `;
 
 const StyledInput = styled.input`
   width: 100%;
-  height: 48px;
-  padding: 0 16px;
+  height: 56px;
+  padding: 0 80px 0 16px;
   border: 1px solid
-    ${(props) => {
-      if (props.isInvalid) return "red";
+    ${(props: { isInvalid?: boolean; isValid?: boolean }) => {
+      // props에 타입 명시
+      if (props.isInvalid) return theme.color.primary; // 에러 시 테마 primary 색상
       if (props.isValid) return "green";
-      return theme.color.white;
+      return theme.color.gray60; // 기본 테두리 색상
     }};
   border-radius: 8px;
   background-color: ${theme.color.gray80};
@@ -51,8 +70,8 @@ const StyledInput = styled.input`
   }
 
   ${theme.media.tablet} {
-    padding: 0 16px;
-    font-size: ${theme.fontSize.fz17 || "17px"};
+    padding: 0 80px 0 16px;
+    font-size: ${theme.fontSize.fz16};
   }
 `;
 
@@ -62,8 +81,8 @@ const StyledCheckButton = styled.button`
   top: 50%;
   transform: translateY(-50%);
   padding: 6px 12px;
-  background-color: ${theme.color.white};
-  color: ${theme.color.black};
+  background-color: ${theme.color.gray20}; /* <-- 시안처럼 회색 배경 */
+  color: ${theme.color.black}; /* <-- 시안처럼 검정색 글씨 */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -74,7 +93,7 @@ const StyledCheckButton = styled.button`
 
   ${theme.media.tablet} {
     padding: 10px 14px;
-    font-size: ${theme.fontSize.fz15 || "15px"};
+    font-size: ${theme.fontSize.fz14};
   }
 `;
 
@@ -84,12 +103,15 @@ const StyledTogglePasswordButton = styled.button`
   top: 50%;
   transform: translateY(-50%);
   background: none;
+  border: none; /* <-- border: none; 추가 */
   cursor: pointer;
   width: 24px;
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0; /* <-- 이전에 문법 오류였던 부분 */
+
   & img {
     width: 16px;
     height: 16px;
@@ -100,7 +122,7 @@ const StyledTogglePasswordButton = styled.button`
     width: 28px;
     height: 28px;
     & img {
-      width: 20px; /* 태블릿에서 이미지 크기 조정 */
+      width: 20px;
       height: 20px;
     }
   }
@@ -110,23 +132,27 @@ const ErrorMessage = styled.p`
   color: #ff3235;
   font-size: ${theme.fontSize.fz14};
   margin-top: 8px;
+  margin-bottom: 0; /* <-- 세미콜론(;) 추가 */
   align-self: flex-start;
+  padding: 0 16px;
 `;
 
-const InputField = ({
+// InputField 컴포넌트 자체에 InputFieldProps 타입을 명시합니다.
+const InputField: React.FC<InputFieldProps> = ({
   label,
   type,
   id,
   placeholder,
   value,
   onChange,
+  onBlur, // <-- onBlur prop
   isValid,
   isInvalid,
-  onCheck, // 이메일 필드에만 해당
-  showToggle, // 비밀번호 필드에만 해당
-  onToggle, // 비밀번호 필드에만 해당
-  showPassword, // 비밀번호 필드에만 해당
-  errorMessage, // 에러 메시지 텍스트
+  onCheck,
+  showToggle,
+  onToggle,
+  showPassword,
+  errorMessage,
 }) => {
   const isEmailField = id === "email";
   const isPasswordField = type === "password";
@@ -136,11 +162,12 @@ const InputField = ({
       <Label htmlFor={id}>{label}</Label>
       <InputContainer>
         <StyledInput
-          type={showToggle && showPassword ? "text" : type} // 비밀번호 토글 로직
+          type={showToggle && showPassword ? "text" : type}
           id={id}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          onBlur={onBlur} // <-- onBlur 이벤트 핸들러 연결
           isValid={isValid}
           isInvalid={isInvalid}
         />
@@ -158,8 +185,8 @@ const InputField = ({
             )}
           </StyledTogglePasswordButton>
         )}
-        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       </InputContainer>
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </InputGroup>
   );
 };
