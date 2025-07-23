@@ -1,19 +1,18 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import Logo from "./Logo.jsx";
-import { SecondaryButton } from "./Button.jsx";
+import Logo from "./Logo";
+import { SecondaryButton } from "./Button";
 
 const HeaderContainer = styled.header`
   width: 100%;
   position: absolute;
   padding: 16px 32px;
-  background-color: #000;
 
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.media.tablet} {
     padding: 45px 32px;
   }
 
-  @media (min-width: 1024px) {
+  ${({ theme }) => theme.media.desktop} {
     padding: 32px 32px;
   }
 `;
@@ -21,7 +20,7 @@ const HeaderContainer = styled.header`
 const HeaderLogo = styled(Logo)`
   width: 88px;
 
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.media.tablet} {
     width: 133px;
   }
 `;
@@ -50,6 +49,13 @@ const UserInfo = styled.div`
   font-size: ${({ theme }) => theme.fontSize.fz14};
 `;
 
+const FavoriteButton = styled(SecondaryButton)`
+  margin-right: 24px;
+  padding-left: 30px;
+  background-image: url("/images/ic_fav.svg");
+  background-position: left center;
+`;
+
 const UserIcon = styled.div`
   width: 20px;
   height: 20px;
@@ -59,19 +65,14 @@ const UserIcon = styled.div`
 `;
 
 const UserName = styled.span`
+  display: none;
   color: ${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize.fz14};
 
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.media.tablet} {
     font-size: ${({ theme }) => theme.fontSize.fz16};
+    display: block;
   }
-`;
-
-const FavoriteButton = styled(SecondaryButton)`
-  margin-right: 24px;
-  padding-left: 30px;
-  background-image: url("/images/ic_fav.svg");
-  background-position: left center;
 `;
 
 export default function Header() {
@@ -83,7 +84,7 @@ export default function Header() {
         <NavMenu>
           {isLoggedIn ? (
             <>
-              <FavoriteButton href="/favorite">즐겨찾기</FavoriteButton>
+              <FavoriteButton href="/favorite">⭐ 즐겨찾기</FavoriteButton>
               <UserInfo>
                 <UserIcon />
                 <UserName>이용섭</UserName>

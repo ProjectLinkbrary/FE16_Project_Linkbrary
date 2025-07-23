@@ -10,7 +10,7 @@ export const Button = styled.button`
   font-size: ${({ theme }) => theme.fontSize.fz14};
   font-weight: 600;
 
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.media.tablet} {
     padding: 12px 24px;
     font-size: ${({ theme }) => theme.fontSize.fz18};
   }
