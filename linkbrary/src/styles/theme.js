@@ -20,6 +20,7 @@ export const theme = {
     fz56: `56px`,
     fz48: `48px`,
     fz42: `42px`,
+    fz40: `42px`,
     fz32: `32px`,
     fz24: `24px`,
     fz20: `20px`,
@@ -39,8 +40,8 @@ export const theme = {
     desktop: "1024px",
   },
   media: {
-    tablet: `@media (min-width: 768px)`,
-    desktop: `@media (min-width: 1024px)`,
+    tablet: "@media (min-width: 768px)",
+    desktop: "@media (min-width: 1024px)",
   },
 };
 
