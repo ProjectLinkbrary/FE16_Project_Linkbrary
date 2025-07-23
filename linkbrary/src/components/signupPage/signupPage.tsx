@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import SignupFormLayout from "./SignupFormLayout"; // .tsx 확장자로 변경되었다고 가정
-import InputField from "./InputField"; // .tsx 확장자로 변경되었다고 가정
-import { theme } from "../../styles/theme"; // .ts 확장자로 변경되었다고 가정
+import SignupFormLayout from "./SignupFormLayout";
+import InputField from "./InputField";
+import { theme } from "../../styles/theme";
 
-// SubmitButton 스타일만 여기에 남겨둡니다.
 const SubmitButton = styled.button`
   width: 100%;
   padding: 15px;
@@ -24,20 +23,17 @@ const SubmitButton = styled.button`
   }
 `;
 
-// 이메일 유효성 상태를 위한 타입 정의
 type EmailStatus = "valid" | "invalid_format" | "invalid_duplicate" | null;
-// 이름 유효성 상태를 위한 타입 정의
 type NameStatus = "valid" | "invalid" | null;
-// 비밀번호 유효성 상태를 위한 타입 정의
 type PasswordStatus = "valid" | "invalid" | null;
 
 const SignupPage: React.FC = () => {
   // 함수 컴포넌트에 React.FC 타입 명시
-  const [email, setEmail] = useState<string>(""); // useState에 타입 명시
-  const [name, setName] = useState<string>(""); // useState에 타입 명시
-  const [password, setPassword] = useState<string>(""); // useState에 타입 명시
-  const [confirmPassword, setConfirmPassword] = useState<string>(""); // useState에 타입 명시
-  const [showPassword, setShowPassword] = useState<boolean>(false); // useState에 타입 명시
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false); // useState에 타입 명시
 
@@ -176,7 +172,7 @@ const SignupPage: React.FC = () => {
     handleEmailBlur(e as any); // 임시로 any 사용, 실제론 HTMLFormElement에서 Input 찾아서 호출
     handleNameBlur(e as any);
     handlePasswordBlur(e as any);
-    handleConfirmPasswordBlur(e as any); // 실제론 e.target이 Input이므로 타입 캐스팅 필요 (생략)
+    handleConfirmPasswordBlur(e as any); // 실제론 e.target이 Input이므로 타입 캐스팅 필요
 
     // 최종 상태 확인 후 제출
     let isValidForm = true;
