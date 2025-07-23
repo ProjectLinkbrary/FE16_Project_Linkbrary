@@ -19,7 +19,11 @@ const SearchBarSection = styled.section`
 const InputWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 52px;
+  height: 3rem;
+
+  ${theme.media.tablet} {
+    height: 3.25rem;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -44,12 +48,30 @@ const LinkIcon = styled.img`
   height: 16px;
 `;
 
+const CloseButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+
+  width: 1rem;
+  height: 1rem;
+
+  ${theme.media.tablet} {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
 export default function SearchBar() {
   return (
     <SearchBarSection>
       <InputWrapper>
         <LinkIcon src="/images/ic_search.svg" alt="검색 아이콘" />
         <StyledInput placeholder="링크를 검색해 보세요." />
+        <CloseButton>
+          <img src="/images/ic_close.svg" alt="취소" />
+        </CloseButton>
       </InputWrapper>
     </SearchBarSection>
   );

@@ -73,6 +73,13 @@ const CardDescription = styled.p`
   text-overflow: ellipsis;
 `;
 
+const NoFavortiesTitle = styled.h1`
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 8rem 0;
+`;
+
 export default function ContentList({ list = [] }) {
   return (
     <ContentListSection>
@@ -96,7 +103,7 @@ export default function ContentList({ list = [] }) {
             </Card>
           ))
         ) : (
-          <p>등록된 즐겨찾기가 없습니다.</p>
+          <NoFavortiesTitle>등록된 즐겨찾기가 없습니다.</NoFavortiesTitle>
         )}
       </CardList>
     </ContentListSection>

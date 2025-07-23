@@ -3,13 +3,12 @@ import styled from "@emotion/styled";
 import theme from "styles/theme.js";
 import { useState, useEffect } from "react";
 import ContentList from "./ContentList.jsx";
-import NoLinks from "./Nolink.jsx";
+import NoLinks from "./Nolinks.jsx";
 import CategoryFilter from "./CategoryFilter.jsx";
 import SearchBar from "./SearchBar.jsx";
 
 const ContentSectionWrapper = styled.section`
-  height: 400px;
-  margin: 24px 0;
+  /* margin: 24px 0; */
 `;
 
 const ContentWrapper = styled.div`
@@ -25,30 +24,29 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const TitleBox = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;
-
-const Title = styled.h2`
+const FolderTitle = styled.h2`
   font-size: 20px;
   font-weight: 600;
 `;
 
-const IconButtonList = styled.ul`
+const FolderTag = styled.div`
+  width: 100%;
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
 `;
+const FolderActions = styled.div``;
+const IconButton = styled.button``;
 
 const Pagination = styled.div`
   width: 100%;
   height: 50px;
-  border: 1px solid red;
   display: flex;
+  gap: 20px;
   justify-content: center;
   align-items: center;
-  padding: 0 30px;
+
+  margin: 4rem 0 4rem 0;
 `;
 
 const cardData = [
@@ -78,13 +76,15 @@ const cardData = [
   },
 ];
 
+const defaultPageNumbers = ["<", 1, 2, 3, 4, 5, ">"];
+
 export default function ContentSection() {
   // const [page, setPage] = useState(1);
   const [list, setList] = useState(cardData);
 
-  useEffect(() => {
-    console.log("list 상태:", list);
-  }, []);
+  // useEffect(() => {
+  //   console.log("list 상태:", list);
+  // }, []);
 
   return (
     <ContentSectionWrapper>
@@ -94,22 +94,31 @@ export default function ContentSection() {
         <>
           <CategoryFilter />
           <ContentWrapper>
-            <TitleBox>
-              <Title>유용한 글</Title>
-              <img src="/images/ic_btn.svg" alt="아이콘" />
-            </TitleBox>
-            <IconButtonList>
-              <li>
-                <img src="/images/ic_share.svg" alt="공유" />
-              </li>
-              <li>
-                <img src="/images/ic_trash.svg" alt="휴지통" />
-              </li>
-            </IconButtonList>
+            <FolderTag>
+              <FolderTitle>전체</FolderTitle>
+              <FolderActions>
+                <IconButton type="button">
+                  <img src="/images/ic_share.svg" alt="공유" />
+                </IconButton>
+                <IconButton type="button">
+                  <img src="/images/ic_btn.svg" alt="폴더 수정하기" />
+                </IconButton>
+                <IconButton type="button">
+                  <img src="/images/ic_trash.svg" alt="폴더 삭제" />
+                </IconButton>
+              </FolderActions>
+            </FolderTag>
           </ContentWrapper>
 
           <ContentList list={list} />
-          <Pagination>1 2 3 4 5</Pagination>
+
+          <Pagination>
+            {defaultPageNumbers.map((num) => (
+              <button key={num} type="button" disabled>
+                {num}
+              </button>
+            ))}
+          </Pagination>
         </>
       ) : (
         <NoLinks />

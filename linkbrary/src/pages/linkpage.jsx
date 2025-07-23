@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import theme from "styles/theme";
+import Header from "components/common/Header";
+import Footer from "components/common/Footer";
 
 import TopSection from "../components/linkpage/TopSection";
 import ContentSection from "../components/linkpage/ContentSection";
-import Header from "components/common/Header";
 
 const PageContainer = styled.div`
   width: 100%;
@@ -31,6 +32,7 @@ export default function LinkPage() {
       <PageContainer>
         <ContentSection />
       </PageContainer>
+      <Footer />
     </>
   );
 }
