@@ -1,16 +1,29 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import theme from "styles/theme";
 
 const SearchBarSection = styled.section`
   display: flex;
   justify-content: center;
-  margin: 1.3rem 0;
+  margin: 1.25rem 0 1.5rem 0;
+
+  ${theme.media.tablet} {
+    margin: 3rem 0 2.5rem 0;
+  }
+
+  ${theme.media.desktop} {
+    margin: 4rem 0 3rem 0;
+  }
 `;
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 327px;
-  height: 52px;
+  width: 100%;
+  height: 3rem;
+
+  ${theme.media.tablet} {
+    height: 3.25rem;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -23,7 +36,7 @@ const StyledInput = styled.input`
   font-size: 1rem;
 
   color: #757575;
-  background-color: #f5f5f5;
+  background-color: ${({ theme }) => theme.color.gray10};
 `;
 
 const LinkIcon = styled.img`
@@ -35,12 +48,30 @@ const LinkIcon = styled.img`
   height: 16px;
 `;
 
+const CloseButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+
+  width: 1rem;
+  height: 1rem;
+
+  ${theme.media.tablet} {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
 export default function SearchBar() {
   return (
     <SearchBarSection>
       <InputWrapper>
         <LinkIcon src="/images/ic_search.svg" alt="검색 아이콘" />
         <StyledInput placeholder="링크를 검색해 보세요." />
+        <CloseButton>
+          <img src="/images/ic_close.svg" alt="취소" />
+        </CloseButton>
       </InputWrapper>
     </SearchBarSection>
   );

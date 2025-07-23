@@ -1,25 +1,38 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import TopSection from "../components/linkpage/TopSection";
-import SearchBar from "../components/linkpage/SearchBar";
-import CategoryFilter from "../components/linkpage/CategoryFilter";
-import ContentSection from "../components/linkpage/ContentSection";
+import theme from "styles/theme";
 import Header from "components/common/Header";
+import Footer from "components/common/Footer";
 
-const LinkpageStyle = styled.div`
+import TopSection from "../components/linkpage/TopSection";
+import ContentSection from "../components/linkpage/ContentSection";
+
+const PageContainer = styled.div`
   width: 100%;
+  max-width: 66.25rem;
+  margin: 0 auto;
+  padding: 0 1.563rem;
+
   display: flex;
   flex-direction: column;
+
+  ${theme.media.tablet} {
+    padding: 0 1.875rem;
+  }
+  ${theme.media.desktop} {
+    padding: 0 1.875rem;
+  }
 `;
 
 export default function LinkPage() {
   return (
-    <LinkpageStyle>
+    <>
       <Header />
       <TopSection />
-      <SearchBar />
-      <CategoryFilter />
-      <ContentSection />
-    </LinkpageStyle>
+      <PageContainer>
+        <ContentSection />
+      </PageContainer>
+      <Footer />
+    </>
   );
 }

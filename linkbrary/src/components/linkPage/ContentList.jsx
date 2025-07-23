@@ -1,27 +1,43 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import theme from "styles/theme";
 
-const contentList = css`
+const ContentListSection = styled.section`
   margin-top: 16px;
 `;
 
-const cardList = css`
+const CardList = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
   gap: 1.5rem;
+
+  ${theme.media.tablet} {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 `;
 
-const card = css`
+const Card = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 16px;
   overflow: hidden;
-
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  width: 100%;
+
+  ${theme.media.tablet} {
+    width: calc(50% - 0.75rem);
+  }
+
+  ${theme.media.desktop} {
+    width: calc(33.333% - 1rem);
+  }
 `;
 
-const cardThumnail = css`
+const CardThumbnail = styled.div`
   position: relative;
   width: 100%;
   height: 190px;
@@ -34,7 +50,7 @@ const cardThumnail = css`
   }
 `;
 
-const favoritesIcon = css`
+const FavoritesIcon = styled.button`
   position: absolute;
   top: 8px;
   right: 8px;
@@ -44,70 +60,52 @@ const favoritesIcon = css`
   cursor: pointer;
 `;
 
-const cardContent = css`
+const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
   padding: 16px 20px;
 `;
 
-const cardDescription = css`
+const CardDescription = styled.p`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `;
 
-const cardData = [
-  {
-    id: 1,
-    thumbnail: "/images/thumnailimg.jpg",
-    title: "이메일 자동화 정복하기",
-    description: "ChatGPT + Gmail 확장으로 메일 지원 자동 응답서비스",
-    timeAgo: "10 minutes ago",
-    date: "2025.07.18",
-  },
-  {
-    id: 2,
-    thumbnail: "/images/thumnailimg.jpg",
-    title: "Next.js 배우기",
-    description: "React 기반 SSR 프레임워크를 익혀봅시다",
-    timeAgo: "1 hour ago",
-    date: "2025.07.17",
-  },
-  {
-    id: 3,
-    thumbnail: "/images/thumnailimg.jpg",
-    title: "Emotion 스타일링",
-    description: "CSS-in-JS 라이브러리로 쉽고 빠른 스타일링 방법",
-    timeAgo: "3 hours ago",
-    date: "2025.07.16",
-  },
-];
+const NoFavortiesTitle = styled.h1`
+  width: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 8rem 0;
+`;
 
-export default function ContentList() {
+export default function ContentList({ list = [] }) {
   return (
-    <section css={contentList}>
-      <div css={cardList}>
-        {cardData.map(
-          ({ id, thumbnail, title, description, timeAgo, date }) => (
-            <div key={id} css={card}>
-              <div css={cardThumnail}>
+    <ContentListSection>
+      <CardList>
+        {list.length > 0 ? (
+          list.map(({ id, thumbnail, title, description, timeAgo, date }) => (
+            <Card key={id}>
+              <CardThumbnail>
                 <img src={thumbnail} alt={title} />
-                <button css={favoritesIcon}>
+                <FavoritesIcon>
                   <img src="/images/ic_favorites.svg" alt="favorites icon" />
-                </button>
-              </div>
+                </FavoritesIcon>
+              </CardThumbnail>
 
-              <div css={cardContent}>
+              <CardContent>
                 <span>{timeAgo}</span>
                 <h2>{title}</h2>
-                <p css={cardDescription}>{description}</p>
+                <CardDescription>{description}</CardDescription>
                 <span>{date}</span>
-              </div>
-            </div>
-          )
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <NoFavortiesTitle>등록된 즐겨찾기가 없습니다.</NoFavortiesTitle>
         )}
-      </div>
-    </section>
+      </CardList>
+    </ContentListSection>
   );
 }

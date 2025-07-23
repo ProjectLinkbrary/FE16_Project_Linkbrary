@@ -7,7 +7,6 @@ const HeaderContainer = styled.header`
   width: 100%;
   position: absolute;
   padding: 16px 32px;
-  background-color: #000;
 
   @media (min-width: 768px) {
     padding: 45px 32px;
@@ -50,6 +49,13 @@ const UserInfo = styled.div`
   font-size: ${({ theme }) => theme.fontSize.fz14};
 `;
 
+const FavoriteButton = styled(SecondaryButton)`
+  margin-right: 24px;
+  padding-left: 30px;
+  background-image: url("/images/ic_fav.svg");
+  background-position: left center;
+`;
+
 const UserIcon = styled.div`
   width: 20px;
   height: 20px;
@@ -58,20 +64,13 @@ const UserIcon = styled.div`
   background-repeat: no-repeat;
 `;
 
-const UserName = styled.span`
+const UserName = styled.div`
   color: ${({ theme }) => theme.color.white};
   font-size: ${({ theme }) => theme.fontSize.fz14};
 
   @media (min-width: 768px) {
     font-size: ${({ theme }) => theme.fontSize.fz16};
   }
-`;
-
-const FavoriteButton = styled(SecondaryButton)`
-  margin-right: 24px;
-  padding-left: 30px;
-  background-image: url("/images/ic_fav.svg");
-  background-position: left center;
 `;
 
 export default function Header() {
