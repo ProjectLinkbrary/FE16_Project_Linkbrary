@@ -20,7 +20,6 @@ export const theme = {
     fz56: `56px`,
     fz48: `48px`,
     fz42: `42px`,
-    fz40: `42px`,
     fz32: `32px`,
     fz24: `24px`,
     fz20: `20px`,
@@ -40,9 +39,12 @@ export const theme = {
     desktop: "1024px",
   },
   media: {
-    tablet: "@media (min-width: 768px)",
-    desktop: "@media (min-width: 1024px)",
+    tablet: `@media (min-width: 768px)`,
+    desktop: `@media (min-width: 1024px)`,
   },
-};
+} as const; // 테마 객체를 리터럴 타입으로 고정시켜 자동완성 가능하게 함
+// them 객체 내부 속성들을 리터럴 타입으로 고정해서 자동완성, 타입 추론이 더 정확해짐
 
-export default theme;
+export type Theme = typeof theme; // 테마 기반 타입 추출
+
+export default theme; // ThemeProvider에서 사용하기 위해 기본 내보내기

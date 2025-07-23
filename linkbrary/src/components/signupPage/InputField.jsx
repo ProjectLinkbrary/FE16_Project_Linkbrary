@@ -98,10 +98,11 @@ const StyledTogglePasswordButton = styled.button`
   }
   ${theme.media.tablet} {
     width: 28px;
-    height: 28px; 
+    height: 28px;
     & img {
       width: 20px; /* 태블릿에서 이미지 크기 조정 */
       height: 20px;
+    }
   }
 `;
 

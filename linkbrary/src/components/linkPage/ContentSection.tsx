@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme.js";
 import { useState, useEffect } from "react";
-import ContentList from "./ContentList.jsx";
-import NoLinks from "./Nolinks.jsx";
-import CategoryFilter from "./CategoryFilter.jsx";
-import SearchBar from "./SearchBar.jsx";
+import ContentList from "./ContentList";
+import NoLinks from "./Nolinks";
+import CategoryFilter from "./CategoryFilter";
+import SearchBar from "./SearchBar";
 
 const ContentSectionWrapper = styled.section`
   /* margin: 24px 0; */
@@ -16,10 +15,10 @@ const ContentWrapper = styled.div`
   justify-content: space-between;
   margin: 1.5rem 0 1rem 0;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     margin: 2.5rem 0 1.5rem 0;
   }
-  ${theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     margin: 3rem 0 2rem 0;
   }
 `;
@@ -49,7 +48,16 @@ const Pagination = styled.div`
   margin: 4rem 0 4rem 0;
 `;
 
-const cardData = [
+type CardItem = {
+  id: number;
+  thumbnail: string;
+  title: string;
+  description: string;
+  timeAgo: string;
+  date: string;
+};
+
+const cardData: CardItem[] = [
   {
     id: 1,
     thumbnail: "/images/thumnailimg.jpg",
@@ -76,11 +84,10 @@ const cardData = [
   },
 ];
 
-const defaultPageNumbers = ["<", 1, 2, 3, 4, 5, ">"];
+const defaultPageNumbers: Array<string | number> = ["<", 1, 2, 3, 4, 5, ">"];
 
 export default function ContentSection() {
-  // const [page, setPage] = useState(1);
-  const [list, setList] = useState(cardData);
+  const [list, setList] = useState<CardItem[]>(cardData);
 
   // useEffect(() => {
   //   console.log("list 상태:", list);
@@ -98,7 +105,7 @@ export default function ContentSection() {
               <FolderTitle>전체</FolderTitle>
               <FolderActions>
                 <IconButton type="button">
-                  <img src="/images/ic_share.svg" alt="공유" />
+                  <img src="./images/ic_share.svg" alt="공유" />
                 </IconButton>
                 <IconButton type="button">
                   <img src="/images/ic_btn.svg" alt="폴더 수정하기" />

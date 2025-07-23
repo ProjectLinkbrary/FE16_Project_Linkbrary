@@ -1,17 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme";
 
 const SearchBarSection = styled.section`
   display: flex;
   justify-content: center;
   margin: 1.25rem 0 1.5rem 0;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     margin: 3rem 0 2.5rem 0;
   }
 
-  ${theme.media.desktop} {
+  ${({ theme }) => theme.media.desktop} {
     margin: 4rem 0 3rem 0;
   }
 `;
@@ -21,7 +20,7 @@ const InputWrapper = styled.div`
   width: 100%;
   height: 3rem;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     height: 3.25rem;
   }
 `;
@@ -57,7 +56,7 @@ const CloseButton = styled.button`
   width: 1rem;
   height: 1rem;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     width: 1.5rem;
     height: 1.5rem;
   }
