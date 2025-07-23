@@ -25,7 +25,6 @@ const PageContainer = styled.div`
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    background-color: #313131;
     padding: 20px;
   }
 `;

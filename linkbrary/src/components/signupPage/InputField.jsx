@@ -13,7 +13,7 @@ const InputGroup = styled.div`
 `;
 
 const Label = styled.label`
-  padding: 0 0;
+  padding: 0 16;
   display: block;
   font-size: ${theme.fontSize.fz14};
   margin-bottom: 8px;
@@ -34,8 +34,8 @@ const InputContainer = styled.div`
 
 const StyledInput = styled.input`
   width: 100%;
-  height: 48px;
-  padding: 0 16px;
+  height: 56px;
+  padding: 0 0 16px;
   border: 1px solid
     ${(props) => {
       if (props.isInvalid) return "red";
@@ -90,6 +90,7 @@ const StyledTogglePasswordButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding:0
   & img {
     width: 16px;
     height: 16px;
@@ -109,7 +110,9 @@ const ErrorMessage = styled.p`
   color: #ff3235;
   font-size: ${theme.fontSize.fz14};
   margin-top: 8px;
+  margin-bottom:0
   align-self: flex-start;
+  padding: 0 16px;
 `;
 
 const InputField = ({
