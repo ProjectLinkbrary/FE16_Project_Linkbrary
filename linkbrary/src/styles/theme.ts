@@ -20,6 +20,7 @@ export const theme = {
     fz56: `56px`,
     fz48: `48px`,
     fz42: `42px`,
+    fz40: `40px`,
     fz32: `32px`,
     fz24: `24px`,
     fz20: `20px`,
