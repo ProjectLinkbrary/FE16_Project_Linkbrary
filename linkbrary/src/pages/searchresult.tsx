@@ -7,8 +7,8 @@ import CategoryFilter from "../components/linkPage/CategoryFilter";
 import ContentList from "../components/linkPage/ContentList";
 import NoLinks from "../components/linkPage/Nolinks";
 import TopSection from "../components/linkPage/TopSection";
-// import Header from "components/common/Header";
-// import Footer from "components/common/Footer";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
 import SearchNoResult from "../components/linkPage/SearchNoResult";
 
 const PageWrapper = styled.div`
@@ -75,7 +75,7 @@ export default function SearchResult({ list }: Props) {
 
   return (
     <PageWrapper>
-      {/* <Header /> */}
+      <Header />
       <TopSection />
 
       <ContentListWrapper>
@@ -114,7 +114,7 @@ export default function SearchResult({ list }: Props) {
         {dummyList.length > 0 ? <ContentList list={[]} /> : <SearchNoResult />}
       </ContentListWrapper>
 
-      {/* <Footer /> */}
+      <Footer />
     </PageWrapper>
   );
 }

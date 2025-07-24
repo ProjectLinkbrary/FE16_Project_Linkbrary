@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
 
 import TopSection from "../components/linkPage/TopSection";
 import ContentSection from "../components/linkPage/ContentSection";
@@ -24,10 +26,12 @@ const PageContainer = styled.div`
 export default function LinkPage() {
   return (
     <>
+      <Header isLoggedIn={true} />
       <TopSection />
       <PageContainer>
         <ContentSection />
       </PageContainer>
+      <Footer />
     </>
   );
 }

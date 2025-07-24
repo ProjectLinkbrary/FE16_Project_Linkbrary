@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import { ChangeEvent, MouseEvent, useState } from "react";
 
 const TopSectionWrapper = styled.section`
   background: url("/images/bg_linkpage.png") no-repeat center center / cover;

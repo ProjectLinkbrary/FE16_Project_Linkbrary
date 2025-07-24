@@ -2,7 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import styled from "@emotion/styled";
 
-const Section = styled.section`
+interface SectionProps {
+  bgColor?: string;
+}
+
+interface FeatureWrapperProps {
+  reverse?: boolean;
+}
+
+const Section = styled.section<SectionProps>`
   padding: 50px 25px;
   background-color: ${({ bgColor }) => bgColor || "white"};
 
@@ -11,7 +19,7 @@ const Section = styled.section`
   }
 `;
 
-const FeatureWrapper = styled.div`
+const FeatureWrapper = styled.div<FeatureWrapperProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
