@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme";
+import Image from "next/image";
 
 // InputField 컴포넌트가 받을 props의 타입을 정의합니다.
 interface InputFieldProps {
@@ -11,13 +12,13 @@ interface InputFieldProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // HTMLInputElement의 change 이벤트
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // HTMLInputElement의 focus 이벤트 (blur는 FocusEvent)
-  isValid?: boolean; // 유효성 상태 (선택적)
-  isInvalid?: boolean; // 유효성 상태 (선택적)
-  onCheck?: () => void; // 중복 확인 버튼 클릭 핸들러 (선택적)
-  showToggle?: boolean; // 비밀번호 토글 버튼 표시 여부 (선택적)
-  onToggle?: () => void; // 비밀번호 토글 버튼 클릭 핸들러 (선택적)
-  showPassword?: boolean; // 비밀번호 표시 상태 (선택적)
-  errorMessage?: string | null; // 에러 메시지 (선택적, 문자열 또는 null)
+  isValid?: boolean; // 유효성 상태
+  isInvalid?: boolean; // 유효성 상태
+  onCheck?: () => void; // 중복 확인 버튼 클릭 핸들러
+  showToggle?: boolean; // 비밀번호 토글 버튼 표시 여부
+  onToggle?: () => void; // 비밀번호 토글 버튼 클릭 핸들러
+  showPassword?: boolean; // 비밀번호 표시 상태
+  errorMessage?: string | null; // 에러 메시지
 }
 
 const InputGroup = styled.div`
@@ -31,7 +32,7 @@ const InputGroup = styled.div`
 `;
 
 const Label = styled.label`
-  padding: 0 16px; /* <-- 단위 'px' 추가되었는지 다시 확인 */
+  padding: 0 16px;
   display: block;
   font-size: ${theme.fontSize.fz14};
   margin-bottom: 8px;
@@ -46,8 +47,6 @@ const Label = styled.label`
 const InputContainer = styled.div`
   position: relative;
   width: 100%;
-  /* InputContainer의 margin-bottom은 제거하는 것을 권장합니다 (InputGroup에서 간격 제어) */
-  /* margin-bottom: 24px; <-- 이 줄을 삭제하거나 0으로 설정하세요 */
 `;
 
 const StyledInput = styled.input`
@@ -57,7 +56,7 @@ const StyledInput = styled.input`
   border: 1px solid
     ${(props: { isInvalid?: boolean; isValid?: boolean }) => {
       // props에 타입 명시
-      if (props.isInvalid) return theme.color.primary; // 에러 시 테마 primary 색상
+      if (props.isInvalid) return "red";
       if (props.isValid) return "green";
       return theme.color.gray60; // 기본 테두리 색상
     }};
@@ -66,7 +65,7 @@ const StyledInput = styled.input`
   color: ${theme.color.white};
   font-size: ${theme.fontSize.fz16};
   &:focus {
-    border-color: ${theme.color.primary};
+    border-color: ${theme.color.white};
   }
 
   ${theme.media.tablet} {
@@ -81,8 +80,8 @@ const StyledCheckButton = styled.button`
   top: 50%;
   transform: translateY(-50%);
   padding: 6px 12px;
-  background-color: ${theme.color.gray20}; /* <-- 시안처럼 회색 배경 */
-  color: ${theme.color.black}; /* <-- 시안처럼 검정색 글씨 */
+  background-color: ${theme.color.gray20};
+  color: ${theme.color.black};
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -103,14 +102,14 @@ const StyledTogglePasswordButton = styled.button`
   top: 50%;
   transform: translateY(-50%);
   background: none;
-  border: none; /* <-- border: none; 추가 */
+  border: none;
   cursor: pointer;
   width: 24px;
   height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0; /* <-- 이전에 문법 오류였던 부분 */
+  padding: 0;
 
   & img {
     width: 16px;
@@ -132,13 +131,12 @@ const ErrorMessage = styled.p`
   color: #ff3235;
   font-size: ${theme.fontSize.fz14};
   margin-top: 8px;
-  margin-bottom: 0; /* <-- 세미콜론(;) 추가 */
+  margin-bottom: 0;
   align-self: flex-start;
   padding: 0 16px;
 `;
 
-// InputField 컴포넌트 자체에 InputFieldProps 타입을 명시합니다.
-const InputField: React.FC<InputFieldProps> = ({
+const InputField = ({
   label,
   type,
   id,
@@ -153,7 +151,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onToggle,
   showPassword,
   errorMessage,
-}) => {
+}: InputFieldProps) => {
   const isEmailField = id === "email";
   const isPasswordField = type === "password";
 
@@ -179,9 +177,19 @@ const InputField: React.FC<InputFieldProps> = ({
         {isPasswordField && showToggle && (
           <StyledTogglePasswordButton type="button" onClick={onToggle}>
             {showPassword ? (
-              <img src="/images/ic_eyes_on.svg" alt="비밀번호 숨기기" />
+              <Image
+                src="/images/ic_eyes_on.svg"
+                alt="비밀번호 숨기기"
+                width={24}
+                height={24}
+              />
             ) : (
-              <img src="/images/ic_eyes_off.svg" alt="비밀번호 보이기" />
+              <Image
+                src="/images/ic_eyes_off.svg"
+                alt="비밀번호 보이기"
+                width={24}
+                height={24}
+              />
             )}
           </StyledTogglePasswordButton>
         )}
