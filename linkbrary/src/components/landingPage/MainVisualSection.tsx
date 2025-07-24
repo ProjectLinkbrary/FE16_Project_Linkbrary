@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { PrimaryButton } from "../common/Button.jsx";
+import { PrimaryButton } from "../common/Button";
 import styled from "@emotion/styled";
 
 const MainVisualWrapper = styled.div`
@@ -74,9 +74,9 @@ export default function MainVisualSection() {
             <span></span>
             관리해 보세요
           </h1>
-          <Link href="/linkpage">
-            <PrimaryButton>링크 추가하기</PrimaryButton>
-          </Link>
+          <PrimaryButton as="a" href="/linkpage">
+            링크 추가하기
+          </PrimaryButton>
         </MainVisual>
       </MainVisualWrapper>
     </>

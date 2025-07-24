@@ -1,16 +1,18 @@
 import Link from "next/link";
-import Footer from "../components/common/Footer.jsx";
-import Header from "../components/common/Header.js";
+import Footer from "../components/common/Footer";
+import Header from "../components/common/Header";
+import MainVisualWrapper from "../components/landingPage/MainVisualSection";
+import LandingContent from "../components/landingPage/LandingContent";
 import type { NextPage } from "next";
 
-const Home: NextPage = () => {
+export default function Home() {
   return (
     <>
-      {/* <Header /> */}
-      <div>Linkbrary 프로젝트</div>
-      {/* <Footer /> */}
+      <Header isLoggedIn={true} />
+      <MainVisualWrapper />
+      <LandingContent />
+      <Footer />
+
     </>
   );
-};
-
-export default Home;
+}

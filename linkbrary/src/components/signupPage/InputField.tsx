@@ -52,7 +52,7 @@ const InputContainer = styled.div`
 const StyledInput = styled.input`
   width: 100%;
   height: 56px;
-  padding: 0 80px 0 16px;
+  padding: 0 100px 0 16px;
   border: 1px solid
     ${(props: { isInvalid?: boolean; isValid?: boolean }) => {
       // props에 타입 명시

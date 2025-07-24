@@ -1,6 +1,9 @@
 import styled from "@emotion/styled";
+import type { AnchorHTMLAttributes } from "react";
 
-export const Button = styled.button`
+type AnchorProps = AnchorHTMLAttributes<HTMLAnchorElement>;
+
+export const Button = styled.button<AnchorProps>`
   border-radius: 40px;
   padding: 8px 16px;
   display: flex;

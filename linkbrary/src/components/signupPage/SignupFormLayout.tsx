@@ -86,8 +86,7 @@ const LogoImageContainer = styled.div`
   }
 
   ${theme.media.desktop} {
-    margin-bottom: 24px;
-    width: 200px; // 데스크탑 너비
+    width: 210px; // 데스크탑 너비
     // padding-bottom은 비율을 유지하므로 변경할 필요 없음
   }
 `;
