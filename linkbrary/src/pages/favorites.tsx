@@ -1,9 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme";
-import ContentList from "components/linkPage/ContentList"; // ✅ 재사용할 리스트 컴포넌트
-import Header from "components/common/Header";
-import Footer from "components/common/Footer";
+import ContentList from "../components/linkPage/ContentList";
 
 const FavoritesSectionWrapper = styled.section`
   background: url("/images/linkpagebg.png") no-repeat center center / cover;
@@ -28,7 +25,7 @@ const Title = styled.h1`
   font-weight: 700;
   color: #ffffff;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     font-size: 32px;
   }
 `;
@@ -53,12 +50,11 @@ const Pagination = styled.div`
   margin: 4rem 0 4rem 0;
 `;
 
-const defaultPageNumbers = ["<", 1, 2, 3, 4, 5, ">"];
+const defaultPageNumbers: (string | number)[] = ["<", 1, 2, 3, 4, 5, ">"];
 
 export default function Favorites() {
   return (
     <>
-      <Header />
       <FavoritesSectionWrapper>
         <LinkWrapper>
           <Title>⭐즐겨찾기</Title>
@@ -66,16 +62,15 @@ export default function Favorites() {
       </FavoritesSectionWrapper>
 
       <FavoriteListWrapper>
-        <ContentList />
+        <ContentList list={[]} />
         <Pagination>
           {defaultPageNumbers.map((num) => (
-            <button key={num} type="button" disabled>
+            <button key={String(num)} type="button" disabled>
               {num}
             </button>
           ))}
         </Pagination>
       </FavoriteListWrapper>
-      <Footer />
     </>
   );
 }

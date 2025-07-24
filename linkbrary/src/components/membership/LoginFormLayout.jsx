@@ -25,8 +25,8 @@ export default function LoginFormLayout() {
       {/* 오른쪽 로그인 폼과 배경 */}
       <div
         style={{
-          width: "1440px",    // 보더 너비
-          height: "982px",    // 보더 높이
+          width: "1440px", // 보더 너비
+          height: "982px", // 보더 높이
           backgroundImage: "url('/images/signup-bg.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
