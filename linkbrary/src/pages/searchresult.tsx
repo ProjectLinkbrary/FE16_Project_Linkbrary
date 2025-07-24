@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import theme from "styles/theme";
+import Image from "next/image";
 
 import SearchBar from "../components/linkPage/SearchBar";
 import CategoryFilter from "../components/linkPage/CategoryFilter";
 import ContentList from "../components/linkPage/ContentList";
-import NoLinks from "../components/linkPage/NoLinks";
-import TopSection from "components/linkPage/TopSection";
-import Header from "components/common/Header";
-import Footer from "components/common/Footer";
-import SearchNoResult from "components/linkPage/SearchNoResult";
+import NoLinks from "../components/linkPage/Nolinks";
+import TopSection from "../components/linkPage/TopSection";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
+import SearchNoResult from "../components/linkPage/SearchNoResult";
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -34,7 +34,7 @@ const SearchSummary = styled.div`
   font-weight: 600;
   color: #b3b3b3;
 
-  ${theme.media.tablet} {
+  ${({ theme }) => theme.media.tablet} {
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
   }
@@ -47,16 +47,31 @@ const FolderTag = styled.div`
   align-items: center;
 `;
 
-const FolderActions = styled.div``;
+const FolderActions = styled.div`
+  display: flex;
+`;
 const IconButton = styled.button``;
+
+const TrashIcon = styled.img``;
 
 const FolderTitle = styled.h2`
   font-size: 20px;
   font-weight: 600;
 `;
 
-export default function SearchResult() {
-  const dummyList = [];
+type LinkItem = {
+  id: number;
+  url: string;
+  title: string;
+  description: string;
+};
+
+type Props = {
+  list: LinkItem[];
+};
+
+export default function SearchResult({ list }: Props) {
+  const dummyList: LinkItem[] = [];
 
   return (
     <PageWrapper>
@@ -74,23 +89,29 @@ export default function SearchResult() {
             <FolderTitle>전체</FolderTitle>
             <FolderActions>
               <IconButton type="button">
-                <img src="/images/ic_share.svg" alt="공유" />
+                <Image
+                  src="./images/ic_share.svg"
+                  alt="공유"
+                  width={30}
+                  height={30}
+                />
               </IconButton>
               <IconButton type="button">
-                <img src="/images/ic_btn.svg" alt="폴더 수정하기" />
+                <Image
+                  src="/images/ic_btn.svg"
+                  alt="폴더 수정하기"
+                  width={30}
+                  height={30}
+                />
               </IconButton>
               <IconButton type="button">
-                <img src="/images/ic_trash.svg" alt="폴더 삭제" />
+                <TrashIcon src="/images/ic_trash.svg" alt="폴더 삭제" />
               </IconButton>
             </FolderActions>
           </FolderTag>
         </ContentWrapper>
 
-        {dummyList.length > 0 ? (
-          <ContentList list={dummyList} />
-        ) : (
-          <SearchNoResult />
-        )}
+        {dummyList.length > 0 ? <ContentList list={[]} /> : <SearchNoResult />}
       </ContentListWrapper>
 
       <Footer />

@@ -93,22 +93,50 @@ export default function LoginForm() {
       >
         {/* 로고 버튼 */}
         <div style={{ textAlign: "center", marginBottom: 20 }}>
-          <Link href="/" style={{ fontSize: 32, fontWeight: "bold", color: "#fff", textDecoration: "none" }}>
+          <Link
+            href="/"
+            style={{
+              fontSize: 32,
+              fontWeight: "bold",
+              color: "#fff",
+              textDecoration: "none",
+            }}
+          >
             Linkbrary
           </Link>
         </div>
 
         {/* 회원가입 안내 */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 30, fontSize: 14 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 8,
+            marginBottom: 30,
+            fontSize: 14,
+          }}
+        >
           <span>회원이 아니신가요?</span>
-          <Link href="/signup" style={{ color: "#6D6AFE", textDecoration: "underline", fontWeight: "bold" }}>
+          <Link
+            href="/signup"
+            style={{
+              color: "#6D6AFE",
+              textDecoration: "underline",
+              fontWeight: "bold",
+            }}
+          >
             회원 가입하기
           </Link>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: 20 }}
+        >
           {/* 이메일 입력 */}
-          <label style={{ display: "flex", flexDirection: "column", fontSize: 14 }}>
+          <label
+            style={{ display: "flex", flexDirection: "column", fontSize: 14 }}
+          >
             이메일
             <input
               type="email"
@@ -130,11 +158,22 @@ export default function LoginForm() {
               }}
               required
             />
-            {emailError && <span style={{ color: "red", fontSize: 12, marginTop: 4 }}>{emailError}</span>}
+            {emailError && (
+              <span style={{ color: "red", fontSize: 12, marginTop: 4 }}>
+                {emailError}
+              </span>
+            )}
           </label>
 
           {/* 비밀번호 입력 */}
-          <label style={{ position: "relative", display: "flex", flexDirection: "column", fontSize: 14 }}>
+          <label
+            style={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              fontSize: 14,
+            }}
+          >
             비밀번호
             <input
               type={showPassword ? "text" : "password"}
@@ -172,12 +211,26 @@ export default function LoginForm() {
               aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
               {showPassword ? (
-                <img src="/images/ic_eyes-on.svg" alt="비밀번호 숨기기" width={24} height={24} />
+                <img
+                  src="/images/ic_eyes-on.svg"
+                  alt="비밀번호 숨기기"
+                  width={24}
+                  height={24}
+                />
               ) : (
-                <img src="/images/ic_eyes-off.svg" alt="비밀번호 보이기" width={24} height={24} />
+                <img
+                  src="/images/ic_eyes-off.svg"
+                  alt="비밀번호 보이기"
+                  width={24}
+                  height={24}
+                />
               )}
             </button>
-            {passwordError && <span style={{ color: "red", fontSize: 12, marginTop: 4 }}>{passwordError}</span>}
+            {passwordError && (
+              <span style={{ color: "red", fontSize: 12, marginTop: 4 }}>
+                {passwordError}
+              </span>
+            )}
           </label>
 
           {/* 로그인 버튼 */}

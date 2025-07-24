@@ -1,7 +1,15 @@
 // src/components/common/Input.jsx
 import React from "react";
 
-export default function Input({ type, value, onChange, placeholder, error, style, ...props }) {
+export default function Input({
+  type,
+  value,
+  onChange,
+  placeholder,
+  error,
+  style,
+  ...props
+}) {
   return (
     <>
       <input

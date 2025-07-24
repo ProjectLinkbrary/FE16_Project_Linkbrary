@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import Image from "next/image";
+
 import { useState, useEffect } from "react";
 import ContentList from "./ContentList";
 import NoLinks from "./Nolinks";
@@ -36,6 +38,10 @@ const FolderTag = styled.div`
 `;
 const FolderActions = styled.div``;
 const IconButton = styled.button``;
+
+const ShareIcon = styled.img``;
+const EditIcon = styled.img``;
+const TrashIcon = styled.img``;
 
 const Pagination = styled.div`
   width: 100%;
@@ -89,10 +95,6 @@ const defaultPageNumbers: Array<string | number> = ["<", 1, 2, 3, 4, 5, ">"];
 export default function ContentSection() {
   const [list, setList] = useState<CardItem[]>(cardData);
 
-  // useEffect(() => {
-  //   console.log("list 상태:", list);
-  // }, []);
-
   return (
     <ContentSectionWrapper>
       <SearchBar />
@@ -105,13 +107,13 @@ export default function ContentSection() {
               <FolderTitle>전체</FolderTitle>
               <FolderActions>
                 <IconButton type="button">
-                  <img src="./images/ic_share.svg" alt="공유" />
+                  <ShareIcon src="./images/ic_share.svg" alt="공유" />
                 </IconButton>
                 <IconButton type="button">
-                  <img src="/images/ic_btn.svg" alt="폴더 수정하기" />
+                  <EditIcon src="/images/ic_btn.svg" alt="폴더 수정하기" />
                 </IconButton>
                 <IconButton type="button">
-                  <img src="/images/ic_trash.svg" alt="폴더 삭제" />
+                  <TrashIcon src="/images/ic_trash.svg" alt="폴더 삭제" />
                 </IconButton>
               </FolderActions>
             </FolderTag>

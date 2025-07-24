@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import Image from "next/image";
 
 const ContentListSection = styled.section`
   margin-top: 16px;
@@ -49,6 +50,10 @@ const CardThumbnail = styled.div`
   }
 `;
 
+const ThumbnailImage = styled.img`
+  width: 100%;
+`;
+
 const FavoritesIcon = styled.button`
   position: absolute;
   top: 8px;
@@ -87,6 +92,7 @@ type CardItem = {
   timeAgo: string;
   date: string;
 };
+
 type ContentListProps = {
   list: CardItem[];
 };
@@ -99,9 +105,14 @@ export default function ContentList({ list = [] }: ContentListProps) {
           list.map(({ id, thumbnail, title, description, timeAgo, date }) => (
             <Card key={id}>
               <CardThumbnail>
-                <img src={thumbnail} alt={title} />
+                <ThumbnailImage src={thumbnail} alt={title} />
                 <FavoritesIcon>
-                  <img src="/images/ic_favorites.svg" alt="favorites icon" />
+                  <Image
+                    src="/images/ic_favorites.svg"
+                    alt="favorites icon"
+                    width={32}
+                    height={32}
+                  />
                 </FavoritesIcon>
               </CardThumbnail>
 
