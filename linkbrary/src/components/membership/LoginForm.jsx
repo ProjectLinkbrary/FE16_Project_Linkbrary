@@ -48,23 +48,42 @@ export default function LoginForm() {
     setShowPassword((prev) => !prev);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const isEmailValid = validateEmail(email);
-    const isPasswordValid = validatePassword(password);
+  const isEmailValid = validateEmail(email);
+  const isPasswordValid = validatePassword(password);
 
-    if (!isEmailValid || !isPasswordValid) {
-      return;
+  if (!isEmailValid || !isPasswordValid) {
+    return;
+  }
+
+  try {
+    const response = await fetch("https://linkbrary-api.vercel.app/16-조우원/auth/sign-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "로그인에 실패했습니다.");
     }
 
-    if (password !== "password123") {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    router.push("/");
-  };
+    // 로그인 성공
+    alert("로그인 성공!");
+    localStorage.setItem("accessToken", data.accessToken); // 저장
+    router.push("/"); // 홈으로 이동
+  } catch (error) {
+    alert(`로그인 실패: ${error.message}`);
+  }
+};
 
   return (
     <div
@@ -172,9 +191,9 @@ export default function LoginForm() {
               aria-label={showPassword ? "비밀번호 숨기기" : "비밀번호 보기"}
             >
               {showPassword ? (
-                <img src="/images/ic_eyes-on.svg" alt="비밀번호 숨기기" width={24} height={24} />
+                <img src="/images/ic_eyes-on.svg" alt="비밀번호 숨기기" width={16} height={16} />
               ) : (
-                <img src="/images/ic_eyes-off.svg" alt="비밀번호 보이기" width={24} height={24} />
+                <img src="/images/ic_eyes-off.svg" alt="비밀번호 보이기" width={16} height={16} />
               )}
             </button>
             {passwordError && <span style={{ color: "red", fontSize: 12, marginTop: 4 }}>{passwordError}</span>}
@@ -201,3 +220,4 @@ export default function LoginForm() {
     </div>
   );
 }
+

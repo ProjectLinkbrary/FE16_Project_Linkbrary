@@ -28,4 +28,4 @@ export default function Input({ type, value, onChange, placeholder, error, style
       {error && <p style={{ color: "red", fontSize: 12 }}>{error}</p>}
     </>
   );
-}
+} 
