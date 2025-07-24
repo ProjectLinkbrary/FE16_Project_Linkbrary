@@ -25,16 +25,24 @@ const Copyright = styled.div`
   color: ${({ theme }) => theme.color.gray40};
   font-size: ${({ theme }) => theme.fontSize.fz16};
 
-  @media (min-width: 768px) {
+  ${({ theme }) => theme.media.tablet} {
     position: static;
   }
 `;
 
 const Menu = styled.div`
-  font-size: ${({ theme }) => theme.fontSize.fz16};
+  font-size: ${({ theme }) => theme.fontSize.fz14};
   color: ${({ theme }) => theme.color.gray50};
   a {
-    margin-right: 30px;
+    margin-right: 20px;
+  }
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: ${({ theme }) => theme.fontSize.fz16};
+
+    a {
+      margin-right: 30px;
+    }
   }
 `;
 
