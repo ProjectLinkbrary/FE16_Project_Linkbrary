@@ -1,9 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 
-// import Header from "components/common/Header";
-// import Footer from "components/common/Footer";
-
 import TopSection from "../components/linkPage/TopSection";
 import ContentSection from "../components/linkPage/ContentSection";
 
