@@ -1,21 +1,33 @@
-import Link from "next/link";
+import Image from "next/image";
 import styled from "@emotion/styled";
-import type { HTMLAttributes } from "react";
+import type { AnchorHTMLAttributes } from "react";
 
-interface LogoProps extends HTMLAttributes<HTMLAnchorElement> {
-  className?: string;
-}
+const LogoWrapper = styled.a<AnchorHTMLAttributes<HTMLAnchorElement>>`
+  position: relative;
+  display: block;
+  width: 88px;
+  height: 33px;
 
-export default function Logo({ className }: LogoProps) {
+  ${({ theme }) => theme.media.tablet} {
+    width: 133px;
+    height: 33px;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+`;
+
+export default function Logo() {
   return (
-    <Link href="/" passHref>
-      <StyledAnchor className={className}>
-        <img src="/images/logo.svg" alt="Linkbrary 로고" />
-      </StyledAnchor>
-    </Link>
+    <LogoWrapper href="/">
+      <Image
+        src="/images/logo.svg"
+        alt="Linkbrary 로고"
+        fill
+        style={{ objectFit: "contain" }}
+      />
+    </LogoWrapper>
   );
 }
-
-const StyledAnchor = styled.a`
-  display: block;
-`;
