@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import Image from "next/image";
+import Link from "next/link";
 import Logo from "./Logo";
 import { SecondaryButton } from "./Button";
 
@@ -7,26 +9,18 @@ interface HeaderProps {
 }
 
 const HeaderContainer = styled.header`
-  width: calc(100% - 64px);
+  width: 100%;
   position: absolute;
   padding: 16px 32px;
 
   ${({ theme }) => theme.media.tablet} {
-    width: calc(100% - 64px);
+    width: 100%;
     padding: 45px 32px;
   }
 
   ${({ theme }) => theme.media.desktop} {
-    width: calc(100% - 64px);
+    width: 100%;
     padding: 32px 32px;
-  }
-`;
-
-const HeaderLogo = styled(Logo)`
-  width: 88px;
-
-  ${({ theme }) => theme.media.tablet} {
-    width: 133px;
   }
 `;
 
@@ -55,9 +49,11 @@ const UserInfo = styled.div`
 `;
 
 const FavoriteButton = styled(SecondaryButton)`
-  margin-right: 24px;
-  background-image: url("/images/ic_fav.svg");
-  background-position: left center;
+  margin-right: 10px;
+
+  ${({ theme }) => theme.media.tablet} {
+    margin-right: 24px;
+  }
 `;
 
 const UserIcon = styled.div`
@@ -83,7 +79,7 @@ export default function Header({ isLoggedIn }: HeaderProps) {
   return (
     <HeaderContainer>
       <Nav>
-        <HeaderLogo />
+        <Logo />
         <NavMenu>
           {isLoggedIn ? (
             <>
