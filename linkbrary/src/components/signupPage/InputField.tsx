@@ -1,7 +1,7 @@
 // components/InputField.tsx
 import React from "react";
 import styled from "@emotion/styled";
-import { theme } from "../../styles/theme"; // theme.ts 경로에 맞게 수정
+import { theme } from "../../styles/theme";
 import Image from "next/image";
 
 // InputField 컴포넌트가 받을 props의 타입을 정의합니다.
