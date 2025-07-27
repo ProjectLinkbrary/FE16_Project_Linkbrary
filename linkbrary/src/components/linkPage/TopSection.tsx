@@ -1,5 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import theme from "../../styles/theme";
+import { useState } from "react";
+import AddLinkModal from "../../components/linkPage/AddlinkModal";
 
 const TopSectionWrapper = styled.section`
   background: url("/images/bg_linkpage.png") no-repeat center center / cover;
@@ -9,7 +12,6 @@ const TopSectionWrapper = styled.section`
   align-items: center;
   padding: 0 25px;
   overflow: hidden;
-
   width: 100%;
 
   ${({ theme }) => theme.media.tablet} {
@@ -60,6 +62,12 @@ const LinkIcon = styled.img`
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
+
+  ${({ theme }) => theme.media.tablet} {
+    left: 1.6rem;
+    width: 28px;
+    height: 28px;
+  }
 `;
 
 const LinkInput = styled.input`
@@ -72,8 +80,17 @@ const LinkInput = styled.input`
   font-size: 1rem;
 
   color: #b3b3b3;
-  background-color: transparent;
+  background-color: #00000080;
   border: 1px solid ${({ theme }) => theme.color.gray50};
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 1.25rem;
+    padding: 0.5rem 3rem 0.5rem 4.5rem;
+  }
+
+  &::placeholder {
+    color: #b3b3b3;
+  }
 `;
 
 const LightButton = styled.button`
@@ -84,28 +101,81 @@ const LightButton = styled.button`
   background: none;
   border: none;
 
-  color: #000000;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 600;
   padding: 8px 20px;
   border-radius: 50px;
   background-color: #ffffff;
   cursor: pointer;
 
   ${({ theme }) => theme.media.tablet} {
+    font-size: 18px;
     height: 3.125rem;
     padding: 8px 30px;
   }
 `;
 
-export default function TopSection() {
+const ErrorMessage = styled.p`
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: 0.5rem;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 16px;
+  }
+`;
+
+export default function TopSection({
+  onRequestAddLink,
+}: {
+  onRequestAddLink: (url: string) => void;
+}) {
+  const [url, setUrl] = useState("");
+  const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
+  const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+
+  // TopSection 클릭 시 모달 띄우는 함수
+  const handleRequestAddLink = (url: string) => {
+    setPendingUrl(url);
+    setIsAddLinkModalOpen(true);
+  };
+
+  // 모달 닫는 함수
+  const closeModal = () => {
+    setIsAddLinkModalOpen(false);
+    setPendingUrl(null);
+  };
+
+  const handleClick = async () => {
+    if (!url.trim()) {
+      alert("링크를 입력해주세요.");
+      return;
+    }
+    onRequestAddLink(url); // 모달 띄우기 요청
+    setUrl(""); // 입력 초기화
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleClick();
+    }
+  };
+
   return (
     <TopSectionWrapper>
       <LinkWrapper>
         <Title>세상의 모든 정보, 필요한 순간에</Title>
         <InputWrapper>
           <LinkIcon src="/images/ic_link.svg" alt="링크 아이콘" />
-          <LinkInput placeholder="링크를 추가해 보세요" />
-          <LightButton>추가하기</LightButton>
+          <LinkInput
+            type="text"
+            placeholder="링크를 추가해 보세요"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            onKeyDown={handleKeyDown}
+          />
+          <LightButton onClick={handleClick}>추가하기</LightButton>
         </InputWrapper>
       </LinkWrapper>
     </TopSectionWrapper>

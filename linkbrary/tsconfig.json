@@ -112,7 +112,7 @@
     "src/components/common/Header.tsx",
     "src/components/common/Button.tsx",
     "src/components/common/Footer.tsx",
-    "src/components/common/Logo.jsx",
+    "src/components/common/Logo.tsx",
     "src/styles/styled.d.ts"
   ],
   "exclude": ["node_modules"]

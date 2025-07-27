@@ -3,7 +3,7 @@ import { Global, css } from "@emotion/react";
 const GlobalStyle = () => (
   <Global
     styles={css`
-      @font-face {
+      /* @font-face {
         font-family: "Pretendard";
         src: url("/fonts/Pretendard-ExtraLight.woff2") format("woff2"),
           url("/fonts/Pretendard-ExtraLight.woff") format("woff");
@@ -23,6 +23,38 @@ const GlobalStyle = () => (
         font-family: "Pretendard";
         src: url("/fonts/Pretendard-Bold.woff2") format("woff2"),
           url("/fonts/Pretendard-Bold.woff") format("woff");
+        font-weight: 700;
+        font-style: normal;
+      } */
+
+      @font-face {
+        font-family: "Pretendard";
+        src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+          format("woff");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Pretendard";
+        src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Medium.woff")
+          format("woff");
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Pretendard";
+        src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff")
+          format("woff");
+        font-weight: 600;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Pretendard";
+        src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff")
+          format("woff");
         font-weight: 700;
         font-style: normal;
       }
@@ -117,9 +149,13 @@ const GlobalStyle = () => (
         margin: 0;
         padding: 0;
         border: 0;
-        font-size: 100%;
+        font-family: "Pretendard", sans-serif;
+        font-size: 16px; /** 기준 루트 폰트 크기(root font size) **/
         font: inherit;
         vertical-align: baseline;
+
+        -webkit-font-smoothing: antialiased; /** 웹킷 기반 브라우저(Chrome, Safari 등)에서 글자를 부드럽게 표현하도록 하는 속성입니다. **/
+        -moz-osx-font-smoothing: grayscale; /** 파이어폭스가 MacOS에서 폰트를 렌더링할 때 사용하는 속성입니다. **/
       }
       /* HTML5 display-role reset for older browsers */
       article,
