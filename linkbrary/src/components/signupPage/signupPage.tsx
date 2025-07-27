@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import SignupFormLayout from "./SignupFormLayout";
 import InputField from "./InputField";
@@ -23,7 +23,7 @@ const SubmitButton = styled.button`
   }
 `;
 
-// 타입 정의
+// 타입 정의 (이전에 수정한 EmailStatus를 포함)
 type EmailStatus = "valid" | "invalid_format" | "invalid_duplicate" | null;
 type NameStatus = "valid" | "invalid" | null;
 type PasswordStatus = "valid" | "invalid" | null;
@@ -44,11 +44,13 @@ const SignupPage = () => {
 
   const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true); // 비밀번호 일치 여부 상태
 
+  // 이메일 변경 핸들러
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setEmailStatus(null); // 입력 시 에러 메시지 초기화
   };
 
+  // 이메일 필드 포커스 아웃 핸들러
   const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (e.target.value.trim() === "") {
@@ -62,6 +64,7 @@ const SignupPage = () => {
     }
   };
 
+  // 이메일 중복 확인 핸들러
   const handleCheckEmail = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -78,11 +81,13 @@ const SignupPage = () => {
     }
   };
 
+  // 이름 변경 핸들러
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
     setNameStatus(null); // 입력 시 에러 메시지 초기화
   };
 
+  // 이름 필드 포커스 아웃 핸들러
   const handleNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (e.target.value.trim() === "") {
       setNameStatus(null); // 비어있으면 상태 초기화
@@ -113,7 +118,7 @@ const SignupPage = () => {
     setPasswordsMatch(newPasswordValue === confirmPassword);
   };
 
-  // 비밀번호 필드 focus out 핸들러
+  // 비밀번호 필드 포커스 아웃 핸들러
   const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (e.target.value.trim() === "") {
       setPasswordStatus(null);
@@ -137,7 +142,7 @@ const SignupPage = () => {
     setPasswordsMatch(password === newConfirmPasswordValue);
   };
 
-  // 비밀번호 확인 필드 focus out 핸들러
+  // 비밀번호 확인 필드 포커스 아웃 핸들러
   const handleConfirmPasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     // 비밀번호 일치 여부 최종 확인
     setPasswordsMatch(password === e.target.value);
@@ -147,29 +152,27 @@ const SignupPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // 제출 시에는 각 필드의 현재 state 값을 사용하여 유효성 검사를 수행합니다.
-
-    // 최종 상태 확인 후 제출
-    let isValidForm = true;
+    // 제출 시 최종 유효성 검사 (각 필드의 현재 state 값을 사용)
+    let formIsValid = true;
 
     // 이메일 유효성 검사 (제출 시 최종 확인)
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setEmailStatus("invalid_format");
-      isValidForm = false;
+      formIsValid = false;
     } else if (emailStatus !== "valid" && emailStatus !== "invalid_duplicate") {
       // 이메일 형식이 맞지만 중복 확인이 안 되었거나, 유효하지 않은 경우
       setEmailStatus("invalid_duplicate"); // 중복 확인을 강제
-      isValidForm = false;
+      formIsValid = false;
     }
 
     // 이름 유효성 검사 (제출 시 최종 확인)
     if (name.length === 0) {
       setNameStatus("invalid");
-      isValidForm = false;
+      formIsValid = false;
     } else if (name.length > 10) {
       setNameStatus("invalid");
-      isValidForm = false;
+      formIsValid = false;
     } else if (nameStatus === null && name.length > 0) {
       setNameStatus("valid"); // 입력값이 있지만 blur가 없었을 경우
     }
@@ -177,7 +180,7 @@ const SignupPage = () => {
     // 비밀번호 유효성 검사 (제출 시 최종 확인)
     if (password.length < 8) {
       setPasswordStatus("invalid");
-      isValidForm = false;
+      formIsValid = false;
     } else if (passwordStatus === null && password.length > 0) {
       setPasswordStatus("valid"); // 입력값이 있지만 blur가 없었을 경우
     }
@@ -185,7 +188,7 @@ const SignupPage = () => {
     // 비밀번호 확인 일치 여부 (제출 시 최종 확인)
     if (password !== confirmPassword || confirmPassword.length === 0) {
       setPasswordsMatch(false);
-      isValidForm = false;
+      formIsValid = false;
     } else {
       setPasswordsMatch(true);
     }
@@ -206,7 +209,8 @@ const SignupPage = () => {
       return;
     }
 
-    // 폼의 모든 유효성 검사를 통과했을 때 실행될 로직
+    console.log({ email, name, password, confirmPassword });
+    // 실제 회원가입 API 호출 로직 (성공 시)
     alert("가입이 완료되었습니다."); // 알림창 표시
     window.location.href = "/login"; // /login 페이지로 이동
   };
@@ -247,7 +251,6 @@ const SignupPage = () => {
             ? "중복된 이메일입니다."
             : null
         }
-        // 이메일 상태가 'valid'일 때만 isMessageSuccess를 true로 설정
         isMessageSuccess={emailStatus === "valid"}
       />
 
@@ -262,13 +265,10 @@ const SignupPage = () => {
         isValid={nameStatus === "valid"}
         isInvalid={nameStatus === "invalid"}
         errorMessage={
-          nameStatus === "invalid" && name.length > 0 // 이름이 비어있지 않으면서 유효하지 않을 때만 메시지 표시
+          nameStatus === "invalid" && name.length > 0
             ? "열 자 이하로 작성해주세요."
-            : nameStatus === "valid"
-            ? null
-            : null
+            : null // 이름이 유효할 때 메시지 삭제
         }
-        // 이름 상태가 'valid'일 때 isMessageSuccess를 true로 설정
         isMessageSuccess={nameStatus === "valid"}
       />
 
@@ -283,19 +283,18 @@ const SignupPage = () => {
         showToggle={true}
         onToggle={() => setShowPassword(!showPassword)}
         showPassword={showPassword}
-        // 비밀번호 자체 유효성 오류 (8자 미만) 또는 비밀번호 불일치 시 isInvalid
-        isValid={passwordStatus === "valid" && passwordsMatch}
+        isValid={false}
         isInvalid={passwordStatus === "invalid" || !passwordsMatch}
         errorMessage={
-          passwordStatus === "invalid" && password.length > 0 // 비밀번호가 비어있지 않으면서 8자 미만
+          passwordStatus === "invalid" && password.length > 0
             ? "8자 이상 입력해주세요."
             : !passwordsMatch &&
               confirmPassword.length > 0 &&
-              password.length > 0 // 비밀번호 확인이 비어있지 않고 불일치할 때
+              password.length > 0
             ? "비밀번호가 일치하지 않습니다."
-            : null // "사용 가능한 비밀번호입니다." 메시지 제거
+            : null
         }
-        // 비밀번호 상태가 'valid'이고 일치할 때 isMessageSuccess를 true로 설정
+        // isMessageSuccess는 메시지 색상에만 영향을 주므로 유지합니다.
         isMessageSuccess={passwordStatus === "valid" && passwordsMatch}
       />
 
@@ -310,15 +309,14 @@ const SignupPage = () => {
         showToggle={true}
         onToggle={() => setShowConfirmPassword(!showConfirmPassword)}
         showPassword={showConfirmPassword}
-        // 비밀번호 확인은 일치 여부와 비밀번호 자체 유효성으로 판단
         isValid={passwordsMatch && passwordStatus === "valid"}
         isInvalid={!passwordsMatch || passwordStatus === "invalid"}
         errorMessage={
-          !passwordsMatch && confirmPassword.length > 0 // 비밀번호 확인이 비어있지 않고 불일치할 때
+          !passwordsMatch && confirmPassword.length > 0
             ? "비밀번호가 일치하지 않습니다."
             : passwordStatus === "invalid" &&
               password.length > 0 &&
-              confirmPassword.length > 0 // 비밀번호가 짧을 때
+              confirmPassword.length > 0
             ? "비밀번호를 8자 이상 입력해주세요."
             : passwordsMatch &&
               passwordStatus === "valid" &&
@@ -326,7 +324,6 @@ const SignupPage = () => {
             ? "비밀번호가 일치합니다."
             : null
         }
-        // 비밀번호 확인 상태도 일치하고 비밀번호가 유효할 때 isMessageSuccess를 true로 설정
         isMessageSuccess={passwordsMatch && passwordStatus === "valid"}
       />
 
