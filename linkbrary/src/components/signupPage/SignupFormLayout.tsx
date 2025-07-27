@@ -2,9 +2,11 @@ import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme";
 import Link from "next/link";
+import Image from "next/image";
+
 interface SignupFormLayoutProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // 폼 제출 이벤트 타입
-  children: React.ReactNode; // React 노드(컴포넌트, 엘리먼트 등)를 자식으로 받음
+  children: React.ReactNode;
 }
 
 // 페이지 전체 컨테이너 스타일 (모바일에서는 폼이 화면을 꽉 채우도록 조정)
@@ -68,26 +70,24 @@ const StyledForm = styled.form`
 // 헤더 (로고/제목) 스타일
 const LogoImageContainer = styled.div`
   margin-bottom: 40px;
-  width: 133px;
-  height: auto;
+  width: 133px; // 모바일 기본 너비
+  position: relative;
+  padding-bottom: 33.33%;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  & img {
-    max-width: 100%;
-    height: auto;
-    display: block; /* img 태그에 display: block 적용 */
-  }
+  // & img { ... } 부분은 Image 컴포넌트의 layout="fill"이 처리하므로 제거합니다.
 
   ${theme.media.tablet} {
     margin-bottom: 16px;
-    width: 167px;
+    width: 167px; // 태블릿 너비
+    // padding-bottom은 비율을 유지하므로 변경할 필요 없음
   }
 
   ${theme.media.desktop} {
-    margin-bottom: 24px;
-    width: 200px;
+    width: 210px; // 데스크탑 너비
+    // padding-bottom은 비율을 유지하므로 변경할 필요 없음
   }
 `;
 
@@ -119,30 +119,27 @@ const LinkText = styled.span`
 `;
 // hover 시, 어떻게 할지 이야기 나눠보기
 
-// SignupFormLayout 컴포넌트에 SignupFormLayoutProps 타입을 명시
-const SignupFormLayout: React.FC<SignupFormLayoutProps> = ({
-  onSubmit,
-  children,
-}) => {
+const SignupFormLayout = ({ onSubmit, children }: SignupFormLayoutProps) => {
   return (
     <PageContainer>
       <StyledForm onSubmit={onSubmit}>
         <Link href="/">
           <LogoImageContainer>
-            <img src="images/logo.svg" alt="Linkbrary-Logo" />
+            <Image
+              src="/images/logo.svg"
+              alt="Linkbrary-Logo"
+              layout="fill"
+              objectFit="contain"
+            />
           </LogoImageContainer>
         </Link>
         <SubText>
           이미 회원이신가요?
           <Link href="/login">
-            <LinkText /* onClick={() => console.log("로그인하기 클릭")} */>
-              {" "}
-              {/* onClick 제거 */}
-              로그인하기
-            </LinkText>
+            <LinkText> 로그인하기</LinkText>
           </Link>
         </SubText>
-        {children}
+        {children} {/* 자식 컴포넌트들을 렌더링합니다. */}
       </StyledForm>
     </PageContainer>
   );

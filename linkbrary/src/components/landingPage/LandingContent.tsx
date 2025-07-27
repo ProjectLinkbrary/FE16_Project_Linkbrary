@@ -2,7 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import styled from "@emotion/styled";
 
-const Section = styled.section`
+interface SectionProps {
+  bgColor?: string;
+}
+
+interface FeatureWrapperProps {
+  reverse?: boolean;
+}
+
+const Section = styled.section<SectionProps>`
   padding: 50px 25px;
   background-color: ${({ bgColor }) => bgColor || "white"};
 
@@ -11,7 +19,7 @@ const Section = styled.section`
   }
 `;
 
-const FeatureWrapper = styled.div`
+const FeatureWrapper = styled.div<FeatureWrapperProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,11 +119,17 @@ export default function LandingContent() {
                 media="(min-width: 768px)"
                 srcSet="/images/cont_pc_img.png"
               />
-              <img src="/images/cont_img.png" alt="링크 저장" />
+              <Image
+                src="/images/cont_img.png"
+                alt="링크 저장"
+                width={300}
+                height={200}
+              />
             </picture>
           </ImageWrapper>
         </FeatureWrapper>
       </Section>
+
       <Section bgColor="#f5f5f5">
         <FeatureWrapper reverse>
           <TextContent>
@@ -133,11 +147,17 @@ export default function LandingContent() {
                 media="(min-width: 768px)"
                 srcSet="/images/cont_pc_img2.png"
               />
-              <img src="/images/cont_img2.png" alt="폴더 관리" />
+              <Image
+                src="/images/cont_img2.png"
+                alt="폴더 관리"
+                width={300}
+                height={200}
+              />
             </picture>
           </ImageWrapper>
         </FeatureWrapper>
       </Section>
+
       <Section>
         <FeatureWrapper>
           <TextContent>
@@ -156,11 +176,17 @@ export default function LandingContent() {
                 media="(min-width: 768px)"
                 srcSet="/images/cont_pc_img3.png"
               />
-              <img src="/images/cont_img3.png" alt="링크 공유" />
+              <Image
+                src="/images/cont_img3.png"
+                alt="링크 공유"
+                width={300}
+                height={200}
+              />
             </picture>
           </ImageWrapper>
         </FeatureWrapper>
       </Section>
+
       <Section bgColor="#f5f5f5">
         <FeatureWrapper reverse>
           <TextContent>
@@ -175,7 +201,12 @@ export default function LandingContent() {
                 media="(min-width: 768px)"
                 srcSet="/images/cont_pc_img4.png"
               />
-              <img src="/images/cont_img4.png" alt="폴더 관리" />
+              <Image
+                src="/images/cont_img4.png"
+                alt="링크 검색"
+                width={300}
+                height={200}
+              />
             </picture>
           </ImageWrapper>
         </FeatureWrapper>

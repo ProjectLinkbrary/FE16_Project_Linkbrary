@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Link from "next/link";
+import Image from "next/image";
 
 const FooterWrapper = styled.div`
   height: 160px;
@@ -70,36 +71,59 @@ export default function Footer() {
         </Menu>
         <SNS>
           <a
-            href="https://instagram.com"
+            href="https://facebook.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/images/ic_facebook.svg" alt="페이스북" />
+            <Image
+              src="/images/ic_facebook.svg"
+              alt="페이스북"
+              width={20}
+              height={20}
+            />
             <SrOnly>Facebook</SrOnly>
           </a>
+
           <a
             href="https://twitter.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/images/ic_twiter.svg" alt="트위터" />
-            <SrOnly> Twitter</SrOnly>
+            <Image
+              src="/images/ic_twiter.svg"
+              alt="트위터"
+              width={20}
+              height={20}
+            />
+            <SrOnly>Twitter</SrOnly>
           </a>
+
           <a
             href="https://www.youtube.com/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/images/ic_youtube.svg" alt="유튜브" />
+            <Image
+              src="/images/ic_youtube.svg"
+              alt="유튜브"
+              width={20}
+              height={20}
+            />
             <SrOnly>Youtube</SrOnly>
           </a>
+
           <a
             href="https://www.instagram.com/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img src="/images/ic_instagram.svg" alt="인스타그램" />
-            <SrOnly> instagram</SrOnly>
+            <Image
+              src="/images/ic_instagram.svg"
+              alt="인스타그램"
+              width={20}
+              height={20}
+            />
+            <SrOnly>Instagram</SrOnly>
           </a>
         </SNS>
       </FooterContent>

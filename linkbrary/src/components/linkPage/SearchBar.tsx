@@ -62,6 +62,16 @@ const CloseButton = styled.button`
   }
 `;
 
+const CloseIcon = styled.img`
+  width: 1rem;
+  height: 1rem;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
 export default function SearchBar() {
   return (
     <SearchBarSection>
@@ -69,7 +79,7 @@ export default function SearchBar() {
         <LinkIcon src="/images/ic_search.svg" alt="검색 아이콘" />
         <StyledInput placeholder="링크를 검색해 보세요." />
         <CloseButton>
-          <img src="/images/ic_close.svg" alt="취소" />
+          <CloseIcon src="/images/ic_close.svg" alt="취소" />
         </CloseButton>
       </InputWrapper>
     </SearchBarSection>

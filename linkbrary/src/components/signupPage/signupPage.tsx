@@ -27,8 +27,9 @@ type EmailStatus = "valid" | "invalid_format" | "invalid_duplicate" | null;
 type NameStatus = "valid" | "invalid" | null;
 type PasswordStatus = "valid" | "invalid" | null;
 
-const SignupPage: React.FC = () => {
-  // 함수 컴포넌트에 React.FC 타입 명시
+// SignupPage 컴포넌트 정의 방식 변경: React.FC<Props> 대신 일반 함수형 컴포넌트로 정의
+// 이 컴포넌트는 부모로부터 props를 받지 않으므로, 별도의 props 타입 정의는 필요 없습니다.
+const SignupPage = () => {
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -169,10 +170,12 @@ const SignupPage: React.FC = () => {
     e.preventDefault();
 
     // 제출 시에도 최종 유효성 검사를 위해 onBlur 핸들러를 호출 (UI 업데이트 위함)
-    handleEmailBlur(e as any); // 임시로 any 사용, 실제론 HTMLFormElement에서 Input 찾아서 호출
+    // TypeScript에서 e.target이 HTMLFormElement이므로, 각 Input 필드를 직접 찾아서 호출해야 함
+    // 여기서는 간단화를 위해 임시로 any를 사용했지만, 실제 프로덕션 코드에서는 각 Input 요소를 참조하여 호출할 것
+    handleEmailBlur(e as any);
     handleNameBlur(e as any);
     handlePasswordBlur(e as any);
-    handleConfirmPasswordBlur(e as any); // 실제론 e.target이 Input이므로 타입 캐스팅 필요
+    handleConfirmPasswordBlur(e as any);
 
     // 최종 상태 확인 후 제출
     let isValidForm = true;
@@ -214,7 +217,8 @@ const SignupPage: React.FC = () => {
     }
 
     if (!isValidForm) {
-      alert("모든 필드의 유효성을 확인해주세요.");
+      // alert("모든 필드의 유효성을 확인해주세요."); // alert 대신 커스텀 메시지 박스 사용 권장
+      console.error("모든 필드의 유효성을 확인해주세요."); // 개발자 콘솔에 에러 출력
       return;
     }
 
