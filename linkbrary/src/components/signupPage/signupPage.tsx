@@ -283,16 +283,13 @@ const SignupPage = () => {
         showToggle={true}
         onToggle={() => setShowPassword(!showPassword)}
         showPassword={showPassword}
+        // 비밀번호 필드는 초록색 테두리 효과를 없애기 위해 isValid를 항상 false로 설정합니다.
         isValid={false}
         isInvalid={passwordStatus === "invalid" || !passwordsMatch}
         errorMessage={
           passwordStatus === "invalid" && password.length > 0
             ? "8자 이상 입력해주세요."
-            : !passwordsMatch &&
-              confirmPassword.length > 0 &&
-              password.length > 0
-            ? "비밀번호가 일치하지 않습니다."
-            : null
+            : null // 비밀번호 불일치 메시지 제거
         }
         // isMessageSuccess는 메시지 색상에만 영향을 주므로 유지합니다.
         isMessageSuccess={passwordStatus === "valid" && passwordsMatch}
@@ -309,6 +306,7 @@ const SignupPage = () => {
         showToggle={true}
         onToggle={() => setShowConfirmPassword(!showConfirmPassword)}
         showPassword={showConfirmPassword}
+        // 비밀번호 확인 필드는 일치하고 비밀번호 길이도 유효할 때 초록색 테두리를 표시합니다.
         isValid={passwordsMatch && passwordStatus === "valid"}
         isInvalid={!passwordsMatch || passwordStatus === "invalid"}
         errorMessage={
@@ -324,6 +322,7 @@ const SignupPage = () => {
             ? "비밀번호가 일치합니다."
             : null
         }
+        // isMessageSuccess는 메시지 색상에만 영향을 주므로 유지합니다.
         isMessageSuccess={passwordsMatch && passwordStatus === "valid"}
       />
 

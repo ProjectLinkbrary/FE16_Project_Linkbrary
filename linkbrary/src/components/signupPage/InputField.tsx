@@ -59,7 +59,7 @@ const StyledInput = styled.input`
     ${(props: { isInvalid?: boolean; isValid?: boolean }) => {
       // props에 타입 명시
       if (props.isInvalid) return "red";
-      if (props.isValid) return "green";
+      if (props.isValid) return "#1FECC6";
       return theme.color.gray60; // 기본 테두리 색상
     }};
   border-radius: 8px;
@@ -131,7 +131,7 @@ const StyledTogglePasswordButton = styled.button`
 
 // ErrorMessage 컴포넌트 수정: `isSuccess` prop을 받아서 색상 결정
 const ErrorMessage = styled.p<{ isSuccess?: boolean }>`
-  color: ${(props) => (props.isSuccess ? "lime" : "#ff3235")};
+  color: ${(props) => (props.isSuccess ? "#1FECC6" : "#ff3235")};
   font-size: ${theme.fontSize.fz14};
   margin-top: 8px;
   margin-bottom: 0;
