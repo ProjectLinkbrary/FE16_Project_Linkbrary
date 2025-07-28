@@ -7,6 +7,8 @@ import ContentList from "./ContentList";
 import NoLinks from "./Nolinks";
 import CategoryFilter from "./CategoryFilter";
 import SearchBar from "./SearchBar";
+import { Link } from "../../api/types";
+import FolderTopSection from "./FolderTopSection ";
 
 const ContentSectionWrapper = styled.section`
   /* margin: 24px 0; */
@@ -20,28 +22,11 @@ const ContentWrapper = styled.div`
   ${({ theme }) => theme.media.tablet} {
     margin: 2.5rem 0 1.5rem 0;
   }
+
   ${({ theme }) => theme.media.desktop} {
     margin: 3rem 0 2rem 0;
   }
 `;
-
-const FolderTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
-`;
-
-const FolderTag = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const FolderActions = styled.div``;
-const IconButton = styled.button``;
-
-const ShareIcon = styled.img``;
-const EditIcon = styled.img``;
-const TrashIcon = styled.img``;
 
 const Pagination = styled.div`
   width: 100%;
@@ -54,47 +39,26 @@ const Pagination = styled.div`
   margin: 4rem 0 4rem 0;
 `;
 
-type CardItem = {
-  id: number;
-  thumbnail: string;
-  title: string;
-  description: string;
-  timeAgo: string;
-  date: string;
-};
-
-const cardData: CardItem[] = [
-  {
-    id: 1,
-    thumbnail: "/images/thumnailimg.jpg",
-    title: "이메일 자동화 정복하기",
-    description: "ChatGPT + Gmail 확장으로 메일 지원 자동 응답서비스",
-    timeAgo: "10 minutes ago",
-    date: "2025.07.18",
-  },
-  {
-    id: 2,
-    thumbnail: "/images/thumnailimg.jpg",
-    title: "Next.js 배우기",
-    description: "React 기반 SSR 프레임워크를 익혀봅시다",
-    timeAgo: "1 hour ago",
-    date: "2025.07.17",
-  },
-  {
-    id: 3,
-    thumbnail: "/images/thumnailimg.jpg",
-    title: "Emotion 스타일링",
-    description: "CSS-in-JS 라이브러리로 쉽고 빠른 스타일링 방법",
-    timeAgo: "3 hours ago",
-    date: "2025.07.16",
-  },
-];
-
 const defaultPageNumbers: Array<string | number> = ["<", 1, 2, 3, 4, 5, ">"];
 
-export default function ContentSection() {
-  const [list, setList] = useState<CardItem[]>(cardData);
+interface ContentSectionProps {
+  list: Link[];
+  loading: boolean;
+  folderTitle?: string;
+  onDelete: (id: number) => void;
+}
 
+export default function ContentSection({
+  list,
+  loading,
+  folderTitle = "전체",
+  onDelete,
+}: ContentSectionProps) {
+  if (loading) {
+    return (
+      <div style={{ padding: "4rem 0", textAlign: "center" }}>로딩 중...</div>
+    );
+  }
   return (
     <ContentSectionWrapper>
       <SearchBar />
@@ -102,24 +66,12 @@ export default function ContentSection() {
       {list.length > 0 ? (
         <>
           <CategoryFilter />
+
           <ContentWrapper>
-            <FolderTag>
-              <FolderTitle>전체</FolderTitle>
-              <FolderActions>
-                <IconButton type="button">
-                  <ShareIcon src="./images/ic_share.svg" alt="공유" />
-                </IconButton>
-                <IconButton type="button">
-                  <EditIcon src="/images/ic_btn.svg" alt="폴더 수정하기" />
-                </IconButton>
-                <IconButton type="button">
-                  <TrashIcon src="/images/ic_trash.svg" alt="폴더 삭제" />
-                </IconButton>
-              </FolderActions>
-            </FolderTag>
+            <FolderTopSection folderTitle={folderTitle} />
           </ContentWrapper>
 
-          <ContentList list={list} />
+          <ContentList list={list} onDelete={onDelete} />
 
           <Pagination>
             {defaultPageNumbers.map((num) => (
