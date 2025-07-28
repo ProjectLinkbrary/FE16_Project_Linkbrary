@@ -50,8 +50,6 @@ const UserInfo = styled.div`
 
 const FavoriteButton = styled(SecondaryButton)`
   margin-right: 10px;
-  background-image: url("/images/ic_fav.svg");
-  background-position: left center;
 
   ${({ theme }) => theme.media.tablet} {
     margin-right: 24px;
