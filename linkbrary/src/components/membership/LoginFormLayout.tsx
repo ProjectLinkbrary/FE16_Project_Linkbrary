@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme";
-import Link from "next/link"; // Link 컴포넌트 임포트 확인
+import Link from "next/link";
 import Image from "next/image";
 
 interface LoginLayoutProps {
