@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { theme } from "../../styles/theme";
 import Link from "next/link";
 import Image from "next/image";
+import { theme } from "../../styles/theme";
 
 interface SignupFormLayoutProps {
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // 폼 제출 이벤트 타입
-  children: React.ReactNode;
+  children: React.ReactNode; // 자식 요소
 }
 
 // 페이지 전체 컨테이너 스타일 (모바일에서는 폼이 화면을 꽉 채우도록 조정)
@@ -15,18 +15,15 @@ const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh; /* 화면 높이를 항상 꽉 채움 */
-  background-color: ${theme.color
-    .gray90}; /* 모바일에서 폼과 동일한 배경색으로 통일 */
+  min-height: 100vh;
+  background-color: ${theme.color.gray90};
   color: ${theme.color.white};
-  padding: 0; /* 모바일에서 PageContainer의 패딩을 제거하여 폼이 꽉 차게 함 */
+  padding: 0;
   box-sizing: border-box;
 
-  background-image: none; /* 모바일에서는 배경 이미지 제거 */
-
-  /* 태블릿 (768px 이상) - 배경 이미지를 적용하고 폼이 중앙에 뜨도록 */
-  ${theme.media.tablet} {
-    background-image: url("/images/bg_signup.png"); /* 태블릿 이상에서 배경 이미지 적용 */
+  background-image: none;
+  \ ${theme.media.tablet} {
+    background-image: url("/images/bg_signup.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -54,10 +51,10 @@ const StyledForm = styled.form`
     width: 100%;
     max-width: 480px;
     padding: 40px 32px;
-    border-radius: 15px; /* 태블릿 이상에서 모서리 둥글기 다시 적용 */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6); /* 태블릿 이상에서 그림자 다시 적용 */
-    min-height: auto; /* 태블릿 이상에서 높이 자동 조절 */
-    margin: auto; /* 태블릿 이상에서 중앙 정렬 */
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    min-height: auto;
+    margin: auto;
     justify-content: center;
   }
 
@@ -77,17 +74,14 @@ const LogoImageContainer = styled.div`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  // & img { ... } 부분은 Image 컴포넌트의 layout="fill"이 처리하므로 제거합니다.
 
   ${theme.media.tablet} {
     margin-bottom: 16px;
     width: 167px; // 태블릿 너비
-    // padding-bottom은 비율을 유지하므로 변경할 필요 없음
   }
 
   ${theme.media.desktop} {
     width: 210px; // 데스크탑 너비
-    // padding-bottom은 비율을 유지하므로 변경할 필요 없음
   }
 `;
 
@@ -117,7 +111,6 @@ const LinkText = styled.span`
     color: #6d6afe;
   }
 `;
-// hover 시, 어떻게 할지 이야기 나눠보기
 
 const SignupFormLayout = ({ onSubmit, children }: SignupFormLayoutProps) => {
   return (
@@ -127,9 +120,11 @@ const SignupFormLayout = ({ onSubmit, children }: SignupFormLayoutProps) => {
           <LogoImageContainer>
             <Image
               src="/images/logo.svg"
-              alt="Linkbrary-Logo"
-              layout="fill"
-              objectFit="contain"
+              alt="링크브러리 로고"
+              fill // 부모 요소에 맞춰 채우기
+              style={{ objectFit: "contain" }}
+              priority // LCP 이미지로 감지되므로 우선 로드
+              sizes="(max-width: 768px) 133px, (max-width: 1200px) 167px, 210px" // 반응형 이미지 최적화를 위한 sizes prop 추가
             />
           </LogoImageContainer>
         </Link>
