@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-
+import theme from "../../styles/theme";
 const NoLinksWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -8,24 +8,37 @@ const NoLinksWrapper = styled.div`
   justify-content: center;
 
   width: 100%;
-  padding: 48px 0;
+  padding: 48px 0 64px 0;
 `;
 
 const NolinkImg = styled.img`
-  width: 100%;
+  width: 40%;
   max-width: 12.5rem;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 100%;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.875rem;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 1.5rem;
+  }
 `;
 
 const SubTitle = styled.p`
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: #b3b3b3;
   text-align: center;
+  line-height: 1.5;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 1rem;
+  }
 `;
 
 export default function NoLinks() {
