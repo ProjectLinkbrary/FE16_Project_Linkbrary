@@ -136,7 +136,7 @@ const SignupFormLayout = ({ onSubmit, children }: SignupFormLayoutProps) => {
         <SubText>
           이미 회원이신가요?
           <Link href="/login">
-            <LinkText> 로그인하기</LinkText>
+            <LinkText>로그인하기</LinkText>
           </Link>
         </SubText>
         {children} {/* 자식 컴포넌트들을 렌더링합니다. */}

@@ -1,3 +1,4 @@
+// components/InputField.tsx
 import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme";
@@ -12,13 +13,14 @@ interface InputFieldProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // HTMLInputElement의 change 이벤트
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // HTMLInputElement의 focus 이벤트 (blur는 FocusEvent)
-  isValid?: boolean; // 유효성 상태
-  isInvalid?: boolean; // 유효성 상태
+  isValid?: boolean; // 필드의 유효성 상태 (테두리 색상용)
+  isInvalid?: boolean; // 필드의 유효성 상태 (테두리 색상용)
   onCheck?: () => void; // 중복 확인 버튼 클릭 핸들러
   showToggle?: boolean; // 비밀번호 토글 버튼 표시 여부
   onToggle?: () => void; // 비밀번호 토글 버튼 클릭 핸들러
   showPassword?: boolean; // 비밀번호 표시 상태
-  errorMessage?: string | null; // 에러 메시지
+  errorMessage?: string | null; // 에러/유효성 메시지 텍스트
+  isMessageSuccess?: boolean; // **메시지가 성공 메시지인지 여부**
 }
 
 const InputGroup = styled.div`
@@ -127,8 +129,9 @@ const StyledTogglePasswordButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.p`
-  color: #ff3235;
+// ErrorMessage 컴포넌트 수정: `isSuccess` prop을 받아서 색상 결정
+const ErrorMessage = styled.p<{ isSuccess?: boolean }>`
+  color: ${(props) => (props.isSuccess ? "lime" : "#ff3235")};
   font-size: ${theme.fontSize.fz14};
   margin-top: 8px;
   margin-bottom: 0;
@@ -143,7 +146,7 @@ const InputField = ({
   placeholder,
   value,
   onChange,
-  onBlur, // <-- onBlur prop
+  onBlur,
   isValid,
   isInvalid,
   onCheck,
@@ -151,9 +154,10 @@ const InputField = ({
   onToggle,
   showPassword,
   errorMessage,
+  isMessageSuccess, // InputFieldProps에서 isMessageSuccess를 구조 분해 할당
 }: InputFieldProps) => {
   const isEmailField = id === "email";
-  const isPasswordField = type === "password";
+  const isPasswordField = type === "password" || id.includes("password"); // id로 비밀번호 필드를 더 정확히 식별
 
   return (
     <InputGroup>
@@ -165,7 +169,7 @@ const InputField = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          onBlur={onBlur} // <-- onBlur 이벤트 핸들러 연결
+          onBlur={onBlur}
           isValid={isValid}
           isInvalid={isInvalid}
         />
@@ -194,7 +198,10 @@ const InputField = ({
           </StyledTogglePasswordButton>
         )}
       </InputContainer>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      {/* errorMessage가 있을 때만 ErrorMessage 컴포넌트를 렌더링하고, isMessageSuccess prop을 전달 */}
+      {errorMessage && (
+        <ErrorMessage isSuccess={isMessageSuccess}>{errorMessage}</ErrorMessage>
+      )}
     </InputGroup>
   );
 };
