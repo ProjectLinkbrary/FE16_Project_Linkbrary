@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme";
-import Link from "next/link";
+import Link from "next/link"; // Link 컴포넌트 임포트 확인
 import Image from "next/image";
 
 interface LoginLayoutProps {
@@ -24,7 +24,7 @@ const LoginFormLayout = ({ children, onSubmit }: LoginLayoutProps) => {
                 priority
               />
               <JoinLink>
-                회원이 아니신가요? <a href="/signup">회원 가입하기</a>
+                회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
               </JoinLink>
             </LogoWrapper>
             {children}
@@ -70,7 +70,7 @@ const Background = styled.div`
 const FormWrapper = styled.div`
   width: 100%;
   max-width: 480px;
-  background-color: rgba(0, 0, 0, 0.4);
+  // background-color: rgba(0, 0, 0, 0.4);
   border-radius: 0;
   padding: 32px 24px;
   box-shadow: none;
@@ -110,8 +110,8 @@ const JoinLink = styled.p`
 
   a {
     color: ${theme.color.primary};
-    text-decoration: none;
     margin-left: 4px;
+    text-decoration: underline;
 
     &:hover {
       color: #6d6afe;
@@ -126,5 +126,3 @@ const JoinLink = styled.p`
     font-size: 20px;
   }
 `;
-
-
