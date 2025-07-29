@@ -74,7 +74,7 @@ export default function MainVisualSection() {
             <span></span>
             관리해 보세요
           </h1>
-          <PrimaryButton as="a" href="/linkpage">
+          <PrimaryButton as="a" href="/links/${folderId}">
             링크 추가하기
           </PrimaryButton>
         </MainVisual>
