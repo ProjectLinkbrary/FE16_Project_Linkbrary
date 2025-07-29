@@ -53,6 +53,7 @@ export default function LinkPage() {
     const loadLinks = async () => {
       try {
         setLoading(true);
+        console.log("");
         const result = await fetchLinksFromServer(Number(folderId));
         setLinks(result);
       } catch (err) {
