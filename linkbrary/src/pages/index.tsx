@@ -8,7 +8,7 @@ import type { NextPage } from "next";
 export default function Home() {
   return (
     <>
-      <Header isLoggedIn={true} />
+      <Header isLoggedIn={false} />
       <MainVisualWrapper />
       <LandingContent />
       <Footer />
