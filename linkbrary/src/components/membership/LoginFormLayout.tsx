@@ -16,13 +16,15 @@ const LoginFormLayout = ({ children, onSubmit }: LoginLayoutProps) => {
         <FormWrapper>
           <StyledForm onSubmit={onSubmit}>
             <LogoWrapper>
-              <Image
-                src="/images/logo.svg"
-                alt="Linkbrary 로고"
-                width={210.58}
-                height={38}
+              <Link href="/">
+                <Image
+                  src="/images/logo.svg"
+                  alt="Linkbrary 로고"
+                  width={210.58}
+                  height={38}
                 priority
               />
+               </Link>
               <JoinLink>
                 회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
               </JoinLink>
