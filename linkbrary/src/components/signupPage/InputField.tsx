@@ -1,26 +1,23 @@
-// components/InputField.tsx
 import React from "react";
 import styled from "@emotion/styled";
 import { theme } from "../../styles/theme";
 import Image from "next/image";
-
-// InputField 컴포넌트가 받을 props의 타입을 정의합니다.
 interface InputFieldProps {
   label: string;
   type: string;
   id: string;
   placeholder: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // HTMLInputElement의 change 이벤트
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void; // HTMLInputElement의 focus 이벤트 (blur는 FocusEvent)
-  isValid?: boolean; // 필드의 유효성 상태 (테두리 색상용)
-  isInvalid?: boolean; // 필드의 유효성 상태 (테두리 색상용)
-  onCheck?: () => void; // 중복 확인 버튼 클릭 핸들러
-  showToggle?: boolean; // 비밀번호 토글 버튼 표시 여부
-  onToggle?: () => void; // 비밀번호 토글 버튼 클릭 핸들러
-  showPassword?: boolean; // 비밀번호 표시 상태
-  errorMessage?: string | null; // 에러/유효성 메시지 텍스트
-  isMessageSuccess?: boolean; // **메시지가 성공 메시지인지 여부**
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  isValid?: boolean;
+  isInvalid?: boolean;
+  onCheck?: () => void;
+  showToggle?: boolean;
+  onToggle?: () => void;
+  showPassword?: boolean;
+  errorMessage?: string | null;
+  isMessageSuccess?: boolean;
 }
 
 const InputGroup = styled.div`
@@ -51,23 +48,29 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ isInvalid?: boolean; isValid?: boolean }>`
   width: 100%;
   height: 56px;
   padding: 0 100px 0 16px;
   border: 1px solid
-    ${(props: { isInvalid?: boolean; isValid?: boolean }) => {
-      // props에 타입 명시
-      if (props.isInvalid) return "red";
+    ${(props) => {
+      if (props.isInvalid) return "#ff3235";
       if (props.isValid) return "#1FECC6";
-      return theme.color.gray60; // 기본 테두리 색상
+      return theme.color.gray60;
     }};
   border-radius: 8px;
   background-color: ${theme.color.gray80};
   color: ${theme.color.white};
   font-size: ${theme.fontSize.fz16};
+
   &:focus {
-    border-color: ${theme.color.white};
+    outline: none;
+    border-width: 1px;
+    border-color: ${(props) => {
+      if (props.isInvalid) return "#ff3235";
+      if (props.isValid) return "#1FECC6";
+      return theme.color.white;
+    }};
   }
 
   ${theme.media.tablet} {
@@ -129,7 +132,6 @@ const StyledTogglePasswordButton = styled.button`
   }
 `;
 
-// ErrorMessage 컴포넌트 수정: `isSuccess` prop을 받아서 색상 결정
 const ErrorMessage = styled.p<{ isSuccess?: boolean }>`
   color: ${(props) => (props.isSuccess ? "#1FECC6" : "#ff3235")};
   font-size: ${theme.fontSize.fz14};
@@ -154,10 +156,10 @@ const InputField = ({
   onToggle,
   showPassword,
   errorMessage,
-  isMessageSuccess, // InputFieldProps에서 isMessageSuccess를 구조 분해 할당
+  isMessageSuccess,
 }: InputFieldProps) => {
   const isEmailField = id === "email";
-  const isPasswordField = type === "password" || id.includes("password"); // id로 비밀번호 필드를 더 정확히 식별
+  const isPasswordField = type === "password" || id.includes("password");
 
   return (
     <InputGroup>
@@ -198,7 +200,6 @@ const InputField = ({
           </StyledTogglePasswordButton>
         )}
       </InputContainer>
-      {/* errorMessage가 있을 때만 ErrorMessage 컴포넌트를 렌더링하고, isMessageSuccess prop을 전달 */}
       {errorMessage && (
         <ErrorMessage isSuccess={isMessageSuccess}>{errorMessage}</ErrorMessage>
       )}

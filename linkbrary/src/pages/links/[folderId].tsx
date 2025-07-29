@@ -7,9 +7,9 @@ import Footer from "../../components/common/Footer";
 import TopSection from "../../components/linkPage/TopSection";
 import ContentSection from "../../components/linkPage/ContentSection";
 import { useRouter } from "next/router";
-import { Link } from "../../api/types";
+import { Link } from "../api/types";
 import { useState, useEffect } from "react";
-import { fetchLinksFromServer } from "../../api/link";
+import { fetchLinksFromServer } from "../api/link";
 import AddLinkModal from "../../components/linkPage/AddlinkModal";
 
 const PageContainer = styled.div`

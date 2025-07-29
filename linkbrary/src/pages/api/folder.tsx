@@ -1,5 +1,5 @@
-import { instance } from "./instance";
-import { Folder } from "./types";
+import { instance } from "../api/instance";
+import { Folder } from "../api/types";
 
 // 폴더 목록 불러오기
 export const fetchFolders = async (): Promise<Folder[]> => {
