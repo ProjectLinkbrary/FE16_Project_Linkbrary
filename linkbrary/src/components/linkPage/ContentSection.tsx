@@ -9,6 +9,7 @@ import CategoryFilter from "./CategoryFilter";
 import SearchBar from "./SearchBar";
 import { Link } from "../../api/types";
 import FolderTopSection from "./FolderTopSection ";
+import LoadingSpinner from "../common/Spinner";
 
 const ContentSectionWrapper = styled.section`
   /* margin: 24px 0; */
@@ -54,18 +55,25 @@ export default function ContentSection({
   folderTitle = "전체",
   onDelete,
 }: ContentSectionProps) {
+  const [selectedCategory, setSelectedCategory] = useState("전체");
+
   if (loading) {
-    return (
-      <div style={{ padding: "4rem 0", textAlign: "center" }}>로딩 중...</div>
-    );
+    return <LoadingSpinner />;
   }
+
   return (
     <ContentSectionWrapper>
       <SearchBar />
 
       {list.length > 0 ? (
         <>
-          <CategoryFilter />
+          <CategoryFilter
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            onAddFolder={() => {
+              alert("+폴더 추가");
+            }}
+          />
 
           <ContentWrapper>
             <FolderTopSection folderTitle={folderTitle} />

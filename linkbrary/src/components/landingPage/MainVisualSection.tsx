@@ -1,7 +1,11 @@
-import Link from "next/link";
+/** @jsxImportSource @emotion/react */
 import Image from "next/image";
 import { PrimaryButton } from "../common/Button";
+import { useRouter } from "next/router";
 import styled from "@emotion/styled";
+
+import { fetchFolders, addFolder } from "../../api/folder";
+import { useEffect, useState } from "react";
 
 const MainVisualWrapper = styled.div`
   width: 100%;
@@ -64,6 +68,14 @@ const MainVisual = styled.div`
 `;
 
 export default function MainVisualSection() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleAddLink = () => {
+    setLoading(true);
+    router.push("/links");
+  };
+
   return (
     <>
       <MainVisualWrapper>
@@ -74,7 +86,7 @@ export default function MainVisualSection() {
             <span></span>
             관리해 보세요
           </h1>
-          <PrimaryButton as="a" href="/links/${folderId}">
+          <PrimaryButton onClick={handleAddLink} disabled={loading}>
             링크 추가하기
           </PrimaryButton>
         </MainVisual>

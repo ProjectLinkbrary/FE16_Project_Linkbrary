@@ -20,11 +20,11 @@ Content-Type: application/json
 
 ### 내 정보 조회 (토큰 검증용)
 GET https://linkbrary-api.vercel.app/16-6/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNTExODUxLCJleHAiOjE3NTM1MTkwNTF9.P6J_uy3HbB-q_1PPO6KmcMpiXz39kTiowILy6YHwKg8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
 
 ### 폴더 생성
 POST https://linkbrary-api.vercel.app/16-6/folders
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNTExODUxLCJleHAiOjE3NTM1MTkwNTF9.P6J_uy3HbB-q_1PPO6KmcMpiXz39kTiowILy6YHwKg8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ### 폴더 조회
 GET https://linkbrary-api.vercel.app/16-6/folders/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNTExODUxLCJleHAiOjE3NTM1MTkwNTF9.P6J_uy3HbB-q_1PPO6KmcMpiXz39kTiowILy6YHwKg8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
 
 {
   "name": "테스트 폴더"
@@ -41,8 +41,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwia
 
 
 ### 폴더 삭제
-DELETE https://linkbrary-api.vercel.app/16-6/folders/1355
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNTExODUxLCJleHAiOjE3NTM1MTkwNTF9.P6J_uy3HbB-q_1PPO6KmcMpiXz39kTiowILy6YHwKg8
+DELETE https://linkbrary-api.vercel.app/16-6/folders/1350
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
 
 
 localStorage.setItem(

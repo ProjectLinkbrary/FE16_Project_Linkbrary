@@ -5,13 +5,18 @@ import { Link } from "./types";
 export const fetchLinksFromServer = async (
   folderId: number
 ): Promise<Link[]> => {
+  console.log("fetchLinksFromServer folderId:", folderId);
   try {
     const res = await instance.get<{ totalCount: number; list: Link[] }>(
       `/folders/${folderId}/links`
     );
     return res.data.list;
-  } catch (error) {
-    console.error("링크 목록 불러오기 실패:", error);
+  } catch (error: any) {
+    console.error(
+      "링크 목록 불러오기 실패:",
+      error.response?.status,
+      error.response?.data
+    );
     throw error;
   }
 };
@@ -24,6 +29,7 @@ export const addLink = async ({
   url: string;
   folderId: number;
 }): Promise<Link> => {
+  console.log("addLink 호출", { url, folderId });
   try {
     const res = await instance.post<Link>(`/links`, {
       url,
