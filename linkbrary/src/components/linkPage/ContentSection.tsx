@@ -7,7 +7,9 @@ import ContentList from "./ContentList";
 import NoLinks from "./Nolinks";
 import CategoryFilter from "./CategoryFilter";
 import SearchBar from "./SearchBar";
+
 import { Folder, Link } from "../../pages/api/types";
+
 import FolderTopSection from "./FolderTopSection ";
 import LoadingSpinner from "../common/Spinner";
 

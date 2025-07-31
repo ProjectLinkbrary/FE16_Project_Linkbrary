@@ -2,7 +2,9 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { addLink } from "../../pages/api/link";
+
 import { Folder, Link } from "../../pages/api/types";
+
 
 const ModalWrapper = styled.div`
   position: fixed;
