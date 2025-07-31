@@ -9,9 +9,8 @@ import ContentSection from "../../components/linkPage/ContentSection";
 import { useRouter } from "next/router";
 import { Link } from "../api/types";
 import { useState, useEffect } from "react";
-import { fetchLinksFromServer } from "../api/link";
+import { fetchLinksFromServer } from "../../pages/api/link";
 import AddLinkModal from "../../components/linkPage/AddlinkModal";
-
 const PageContainer = styled.div`
   width: 100%;
   max-width: 66.25rem;

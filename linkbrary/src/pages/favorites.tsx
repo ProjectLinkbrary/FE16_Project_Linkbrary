@@ -1,6 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import ContentList from "../components/linkPage/ContentList";
+import { Link } from "../pages/api/types";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
 
 const FavoritesSectionWrapper = styled.section`
   background: url("/images/linkpagebg.png") no-repeat center center / cover;
@@ -62,7 +65,7 @@ export default function Favorites() {
       </FavoritesSectionWrapper>
 
       <FavoriteListWrapper>
-        <ContentList list={[]} />
+        <ContentList list={[]} onDelete={() => {}} />
         <Pagination>
           {defaultPageNumbers.map((num) => (
             <button key={String(num)} type="button" disabled>

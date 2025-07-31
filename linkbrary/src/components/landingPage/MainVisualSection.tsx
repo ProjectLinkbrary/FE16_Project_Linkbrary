@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { PrimaryButton } from "../common/Button";
 import styled from "@emotion/styled";
+import { fetchFolders, addFolder } from "../../pages/api/folder";
+import { useEffect, useState } from "react";
 
 const MainVisualWrapper = styled.div`
   width: 100%;
