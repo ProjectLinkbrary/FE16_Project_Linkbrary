@@ -2,7 +2,9 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { addLink } from "../../pages/api/link";
-import { Link } from "../../pages/api/types";
+
+import { Folder, Link } from "../../pages/api/types";
+
 
 const ModalWrapper = styled.div`
   position: fixed;
@@ -126,18 +128,10 @@ const AddButton = styled.button`
   }
 `;
 
-// const folders = [
-//   { id: 1, name: "유튜브", count: 23 },
-//   { id: 2, name: "코딩팁", count: 7 },
-//   { id: 3, name: "채용 사이트", count: 12 },
-//   { id: 4, name: "유용한 글", count: 30 },
-//   { id: 5, name: "나만의 장소", count: 3 },
-// ];
-
 interface Props {
   folderId: number;
   url: string;
-  folders: { id: number; name: string; count: number }[];
+  folders: Folder[];
   onClose: () => void;
   onSuccess: (newLink: Link) => void;
 }
@@ -207,7 +201,7 @@ export default function AddLinkModal({
             )
           )}
         </FolderList>
-        <AddButton onClick={handleAdd} disabled={loading}>
+        <AddButton onClick={handleAdd}>
           {loading ? "추가 중..." : "링크 추가하기"}
         </AddButton>
       </ModalBox>

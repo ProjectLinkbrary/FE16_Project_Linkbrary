@@ -6,7 +6,11 @@ export const fetchFolders = async (): Promise<Folder[]> => {
   try {
     const res = await instance.get("/folders");
     console.log("폴더 목록 API 응답:", res.data);
-    return res.data;
+    return res.data.map((folder: any) => ({
+      id: folder.id,
+      name: folder.name,
+      count: folder.linkCount,
+    }));
   } catch (error: any) {
     console.error(
       "폴더 목록 불러오기 실패:",

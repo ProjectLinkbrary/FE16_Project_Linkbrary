@@ -15,7 +15,8 @@ export const fetchLinksFromServer = async (
     console.error(
       "링크 목록 불러오기 실패:",
       error.response?.status,
-      error.response?.data
+      error.response?.data,
+      error.message
     );
     throw error;
   }

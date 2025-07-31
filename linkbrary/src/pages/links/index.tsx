@@ -27,16 +27,13 @@ export default function LinksHome() {
         if (folders.length > 0) {
           router.replace(`/links/${folders[0].id}`);
         } else {
-          setHasFolders(false);
           setIsLoading(false);
         }
       } catch (error) {
         console.error("폴더 불러오기 실패", error);
-        setHasFolders(false);
         setIsLoading(false);
       }
     }
-
     checkFolders();
   }, []);
 

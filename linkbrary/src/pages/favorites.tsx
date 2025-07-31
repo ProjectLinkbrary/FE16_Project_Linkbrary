@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import ContentList from "../components/linkPage/ContentList";
-import { Link } from "./api/types";
+
+import { Link } from "../pages/api/types";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 
