@@ -57,7 +57,7 @@ const SignupPage = () => {
   };
 
   const handleCheckEmail = async () => {
-    handleEmailBlur(); // 중복 확인 전 형식 먼저 확인
+    handleEmailBlur();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) return;
 

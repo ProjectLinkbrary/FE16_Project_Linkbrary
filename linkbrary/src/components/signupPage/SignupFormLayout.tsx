@@ -5,11 +5,10 @@ import Image from "next/image";
 import { theme } from "../../styles/theme";
 
 interface SignupFormLayoutProps {
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void; // 폼 제출 이벤트 타입
-  children: React.ReactNode; // 자식 요소
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  children: React.ReactNode;
 }
 
-// 페이지 전체 컨테이너 스타일 (모바일에서는 폼이 화면을 꽉 채우도록 조정)
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -123,8 +122,8 @@ const SignupFormLayout = ({ onSubmit, children }: SignupFormLayoutProps) => {
               alt="링크브러리 로고"
               fill // 부모 요소에 맞춰 채우기
               style={{ objectFit: "contain" }}
-              priority // LCP 이미지로 감지되므로 우선 로드
-              sizes="(max-width: 768px) 133px, (max-width: 1200px) 167px, 210px" // 반응형 이미지 최적화를 위한 sizes prop 추가
+              priority
+              sizes="(max-width: 768px) 133px, (max-width: 1200px) 167px, 210px"
             />
           </LogoImageContainer>
         </Link>
