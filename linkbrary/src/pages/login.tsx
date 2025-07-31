@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import LoginFormLayout from "../components/membership/LoginFormLayout";
 import MembershipInput from "../components/membership/MembershipInput";
 import { theme } from "../styles/theme";
-import { instance } from "../api/instance"; // axios 인스턴스
+import { instance } from "../pages/api/instance"
 import { saveToStorage } from "../utils/storage"; // 토큰 저장 함수
 
 const LoginPage = () => {
