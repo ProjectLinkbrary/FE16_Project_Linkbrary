@@ -1,7 +1,7 @@
 // 토큰 및 기타 로컬스토리지 데이터 관리 전용 파일
 // saveToStorage(), loadFromStorage(), removeFromStorage(), clearStorage() 함수 모아놓기
 // import 해서 “로컬 스토리지 관리만” 담당
-import { Link } from "../api/types";
+import { Link } from "../pages/api/types";
 
 const STORAGE_KEY = "LinkbraryData";
 

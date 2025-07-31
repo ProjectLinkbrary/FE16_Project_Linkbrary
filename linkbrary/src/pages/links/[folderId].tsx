@@ -9,8 +9,8 @@ import TopSection from "../../components/linkPage/TopSection";
 import ContentSection from "../../components/linkPage/ContentSection";
 import AddLinkModal from "../../components/linkPage/AddlinkModal";
 
-import { fetchLinksFromServer, deleteLink } from "../../api/link";
-import { Link } from "../../api/types";
+import { fetchLinksFromServer, deleteLink } from "../api/link";
+import { Link } from "../api/types";
 
 const PageContainer = styled.div`
   width: 100%;
