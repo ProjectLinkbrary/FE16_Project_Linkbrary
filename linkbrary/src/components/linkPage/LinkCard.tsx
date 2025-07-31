@@ -200,7 +200,12 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
 
         <KebabWrapper>
           <KebabButton onClick={toggleMenu} aria-label="옵션 메뉴 열기">
-            <img src="/images/ic_kebab.svg" alt="메뉴 버튼" />
+            <Image
+              src="/images/ic_kebab.svg"
+              alt="메뉴 버튼"
+              width={24}
+              height={24}
+            />
           </KebabButton>
           {menuOpen && (
             <KebabMenu>
