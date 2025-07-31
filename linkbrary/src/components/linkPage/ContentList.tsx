@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { Link } from "../../api/types";
+import { Link } from "../../pages/api/types";
 import LinkCard from "./LinkCard";
 
 const ContentListSection = styled.section`

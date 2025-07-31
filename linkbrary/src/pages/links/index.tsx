@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import NoLinks from "../../components/linkPage/Nolinks";
-import { fetchFolders } from "../../api/folder";
+import { fetchFolders } from "../api/folder";
 import LoadingSpinner from "../../components/common/Spinner";
 
 const CenterWrapper = styled.div`
@@ -27,16 +27,13 @@ export default function LinksHome() {
         if (folders.length > 0) {
           router.replace(`/links/${folders[0].id}`);
         } else {
-          setHasFolders(false);
           setIsLoading(false);
         }
       } catch (error) {
         console.error("폴더 불러오기 실패", error);
-        setHasFolders(false);
         setIsLoading(false);
       }
     }
-
     checkFolders();
   }, []);
 

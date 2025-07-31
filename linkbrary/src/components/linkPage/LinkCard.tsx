@@ -2,7 +2,7 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { useState } from "react";
-import { Link } from "../../api/types";
+import { Link } from "../../pages/api/types";
 import { formatDistanceToNow } from "date-fns";
 
 const Card = styled.div`

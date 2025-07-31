@@ -9,8 +9,10 @@ import TopSection from "../../components/linkPage/TopSection";
 import ContentSection from "../../components/linkPage/ContentSection";
 import AddLinkModal from "../../components/linkPage/AddlinkModal";
 
-import { fetchLinksFromServer, deleteLink } from "../../api/link";
-import { Link } from "../../api/types";
+import { fetchLinksFromServer, deleteLink } from "../api/link";
+import { Link } from "../api/types";
+import { fetchFolders } from "../api/folder";
+import { Folder } from "../api/types";
 
 const PageContainer = styled.div`
   width: 100%;
@@ -31,15 +33,26 @@ const PageContainer = styled.div`
 export default function FolderLinksPage() {
   const router = useRouter();
   const { folderId } = router.query;
-
   const [links, setLinks] = useState<Link[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
-  const [folders, setFolders] = useState<
-    { id: number; name: string; count: number }[]
-  >([]);
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState(0);
+
+  useEffect(() => {
+    async function loadFolders() {
+      try {
+        const apiFolders = await fetchFolders();
+        const withAll = [{ id: 0, name: "전체", count: 0 }, ...apiFolders];
+        setFolders(withAll);
+      } catch (err) {
+        console.error("폴더 목록 불러오기 실패:", err);
+      }
+    }
+    loadFolders();
+  }, []);
 
   useEffect(() => {
     if (!folderId) return;
@@ -49,8 +62,10 @@ export default function FolderLinksPage() {
         setLoading(true);
         const list = await fetchLinksFromServer(Number(folderId));
         setLinks(list);
+        setError(null);
       } catch (err) {
         console.error("링크 로드 실패:", err);
+        setError("링크를 불러오지 못했습니다.");
       } finally {
         setLoading(false);
       }
@@ -89,13 +104,14 @@ export default function FolderLinksPage() {
           loading={loading}
           onDelete={handleDelete}
           folderTitle="전체"
+          folders={folders}
         />
       </PageContainer>
       <Footer />
 
       {isAddLinkModalOpen && pendingUrl && typeof folderId === "string" && (
         <AddLinkModal
-          folderId={Number(folderId)}
+          folderId={Number(folderId) ?? 0}
           url={pendingUrl}
           folders={folders}
           onClose={closeModal}

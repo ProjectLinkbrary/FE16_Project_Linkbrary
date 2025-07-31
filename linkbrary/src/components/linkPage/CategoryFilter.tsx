@@ -1,14 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-
-const categories = [
-  "전체",
-  "유튜브",
-  "코딩 팁",
-  "채용 사이트",
-  "유용한 글",
-  "나만의 장소",
-];
+import { Folder } from "../../pages/api/types";
 
 const CategorySection = styled.section`
   display: flex;
@@ -69,13 +61,15 @@ const SecondaryButton = styled.button`
 `;
 
 interface CategoryFilterProps {
-  selectedCategory: string;
-  onSelectCategory: (category: string) => void;
+  folders: Folder[];
+  selectedCategoryId: number | null;
+  onSelectCategory: (folderId: number) => void;
   onAddFolder: () => void;
 }
 
 export default function CategoryFilter({
-  selectedCategory,
+  folders = [],
+  selectedCategoryId,
   onSelectCategory,
   onAddFolder,
 }: CategoryFilterProps) {
@@ -83,20 +77,20 @@ export default function CategoryFilter({
     <CategorySection>
       <CategoryWrapper>
         <CategoryItems>
-          {categories.map((item) => (
+          {folders.map(({ id, name }) => (
             <CategoryItem
-              key={item}
-              active={selectedCategory === item}
-              onClick={() => onSelectCategory(item)}
+              key={id}
+              active={selectedCategoryId === id}
+              onClick={() => onSelectCategory(id)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
-                  onSelectCategory(item);
+                  onSelectCategory(id);
                 }
               }}
             >
-              {item}
+              {name}
             </CategoryItem>
           ))}
         </CategoryItems>

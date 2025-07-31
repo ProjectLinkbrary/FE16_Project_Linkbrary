@@ -10,6 +10,7 @@ import TopSection from "../components/linkPage/TopSection";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import SearchNoResult from "../components/linkPage/SearchNoResult";
+import { Folder } from "./api/types";
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -64,26 +65,37 @@ type LinkItem = {
   url: string;
   title: string;
   description: string;
+  createdAt: string;
 };
 
 type Props = {
   list: LinkItem[];
 };
+const dummyFolders: Folder[] = [
+  { id: 0, name: "전체", count: 0 },
+  { id: 1, name: "유튜브", count: 0 },
+  { id: 2, name: "코딩 팁", count: 0 },
+];
 
 export default function SearchResult({ list }: Props) {
   const dummyList: LinkItem[] = [];
 
   return (
     <PageWrapper>
-      <Header />
-      <TopSection />
+      <Header isLoggedIn={false} />
+      <TopSection onRequestAddLink={(url) => console.log(url)} />
 
       <ContentListWrapper>
         <SearchBar />
 
         <SearchSummary>코드잇으로 검색한 결과입니다.</SearchSummary>
 
-        <CategoryFilter />
+        <CategoryFilter
+          folders={dummyFolders}
+          selectedCategoryId={0} // "전체" 선택
+          onSelectCategory={(id) => console.log("선택된 폴더 ID:", id)}
+          onAddFolder={() => console.log("폴더 추가")}
+        />
         <ContentWrapper>
           <FolderTag>
             <FolderTitle>전체</FolderTitle>
@@ -111,7 +123,11 @@ export default function SearchResult({ list }: Props) {
           </FolderTag>
         </ContentWrapper>
 
-        {dummyList.length > 0 ? <ContentList list={[]} /> : <SearchNoResult />}
+        {dummyList.length > 0 ? (
+          <ContentList list={[]} onDelete={(id) => console.log("삭제:", id)} />
+        ) : (
+          <SearchNoResult />
+        )}
       </ContentListWrapper>
 
       <Footer />

@@ -11,4 +11,5 @@ export interface Link {
 export interface Folder {
   id: number;
   name: string;
+  count: number;
 }
