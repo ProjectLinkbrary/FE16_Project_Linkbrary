@@ -34,10 +34,15 @@ const CategoryItems = styled.ul`
   gap: 0.375rem;
 `;
 
-const CategoryItem = styled.li`
+const CategoryItem = styled("li", {
+  shouldForwardProp: (prop) => prop !== "active",
+})<{ active: boolean }>`
   border: 1px solid ${({ theme }) => theme.color.gray30};
+  background-color: ${({ theme, active }) =>
+    active ? theme.color.gray30 : "transparent"};
   border-radius: 50px;
   padding: 8px 12px;
+  cursor: pointer;
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
@@ -63,16 +68,39 @@ const SecondaryButton = styled.button`
   cursor: pointer;
 `;
 
-export default function CategoryFilter() {
+interface CategoryFilterProps {
+  selectedCategory: string;
+  onSelectCategory: (category: string) => void;
+  onAddFolder: () => void;
+}
+
+export default function CategoryFilter({
+  selectedCategory,
+  onSelectCategory,
+  onAddFolder,
+}: CategoryFilterProps) {
   return (
     <CategorySection>
       <CategoryWrapper>
         <CategoryItems>
           {categories.map((item) => (
-            <CategoryItem key={item}>{item}</CategoryItem>
+            <CategoryItem
+              key={item}
+              active={selectedCategory === item}
+              onClick={() => onSelectCategory(item)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  onSelectCategory(item);
+                }
+              }}
+            >
+              {item}
+            </CategoryItem>
           ))}
         </CategoryItems>
-        <SecondaryButton>+ 폴더 추가하기</SecondaryButton>
+        <SecondaryButton onClick={onAddFolder}>+ 폴더 추가하기</SecondaryButton>
       </CategoryWrapper>
     </CategorySection>
   );

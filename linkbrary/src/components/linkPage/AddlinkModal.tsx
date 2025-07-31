@@ -126,31 +126,35 @@ const AddButton = styled.button`
   }
 `;
 
+// const folders = [
+//   { id: 1, name: "유튜브", count: 23 },
+//   { id: 2, name: "코딩팁", count: 7 },
+//   { id: 3, name: "채용 사이트", count: 12 },
+//   { id: 4, name: "유용한 글", count: 30 },
+//   { id: 5, name: "나만의 장소", count: 3 },
+// ];
+
 interface Props {
   folderId: number;
-  url: string; // 초기 url 받기
+  url: string;
+  folders: { id: number; name: string; count: number }[];
   onClose: () => void;
   onSuccess: (newLink: Link) => void;
 }
 
-const folders = [
-  { id: 1, name: "유튜브", count: 23 },
-  { id: 2, name: "코딩팁", count: 7 },
-  { id: 3, name: "채용 사이트", count: 12 },
-  { id: 4, name: "유용한 글", count: 30 },
-  { id: 5, name: "나만의 장소", count: 3 },
-];
-
 export default function AddLinkModal({
   folderId,
   url,
+  folders,
   onClose,
   onSuccess,
 }: Props) {
-  const [inputUrl, setInputUrl] = useState(url); // 초기값으로 prop url 세팅
-  const [selectedFolderId, setSelectedFolderId] = useState(folderId);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [inputUrl, setInputUrl] = useState(url);
+  const [selectedFolderId, setSelectedFolderId] = useState<number>(
+    Number.isFinite(folderId) ? folderId : folders[0]?.id ?? 0
+  );
 
   const handleAdd = async () => {
     if (!inputUrl.trim()) {
@@ -160,7 +164,6 @@ export default function AddLinkModal({
 
     try {
       setLoading(true);
-      // 실제 선택한 폴더 ID로 링크 추가
       const newLink = await addLink({
         url: inputUrl,
         folderId: selectedFolderId,
@@ -186,21 +189,23 @@ export default function AddLinkModal({
         <LinkUrlTitle>{inputUrl}</LinkUrlTitle>
 
         <FolderList>
-          {folders.map(({ id, name, count }) => (
-            <FolderItem
-              key={id}
-              selected={selectedFolderId === id}
-              onClick={() => setSelectedFolderId(id)}
-            >
-              <LeftContent>
-                <FolderName>{name}</FolderName>
-                <Count>{count}개 링크</Count>
-              </LeftContent>
-              <RightContent>
-                {selectedFolderId === id && <CheckIcon />}
-              </RightContent>
-            </FolderItem>
-          ))}
+          {(Array.isArray(folders) ? folders : []).map(
+            ({ id, name, count }) => (
+              <FolderItem
+                key={id}
+                selected={selectedFolderId === id}
+                onClick={() => setSelectedFolderId(id)}
+              >
+                <LeftContent>
+                  <FolderName>{name}</FolderName>
+                  <Count>{count}개 링크</Count>
+                </LeftContent>
+                <RightContent>
+                  {selectedFolderId === id && <CheckIcon />}
+                </RightContent>
+              </FolderItem>
+            )
+          )}
         </FolderList>
         <AddButton onClick={handleAdd} disabled={loading}>
           {loading ? "추가 중..." : "링크 추가하기"}

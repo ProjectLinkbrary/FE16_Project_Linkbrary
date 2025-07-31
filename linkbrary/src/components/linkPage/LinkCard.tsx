@@ -5,12 +5,6 @@ import { useState } from "react";
 import { Link } from "../../api/types";
 import { formatDistanceToNow } from "date-fns";
 
-interface LinkCardProps {
-  link: Link;
-}
-
-const NextLink = styled.a``;
-
 const Card = styled.div`
   display: flex;
   flex-direction: column;

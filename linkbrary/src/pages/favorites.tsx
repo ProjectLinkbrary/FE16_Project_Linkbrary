@@ -1,9 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import ContentList from "../components/linkPage/ContentList";
+import { Link } from "../api/types";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
 
 const FavoritesSectionWrapper = styled.section`
-  background: url("/images/linkpagebg.png") no-repeat center center / cover;
+  background: url("/images/bg_linkpage.png") no-repeat center center / cover;
   height: 250px;
   display: flex;
   justify-content: center;
@@ -52,9 +55,15 @@ const Pagination = styled.div`
 
 const defaultPageNumbers: (string | number)[] = ["<", 1, 2, 3, 4, 5, ">"];
 
-export default function Favorites() {
+interface FavoritesProps {
+  list: Link[];
+  onDelete: (id: number) => void;
+}
+
+export default function Favorites({ list = [], onDelete }: FavoritesProps) {
   return (
     <>
+      <Header isLoggedIn={true} />
       <FavoritesSectionWrapper>
         <LinkWrapper>
           <Title>⭐즐겨찾기</Title>
@@ -62,7 +71,7 @@ export default function Favorites() {
       </FavoritesSectionWrapper>
 
       <FavoriteListWrapper>
-        <ContentList list={[]} />
+        <ContentList list={list} onDelete={onDelete} />
         <Pagination>
           {defaultPageNumbers.map((num) => (
             <button key={String(num)} type="button" disabled>
@@ -71,6 +80,7 @@ export default function Favorites() {
           ))}
         </Pagination>
       </FavoriteListWrapper>
+      <Footer />
     </>
   );
 }
