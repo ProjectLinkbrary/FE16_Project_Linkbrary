@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { addLink } from "../../api/link";
-import { Link } from "../../api/types";
+import { addLink } from "../../pages/api/link";
+import { Link } from "../../pages/api/types";
 
 const ModalWrapper = styled.div`
   position: fixed;

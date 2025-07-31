@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import NoLinks from "../../components/linkPage/Nolinks";
-import { fetchFolders } from "../../api/folder";
+import { fetchFolders } from "../api/folder";
 import LoadingSpinner from "../../components/common/Spinner";
 
 const CenterWrapper = styled.div`

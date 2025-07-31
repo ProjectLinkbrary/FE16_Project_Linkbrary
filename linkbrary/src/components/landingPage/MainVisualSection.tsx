@@ -4,7 +4,7 @@ import { PrimaryButton } from "../common/Button";
 import { useRouter } from "next/router";
 import styled from "@emotion/styled";
 
-import { fetchFolders, addFolder } from "../../api/folder";
+import { fetchFolders, addFolder } from "../../pages/api/folder";
 import { useEffect, useState } from "react";
 
 const MainVisualWrapper = styled.div`
