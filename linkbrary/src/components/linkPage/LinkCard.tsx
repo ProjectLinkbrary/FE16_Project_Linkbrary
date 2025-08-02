@@ -2,14 +2,8 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { useState } from "react";
-import { Link } from "../../api/types";
+import { Link } from "../../pages/api/types";
 import { formatDistanceToNow } from "date-fns";
-
-interface LinkCardProps {
-  link: Link;
-}
-
-const NextLink = styled.a``;
 
 const Card = styled.div`
   display: flex;
@@ -200,7 +194,12 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
 
         <KebabWrapper>
           <KebabButton onClick={toggleMenu} aria-label="옵션 메뉴 열기">
-            <img src="/images/ic_kebab.svg" alt="메뉴 버튼" />
+            <Image
+              src="/images/ic_kebab.svg"
+              alt="메뉴 버튼"
+              width={24}
+              height={24}
+            />
           </KebabButton>
           {menuOpen && (
             <KebabMenu>

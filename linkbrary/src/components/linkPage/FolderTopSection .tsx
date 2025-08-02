@@ -15,7 +15,6 @@ const FolderTitle = styled.h2`
 
 const FolderActions = styled.div`
   display: flex;
-  gap: 12px;
 `;
 
 const IconButton = styled.button`
@@ -30,7 +29,7 @@ const EditIcon = styled.img``;
 const TrashIcon = styled.img``;
 
 interface FolderTopSectionProps {
-  folderTitle: string;
+  folderTitle?: string;
 }
 
 export default function FolderTopSection({
@@ -38,7 +37,7 @@ export default function FolderTopSection({
 }: FolderTopSectionProps) {
   return (
     <FolderTag>
-      <FolderTitle>{folderTitle}</FolderTitle>
+      <FolderTitle>{folderTitle ?? "기본 폴더명"}</FolderTitle>
       <FolderActions>
         <IconButton type="button">
           <ShareIcon src="/images/ic_share.svg" alt="공유" />

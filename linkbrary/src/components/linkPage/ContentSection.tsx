@@ -7,8 +7,11 @@ import ContentList from "./ContentList";
 import NoLinks from "./Nolinks";
 import CategoryFilter from "./CategoryFilter";
 import SearchBar from "./SearchBar";
-import { Link } from "../../api/types";
+
+import { Folder, Link } from "../../pages/api/types";
+
 import FolderTopSection from "./FolderTopSection ";
+import LoadingSpinner from "../common/Spinner";
 
 const ContentSectionWrapper = styled.section`
   /* margin: 24px 0; */
@@ -46,26 +49,35 @@ interface ContentSectionProps {
   loading: boolean;
   folderTitle?: string;
   onDelete: (id: number) => void;
+  folders: Folder[];
 }
-
 export default function ContentSection({
   list,
   loading,
-  folderTitle = "전체",
+  folderTitle,
   onDelete,
+  folders,
 }: ContentSectionProps) {
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+
   if (loading) {
-    return (
-      <div style={{ padding: "4rem 0", textAlign: "center" }}>로딩 중...</div>
-    );
+    return <LoadingSpinner />;
   }
+
   return (
     <ContentSectionWrapper>
       <SearchBar />
 
       {list.length > 0 ? (
         <>
-          <CategoryFilter />
+          <CategoryFilter
+            folders={folders}
+            selectedCategoryId={selectedCategory}
+            onSelectCategory={(id) => setSelectedCategory(id)}
+            onAddFolder={() => {
+              alert("+폴더 추가");
+            }}
+          />
 
           <ContentWrapper>
             <FolderTopSection folderTitle={folderTitle} />

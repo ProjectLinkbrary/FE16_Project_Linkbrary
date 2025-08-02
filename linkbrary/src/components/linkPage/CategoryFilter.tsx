@@ -1,14 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-
-const categories = [
-  "전체",
-  "유튜브",
-  "코딩 팁",
-  "채용 사이트",
-  "유용한 글",
-  "나만의 장소",
-];
+import { Folder } from "../../pages/api/types";
 
 const CategorySection = styled.section`
   display: flex;
@@ -34,10 +26,15 @@ const CategoryItems = styled.ul`
   gap: 0.375rem;
 `;
 
-const CategoryItem = styled.li`
+const CategoryItem = styled("li", {
+  shouldForwardProp: (prop) => prop !== "active",
+})<{ active: boolean }>`
   border: 1px solid ${({ theme }) => theme.color.gray30};
+  background-color: ${({ theme, active }) =>
+    active ? theme.color.gray30 : "transparent"};
   border-radius: 50px;
   padding: 8px 12px;
+  cursor: pointer;
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
@@ -63,16 +60,41 @@ const SecondaryButton = styled.button`
   cursor: pointer;
 `;
 
-export default function CategoryFilter() {
+interface CategoryFilterProps {
+  folders: Folder[];
+  selectedCategoryId: number | null;
+  onSelectCategory: (folderId: number) => void;
+  onAddFolder: () => void;
+}
+
+export default function CategoryFilter({
+  folders = [],
+  selectedCategoryId,
+  onSelectCategory,
+  onAddFolder,
+}: CategoryFilterProps) {
   return (
     <CategorySection>
       <CategoryWrapper>
         <CategoryItems>
-          {categories.map((item) => (
-            <CategoryItem key={item}>{item}</CategoryItem>
+          {folders.map(({ id, name }) => (
+            <CategoryItem
+              key={id}
+              active={selectedCategoryId === id}
+              onClick={() => onSelectCategory(id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  onSelectCategory(id);
+                }
+              }}
+            >
+              {name}
+            </CategoryItem>
           ))}
         </CategoryItems>
-        <SecondaryButton>+ 폴더 추가하기</SecondaryButton>
+        <SecondaryButton onClick={onAddFolder}>+ 폴더 추가하기</SecondaryButton>
       </CategoryWrapper>
     </CategorySection>
   );

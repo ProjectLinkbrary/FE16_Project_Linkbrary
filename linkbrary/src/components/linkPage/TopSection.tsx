@@ -2,7 +2,6 @@
 import styled from "@emotion/styled";
 import theme from "../../styles/theme";
 import { useState } from "react";
-import AddLinkModal from "../../components/linkPage/AddlinkModal";
 
 const TopSectionWrapper = styled.section`
   background: url("/images/bg_linkpage.png") no-repeat center center / cover;
@@ -115,36 +114,12 @@ const LightButton = styled.button`
   }
 `;
 
-const ErrorMessage = styled.p`
-  color: #ff6b6b;
-  font-size: 14px;
-  margin-top: 0.5rem;
-
-  ${({ theme }) => theme.media.tablet} {
-    font-size: 16px;
-  }
-`;
-
 export default function TopSection({
   onRequestAddLink,
 }: {
   onRequestAddLink: (url: string) => void;
 }) {
   const [url, setUrl] = useState("");
-  const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
-  const [pendingUrl, setPendingUrl] = useState<string | null>(null);
-
-  // TopSection 클릭 시 모달 띄우는 함수
-  const handleRequestAddLink = (url: string) => {
-    setPendingUrl(url);
-    setIsAddLinkModalOpen(true);
-  };
-
-  // 모달 닫는 함수
-  const closeModal = () => {
-    setIsAddLinkModalOpen(false);
-    setPendingUrl(null);
-  };
 
   const handleClick = async () => {
     if (!url.trim()) {

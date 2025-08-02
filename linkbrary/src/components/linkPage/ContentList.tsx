@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { Link } from "../../api/types";
-import { useState } from "react";
+import { Link } from "../../pages/api/types";
 import LinkCard from "./LinkCard";
 
 const ContentListSection = styled.section`
@@ -34,7 +33,7 @@ interface ContentListProps {
   onDelete: (id: number) => void;
 }
 
-export default function ContentList({ list = [], onDelete }: ContentListProps) {
+export default function ContentList({ list, onDelete }: ContentListProps) {
   return (
     <ContentListSection>
       <CardList>

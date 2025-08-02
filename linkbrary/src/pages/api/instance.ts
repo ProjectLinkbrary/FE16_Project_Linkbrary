@@ -1,6 +1,6 @@
 // src/api/instance.ts
 import axios from "axios";
-import { loadFromStorage, clearStorage } from "../utils/storage";
+import { loadFromStorage, clearStorage } from "../../utils/storage";
 
 export const instance = axios.create({
   baseURL: "https://linkbrary-api.vercel.app/16-6",
