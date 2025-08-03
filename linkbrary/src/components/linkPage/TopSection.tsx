@@ -145,8 +145,8 @@ export default function TopSection({
       alert("링크를 입력해주세요.");
       return;
     }
-    onRequestAddLink(url); // 모달 띄우기 요청
-    setUrl(""); // 입력 초기화
+    onRequestAddLink(url);
+    setUrl("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

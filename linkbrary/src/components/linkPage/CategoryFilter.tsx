@@ -76,12 +76,11 @@ export default function CategoryFilter({
   onSelectCategory,
   onAddFolder,
 }: CategoryFilterProps) {
-  // 전체 개수 계산
   const totalCount = folders.reduce(
     (sum, folder) => sum + (folder.count ?? 0),
     0
   );
-  // "전체" 카테고리를 UI에서만 추가
+
   const categories = [{ id: -1, name: "전체", count: totalCount }, ...folders];
   return (
     <CategorySection>

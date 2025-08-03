@@ -8,6 +8,7 @@ export interface Link {
   folderId: number;
   isFavorite: boolean;
 }
+
 export interface Folder {
   id: number;
   name: string;
@@ -27,4 +28,5 @@ export interface ToggleFavoritePayload {
   isFavorite: boolean;
   favorite: boolean;
   folderId?: number;
+  linkId: number;
 }

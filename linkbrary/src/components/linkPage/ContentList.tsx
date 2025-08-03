@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import Image from "next/image";
 import { Link } from "../../pages/api/types";
 import LinkCard from "./LinkCard";
 import { useRef, useEffect, useState } from "react";
@@ -22,11 +21,23 @@ const CardList = styled.div`
   }
 `;
 
-const NoFavortiesTitle = styled.h1`
+const NoFavoritesTitle = styled.div`
   width: 100%;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 8rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+  }
+`;
+
+const NolinkImg = styled.img`
+  width: 30%;
 `;
 
 interface ContentListProps {
@@ -59,7 +70,7 @@ export default function ContentList({
 
       const currentRef = kebabRefs.current[openMenuCardId];
       if (currentRef && !currentRef.contains(event.target as Node)) {
-        setOpenMenuCardId(null); // 메뉴 닫기
+        setOpenMenuCardId(null);
       }
     };
 
@@ -82,12 +93,17 @@ export default function ContentList({
               onEdit={onEdit}
               isMenuOpen={openMenuCardId === link.id}
               onToggleMenu={() => handleToggleMenu(link.id)}
-              menuRef={(el) => (kebabRefs.current[link.id] = el)}
+              menuRef={(el) => {
+                kebabRefs.current[link.id] = el;
+              }}
               onToggleFavorite={onToggleFavorite}
             />
           ))
         ) : (
-          <NoFavortiesTitle>등록된 즐겨찾기가 없습니다.</NoFavortiesTitle>
+          <NoFavoritesTitle>
+            <NolinkImg src="/images/nolink.png" alt="비어있음" />
+            <h2>등록된 즐겨찾기가 없습니다.</h2>
+          </NoFavoritesTitle>
         )}
       </CardList>
     </ContentListSection>

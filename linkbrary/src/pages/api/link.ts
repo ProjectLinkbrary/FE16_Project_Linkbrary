@@ -118,10 +118,11 @@ export const toggleFavorite = async (payload: {
   const { id, favorite, folderId } = payload;
   if (favorite === undefined) throw new Error("favorite 값이 없습니다.");
 
-  const res = await instance.put(`/links/${id}/favorite`, {
-    favorite,
-    folderId,
-  });
+  const body: Record<string, any> = { favorite };
+  if (folderId !== undefined) {
+    body.folderId = folderId;
+  }
 
-  return res.data; // 변경된 Link 객체를 반환한다고 가정
+  const res = await instance.put(`/links/${id}/favorite`, body);
+  return res.data;
 };

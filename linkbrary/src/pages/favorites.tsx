@@ -41,11 +41,10 @@ const Title = styled.h1`
 `;
 
 const FavoriteListWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 4rem 0 0 0;
+  width: 100%;
+  max-width: 66.25rem;
+  margin: 0 auto;
+  padding: 4rem 1.563rem 0;
 `;
 
 const Pagination = styled.div`
@@ -165,8 +164,6 @@ export default function Favorites() {
           onToggleFavorite={handleToggleFavorite}
           onDeleteRequest={handleDeleteRequest}
           onEdit={handleEdit}
-          loading={loading}
-          error={error}
         />
 
         <LinkModals

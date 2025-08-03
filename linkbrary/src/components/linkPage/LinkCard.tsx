@@ -75,6 +75,15 @@ const FavoritesIcon = styled.button<{ isFavorite: boolean }>`
     filter: ${(props) =>
       props.isFavorite ? "drop-shadow(0 0 3px #FFD700)" : "none"};
   }
+
+  &:focus-visible {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+  }
+  &:active {
+    filter: drop-shadow(0 0 5px #ffd700);
+    transform: scale(0.95);
+  }
 `;
 
 const CardContent = styled.div`
@@ -171,8 +180,8 @@ export default function LinkCard({
   const { imageSource, title, description, createdAt } = link;
   const buttonRef = useRef<HTMLButtonElement>(null);
   const internalMenuRef = useRef<HTMLUListElement | null>(null);
+  const favoriteBtnRef = useRef<HTMLButtonElement>(null);
 
-  // menuRef 콜백과 internalMenuRef 연결
   const combinedMenuRef = (node: HTMLUListElement | null) => {
     internalMenuRef.current = node;
     menuRef(node);
@@ -196,7 +205,6 @@ export default function LinkCard({
     };
   }, [isMenuOpen, onToggleMenu]);
 
-  // ESC 누르면 메뉴 닫기
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape" && isMenuOpen) {
@@ -210,18 +218,14 @@ export default function LinkCard({
     };
   }, [isMenuOpen, onToggleMenu]);
 
-  // createdAt 기준으로 현재 시점과의 상대 시간을 표시
-  // date-fns 라이브러리로 formatDistanceToNow 함수 사용, addSuffix 옵션으로 'ago' 추가
   const relativeTime = formatDistanceToNow(new Date(createdAt), {
     addSuffix: true,
   });
 
-  // 카드 클릭 시 새 탭 열기
   const handleClick = () => {
     window.open(link.url, "_blank", "noopener,noreferrer");
   };
 
-  // 케밥 메뉴 토글 시 이벤트 버블링 차단
   const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onToggleMenu();
@@ -259,6 +263,7 @@ export default function LinkCard({
           isFavorite={isFavorite}
           onClick={(e) => {
             e.stopPropagation();
+            console.log("즐겨찾기 클릭!", link);
             onToggleFavorite(link);
           }}
         >

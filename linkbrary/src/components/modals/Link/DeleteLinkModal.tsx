@@ -76,7 +76,7 @@ const DeleteButton = styled.button`
 interface Props {
   link: Link;
   onClose: () => void;
-  onConfirm: () => void; // 삭제 확정 시 실행
+  onConfirm: () => void;
   loading?: boolean;
 }
 
