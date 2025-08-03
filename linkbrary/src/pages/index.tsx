@@ -1,39 +1,55 @@
-import Link from "next/link";
-import Footer from "../components/common/Footer";
-import Header from "../components/common/Header";
-import MainVisualSection from "../components/landingPage/MainVisualSection";
-import LandingContent from "../components/landingPage/LandingContent";
-import type { NextPage } from "next";
+/** @jsxImportSource @emotion/react */
+import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { addFolder, fetchFolders } from "./api/folder";
+import Header from "../../components/common/Header";
+import Footer from "../../components/common/Footer";
+import NoLinks from "../../components/linkPage/Nolinks";
+import LoadingSpinner from "../../components/common/Spinner";
+import { fetchFolders } from "../api/folder";
 
-export default function Home() {
+const CenterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+export default function LinksHome() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasFolders, setHasFolders] = useState(false);
 
-  const handleAddLink = async () => {
-    if (loading) return;
-    setLoading(true);
-    try {
-      const folders = await fetchFolders();
-      if (folders.length === 0) {
-        const newFolder = await addFolder("새 폴더");
-        router.push(`/links/${newFolder.id}`);
-      } else {
-        router.push(`/links/${folders[0].id}`);
+  useEffect(() => {
+    async function checkFolders() {
+      try {
+        const folders = await fetchFolders();
+        if (folders.length > 0) {
+          router.replace(`/links/${folders[0].id}`);
+        } else {
+          setHasFolders(false);
+        }
+      } catch (error) {
+        setHasFolders(false);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      alert("오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
     }
-  };
+    checkFolders();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <CenterWrapper>
+        <LoadingSpinner />
+      </CenterWrapper>
+    );
+  }
+
   return (
     <>
       <Header isLoggedIn />
-      <MainVisualSection onAddLink={handleAddLink} loading={loading} />
-      <LandingContent />
+      {!hasFolders && <NoLinks />}
       <Footer />
     </>
   );

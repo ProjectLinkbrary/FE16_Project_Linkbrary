@@ -22,9 +22,9 @@ const LoginFormLayout = ({ children, onSubmit }: LoginLayoutProps) => {
                   alt="Linkbrary 로고"
                   width={210.58}
                   height={38}
-                priority
-              />
-               </Link>
+                  priority
+                />
+              </Link>
               <JoinLink>
                 회원이 아니신가요? <Link href="/signup">회원가입하기</Link>
               </JoinLink>
