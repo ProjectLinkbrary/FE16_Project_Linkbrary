@@ -137,11 +137,11 @@ const LoginForm = () => {
   return (
     <Wrapper>
       <FormContainer>
-     <LogoArea>
-     <Link href="/" passHref>
-     <a>Linkbrary</a>
-     </Link>
-     </LogoArea>
+        <LogoArea>
+          <Link href="/" passHref>
+            <a>Linkbrary</a>
+          </Link>
+        </LogoArea>
         <SignupPrompt>
           <span>회원이 아니신가요?</span>
           <Link href="/signup">회원 가입하기</Link>
