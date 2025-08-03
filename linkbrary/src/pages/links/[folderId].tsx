@@ -7,11 +7,13 @@ import TopSection from "../../components/linkPage/TopSection";
 import ContentSection from "../../components/linkPage/ContentSection";
 import LinkModals from "../../components/linkPage/LinkModals";
 import FolderModals from "../../components/linkPage/FolderModals";
-import { fetchFavoriteLinksFromServer, toggleFavorite } from "../api/link";
+import ShareModal from "../../components/modals/Folder/ShareModal";
+
 import {
   fetchLinksFromServer,
-  deleteLink,
   fetchAllLinksFromServer,
+  deleteLink,
+  toggleFavorite,
 } from "../api/link";
 
 import {
@@ -45,9 +47,11 @@ export default function FolderLinksPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // 링크 추가 모달 상태
   const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
 
+  // 링크 편집/삭제 상태
   const [editingLink, setEditingLink] = useState<Link | null>(null);
   const [deletingLink, setDeletingLink] = useState<Link | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -56,16 +60,21 @@ export default function FolderLinksPage() {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [selectedFolderId, setSelectedFolderId] = useState<number>(-1);
 
+  // 폴더 모달 상태
   const [isAddFolderModalOpen, setIsAddFolderModalOpen] = useState(false);
   const [isEditFolderModalOpen, setIsEditFolderModalOpen] = useState(false);
   const [isDeleteFolderModalOpen, setIsDeleteFolderModalOpen] = useState(false);
 
-  // 폴더 수정, 삭제 대상
+  // 폴더 편집/삭제 상태
   const [folderOperationLoading, setFolderOperationLoading] = useState(false);
   const [editingFolder, setEditingFolder] = useState<Folder | null>(null);
   const [deletingFolder, setDeletingFolder] = useState<Folder | null>(null);
 
-  // 폴더 API 갱신 함수
+  // 공유 모달 상태
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [sharingFolder, setSharingFolder] = useState<Folder | null>(null);
+
+  // 폴더 목록 새로고침
   const refreshFolders = async () => {
     try {
       const apiFolders = await fetchFolders();
@@ -74,17 +83,12 @@ export default function FolderLinksPage() {
       console.error("폴더 목록 불러오기 실패:", err);
     }
   };
-  // 폴더 추가 모달 열기
-  const openAddFolderModal = () => {
-    setIsAddFolderModalOpen(true);
-  };
 
-  // 폴더 추가 처리 (중복 체크 포함)
+  // 폴더 추가
   const handleConfirmAddFolder = async (name: string) => {
     const trimmedName = name.trim();
     if (!trimmedName) return;
 
-    // 중복 폴더명 체크
     if (folders.some((folder) => folder.name === trimmedName)) {
       alert(`"${trimmedName}" 폴더가 이미 존재합니다.`);
       return;
@@ -111,21 +115,13 @@ export default function FolderLinksPage() {
     }
   };
 
-  // 폴더 수정 모달 열기
-  const openEditFolderModal = () => {
-    const folder = folders.find((f) => f.id === selectedFolderId) || null;
-    setEditingFolder(folder);
-    setIsEditFolderModalOpen(true);
-  };
-
-  // 폴더 수정 처리 (중복 체크 포함)
+  // 폴더 수정
   const handleEditFolder = async (newName: string) => {
     if (!editingFolder) return;
 
     const trimmedName = newName.trim();
     if (!trimmedName) return;
 
-    // 중복 폴더명 체크
     if (
       folders.some(
         (folder) =>
@@ -152,14 +148,7 @@ export default function FolderLinksPage() {
     }
   };
 
-  // 폴더 삭제 모달 열기
-  const openDeleteFolderModal = () => {
-    const folder = folders.find((f) => f.id === selectedFolderId) || null;
-    setDeletingFolder(folder);
-    setIsDeleteFolderModalOpen(true);
-  };
-
-  // 폴더 삭제 처리
+  // 폴더 삭제
   const handleDeleteFolder = async () => {
     if (!deletingFolder) return;
 
@@ -184,7 +173,7 @@ export default function FolderLinksPage() {
     }
   };
 
-  // 링크 관련
+  // 카테고리(폴더) 선택 시 링크 로드
   const handleSelectCategory = async (folderId: number) => {
     setSelectedFolderId(folderId);
     setLoading(true);
@@ -210,7 +199,7 @@ export default function FolderLinksPage() {
     setDeletingLink(link);
   };
 
-  // 링크 삭제 실제 수행
+  // 실제 링크 삭제
   const handleDeleteConfirm = async () => {
     if (!deletingLink) return;
     setDeleteLoading(true);
@@ -228,7 +217,7 @@ export default function FolderLinksPage() {
     }
   };
 
-  // 링크 편집
+  // 링크 편집 관련
   const handleEdit = (link: Link) => setEditingLink(link);
   const handleCloseEditModal = () => setEditingLink(null);
   const handleEditSuccess = (updatedLink: Link) => {
@@ -243,7 +232,6 @@ export default function FolderLinksPage() {
     setPendingUrl(url);
     setIsAddLinkModalOpen(true);
   };
-
   // 링크 추가 모달 닫기
   const closeModal = () => {
     setPendingUrl(null);
@@ -253,37 +241,24 @@ export default function FolderLinksPage() {
   // 즐겨찾기 토글 핸들러
   const handleToggleFavorite = async (link: Link) => {
     try {
-      // UI에서 바로 즐겨찾기 상태 토글 (optimistic update)
       setLinks((prev) =>
         prev.map((l) =>
           l.id === link.id ? { ...l, isFavorite: !l.isFavorite } : l
         )
       );
 
-      // 서버에 변경 요청 보내고 변경된 링크 정보 받기
       const updatedLink = await toggleFavorite({
         id: link.id,
         favorite: !link.isFavorite,
         folderId: link.folderId,
       });
 
-      // 서버가 제대로 변경된 링크를 반환했으면 상태 업데이트
       if (updatedLink && updatedLink.id) {
         setLinks((prev) =>
           prev.map((l) => (l.id === updatedLink.id ? updatedLink : l))
         );
-      } else {
-        // 반환값이 이상하면 원래 상태로 롤백
-        setLinks((prev) =>
-          prev.map((l) =>
-            l.id === link.id ? { ...l, isFavorite: link.isFavorite } : l
-          )
-        );
       }
     } catch (error) {
-      console.error("즐겨찾기 토글 실패:", error);
-
-      // 실패 시 원래 상태로 롤백
       setLinks((prev) =>
         prev.map((l) =>
           l.id === link.id ? { ...l, isFavorite: link.isFavorite } : l
@@ -292,7 +267,7 @@ export default function FolderLinksPage() {
     }
   };
 
-  // 페이지 첫 로딩 시 폴더 및 전체 링크 로드
+  // 첫 렌더 시 폴더 & 링크 초기 로드
   useEffect(() => {
     (async () => {
       await refreshFolders();
@@ -309,7 +284,7 @@ export default function FolderLinksPage() {
         isModalOpen={isAddLinkModalOpen}
         selectedCategoryId={selectedFolderId}
         onSelectCategory={handleSelectCategory}
-        onAddFolder={openAddFolderModal}
+        onAddFolder={() => setIsAddFolderModalOpen(true)}
       />
 
       <PageContainer>
@@ -327,10 +302,24 @@ export default function FolderLinksPage() {
           folders={folders}
           selectedCategoryId={selectedFolderId}
           onSelectCategory={handleSelectCategory}
-          onAddFolder={openAddFolderModal}
-          onEditFolder={openEditFolderModal}
-          onDeleteFolder={openDeleteFolderModal}
+          onAddFolder={() => setIsAddFolderModalOpen(true)}
+          onEditFolder={() => {
+            const folder =
+              folders.find((f) => f.id === selectedFolderId) || null;
+            setEditingFolder(folder);
+            setIsEditFolderModalOpen(true);
+          }}
+          onDeleteFolder={() => {
+            const folder =
+              folders.find((f) => f.id === selectedFolderId) || null;
+            setDeletingFolder(folder);
+            setIsDeleteFolderModalOpen(true);
+          }}
           onRefreshFolders={refreshFolders}
+          onShareFolder={(folder) => {
+            setSharingFolder(folder);
+            setIsShareModalOpen(true);
+          }}
         />
       </PageContainer>
 
@@ -374,6 +363,18 @@ export default function FolderLinksPage() {
         onConfirmDelete={handleDeleteFolder}
         deleteLoading={folderOperationLoading}
       />
+
+      {isShareModalOpen && sharingFolder && (
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={() => {
+            setIsShareModalOpen(false);
+            setSharingFolder(null);
+          }}
+          folderName={sharingFolder.name}
+          folderUrl={`https://yourdomain.com/folder/${sharingFolder.id}`} // 실제 공유 URL로 변경 필요
+        />
+      )}
     </>
   );
 }

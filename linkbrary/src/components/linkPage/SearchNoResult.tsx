@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 const SearchNoResultWrapper = styled.div`
   text-align: center;
-  padding: 4rem 0;
+  padding: 5rem 0 8rem 0;
   color: #999;
 `;
 

@@ -54,6 +54,8 @@ const LinkUrlTitle = styled.p`
   font-size: 0.875rem;
   color: #b3b3b3;
   text-align: center;
+
+  word-break: break-all;
 `;
 
 const FolderList = styled.ul`
@@ -135,7 +137,6 @@ const AddButton = styled.button`
   }
 `;
 
-// URL 유효성 검사 함수
 function isValidUrl(url: string) {
   try {
     const testUrl =
