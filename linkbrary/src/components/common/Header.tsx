@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import Logo from "./Logo";
 import { SecondaryButton } from "./Button";
 
@@ -75,7 +76,32 @@ const UserName = styled.span`
   }
 `;
 
-export default function Header({ isLoggedIn }: HeaderProps) {
+export default function Header({}: HeaderProps) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [nameId, setNameId] = useState<string>("");
+
+  /*토큰에서 이름 꺼내서 넣기*/
+  useEffect(() => {
+    const stored = localStorage.getItem("LinkbraryData");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      setNameId(parsed.nameId || "");
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      const data = localStorage.getItem("LinkbraryData");
+      if (!data) return;
+
+      const parsed = JSON.parse(data);
+      if (parsed.accessToken) {
+        setIsLoggedIn(true);
+      }
+    } catch (err) {
+      console.error("로컬스토리지 파싱 오류:", err);
+    }
+  }, []);
   return (
     <HeaderContainer>
       <Nav>
@@ -88,7 +114,7 @@ export default function Header({ isLoggedIn }: HeaderProps) {
               </FavoriteButton>
               <UserInfo>
                 <UserIcon />
-                <UserName>이용섭</UserName>
+                <UserName>{nameId}</UserName>
               </UserInfo>
             </>
           ) : (

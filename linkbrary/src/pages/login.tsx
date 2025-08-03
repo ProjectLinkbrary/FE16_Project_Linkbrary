@@ -3,8 +3,9 @@ import styled from "@emotion/styled";
 import LoginFormLayout from "../components/membership/LoginFormLayout";
 import MembershipInput from "../components/membership/MembershipInput";
 import { theme } from "../styles/theme";
-import { instance } from "../pages/api/instance"
+import { instance } from "../pages/api/instance";
 import { saveToStorage } from "../utils/storage"; // 토큰 저장 함수
+import KakaoLoginButton from "../components/signupPage/KakaoLogin";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -51,8 +52,8 @@ const LoginPage = () => {
 
     try {
       const response = await instance.post("/auth/sign-in", {
-       email,
-       password,
+        email,
+        password,
       });
 
       const token = response.data.accessToken;
@@ -96,6 +97,7 @@ const LoginPage = () => {
         placeholder="비밀번호를 입력해주세요"
       />
       <LoginButton type="submit">로그인</LoginButton>
+      <KakaoLoginButton />
     </LoginFormLayout>
   );
 };
