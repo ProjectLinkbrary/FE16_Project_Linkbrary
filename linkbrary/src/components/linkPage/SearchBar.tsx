@@ -72,15 +72,32 @@ const CloseIcon = styled.img`
   }
 `;
 
-export default function SearchBar() {
+type SearchBarProps = {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClear: () => void;
+};
+
+export default function SearchBar({
+  value,
+  onChange,
+  onClear,
+}: SearchBarProps) {
   return (
     <SearchBarSection>
       <InputWrapper>
         <LinkIcon src="/images/ic_search.svg" alt="검색 아이콘" />
-        <StyledInput placeholder="링크를 검색해 보세요." />
-        <CloseButton>
-          <CloseIcon src="/images/ic_close.svg" alt="취소" />
-        </CloseButton>
+        <StyledInput
+          type="text"
+          placeholder="링크를 검색해 보세요."
+          value={value}
+          onChange={(e) => onChange(e)}
+        />
+        {value && (
+          <CloseButton onClick={onClear} aria-label="검색어 초기화">
+            <CloseIcon src="/images/ic_close.svg" alt="취소" />
+          </CloseButton>
+        )}
       </InputWrapper>
     </SearchBarSection>
   );

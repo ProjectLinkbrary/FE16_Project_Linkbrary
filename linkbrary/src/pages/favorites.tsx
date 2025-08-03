@@ -57,10 +57,13 @@ const defaultPageNumbers: (string | number)[] = ["<", 1, 2, 3, 4, 5, ">"];
 
 interface FavoritesProps {
   list: Link[];
-  onDelete: (id: number) => void;
+  onDeleteRequest: (link: Link) => void;
 }
 
-export default function Favorites({ list = [], onDelete }: FavoritesProps) {
+export default function Favorites({
+  list = [],
+  onDeleteRequest,
+}: FavoritesProps) {
   return (
     <>
       <Header isLoggedIn={true} />
@@ -71,7 +74,16 @@ export default function Favorites({ list = [], onDelete }: FavoritesProps) {
       </FavoritesSectionWrapper>
 
       <FavoriteListWrapper>
-        <ContentList list={list} onDelete={onDelete} />
+        <ContentList
+          list={list}
+          onDeleteRequest={onDeleteRequest}
+          onEdit={(link) => {
+            console.log("즐겨찾기 수정:", link);
+          }}
+          onToggleFavorite={(link) => {
+            console.log("즐겨찾기 토글:", link);
+          }}
+        />
         <Pagination>
           {defaultPageNumbers.map((num) => (
             <button key={String(num)} type="button" disabled>

@@ -9,8 +9,12 @@ const FolderTag = styled.div`
 `;
 
 const FolderTitle = styled.h2`
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 600;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 2rem;
+  }
 `;
 
 const FolderActions = styled.div`
@@ -24,29 +28,39 @@ const IconButton = styled.button`
   cursor: pointer;
 `;
 
-const ShareIcon = styled.img``;
-const EditIcon = styled.img``;
-const TrashIcon = styled.img``;
+const IconItem = styled.img`
+  width: 2rem;
+
+  ${({ theme }) => theme.media.tablet} {
+    width: 2.5rem;
+  }
+`;
 
 interface FolderTopSectionProps {
   folderTitle?: string;
+  onEditFolder?: () => void;
+  onDeleteFolder?: () => void;
+  onShareFolder?: () => void;
 }
 
 export default function FolderTopSection({
   folderTitle,
+  onEditFolder,
+  onDeleteFolder,
+  onShareFolder,
 }: FolderTopSectionProps) {
   return (
     <FolderTag>
       <FolderTitle>{folderTitle ?? "기본 폴더명"}</FolderTitle>
       <FolderActions>
-        <IconButton type="button">
-          <ShareIcon src="/images/ic_share.svg" alt="공유" />
+        <IconButton type="button" onClick={onShareFolder}>
+          <IconItem src="/images/ic_share.svg" alt="공유" />
         </IconButton>
-        <IconButton type="button">
-          <EditIcon src="/images/ic_btn.svg" alt="폴더 수정하기" />
+        <IconButton type="button" onClick={onEditFolder}>
+          <IconItem src="/images/ic_btn.svg" alt="폴더 수정하기" />
         </IconButton>
-        <IconButton type="button">
-          <TrashIcon src="/images/ic_trash.svg" alt="폴더 삭제" />
+        <IconButton type="button" onClick={onDeleteFolder}>
+          <IconItem src="/images/ic_trash.svg" alt="폴더 삭제" />
         </IconButton>
       </FolderActions>
     </FolderTag>

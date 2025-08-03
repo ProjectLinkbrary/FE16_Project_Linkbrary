@@ -1,5 +1,5 @@
 import { instance } from "./instance";
-import { Link } from "./types";
+import { Link, UpdateLinkPayload } from "./types";
 
 // 특정 폴더에 속한 링크 목록 불러오기
 export const fetchLinksFromServer = async (
@@ -14,6 +14,25 @@ export const fetchLinksFromServer = async (
   } catch (error: any) {
     console.error(
       "링크 목록 불러오기 실패:",
+      error.response?.status,
+      error.response?.data,
+      error.message
+    );
+    throw error;
+  }
+};
+
+// ✅ 전체 링크 목록 불러오기
+export const fetchAllLinksFromServer = async (): Promise<Link[]> => {
+  console.log("fetchAllLinksFromServer 호출");
+  try {
+    const res = await instance.get<{ totalCount: number; list: Link[] }>(
+      `/links`
+    );
+    return res.data.list;
+  } catch (error: any) {
+    console.error(
+      "전체 링크 목록 불러오기 실패:",
       error.response?.status,
       error.response?.data,
       error.message
@@ -40,6 +59,21 @@ export const addLink = async ({
   } catch (error: any) {
     console.error(
       "링크 추가 실패:",
+      error.response?.data?.message || error.message
+    );
+    throw error;
+  }
+};
+
+// 링크 수정
+export const updateLink = async (payload: UpdateLinkPayload): Promise<Link> => {
+  const { id, ...data } = payload;
+  try {
+    const res = await instance.put<Link>(`/links/${id}`, data);
+    return res.data;
+  } catch (error: any) {
+    console.error(
+      "링크 수정 실패:",
       error.response?.data?.message || error.message
     );
     throw error;

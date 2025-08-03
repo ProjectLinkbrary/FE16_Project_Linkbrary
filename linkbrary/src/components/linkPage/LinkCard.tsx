@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "../../pages/api/types";
 import { formatDistanceToNow } from "date-fns";
 
@@ -10,6 +10,7 @@ const Card = styled.div`
   flex-direction: column;
   border-radius: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
   width: 100%;
 
@@ -60,7 +61,7 @@ const LinkIcon = styled.img`
   width: 15%;
 `;
 
-const FavoritesIcon = styled.button`
+const FavoritesIcon = styled.button<{ isFavorite: boolean }>`
   position: absolute;
   top: 8px;
   right: 8px;
@@ -68,6 +69,12 @@ const FavoritesIcon = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+
+  svg,
+  img {
+    filter: ${(props) =>
+      props.isFavorite ? "drop-shadow(0 0 3px #FFD700)" : "none"};
+  }
 `;
 
 const CardContent = styled.div`
@@ -107,7 +114,11 @@ const KebabWrapper = styled.div`
 const KebabButton = styled.button`
   background: transparent;
   border: none;
+
   cursor: pointer;
+`;
+const IconImg = styled.img`
+  width: 100%;
 `;
 
 const KebabMenu = styled.ul`
@@ -137,12 +148,67 @@ const KebabMenuItem = styled.li`
 
 interface LinkCardProps {
   link: Link;
-  onDelete: (id: number) => void;
+  onDeleteRequest: (link: Link) => void;
+  onEdit: (link: Link) => void;
+  isMenuOpen: boolean;
+  onToggleMenu: () => void;
+  menuRef: (node: HTMLUListElement | null) => void;
+
+  isFavorite: boolean;
+  onToggleFavorite: (link: Link) => void;
 }
 
-export default function LinkCard({ link, onDelete }: LinkCardProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const { id, imageSource, title, description, createdAt } = link;
+export default function LinkCard({
+  link,
+  onDeleteRequest,
+  onEdit,
+  isMenuOpen,
+  onToggleMenu,
+  menuRef,
+  isFavorite,
+  onToggleFavorite,
+}: LinkCardProps) {
+  const { imageSource, title, description, createdAt } = link;
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const internalMenuRef = useRef<HTMLUListElement | null>(null);
+
+  // menuRef 콜백과 internalMenuRef 연결
+  const combinedMenuRef = (node: HTMLUListElement | null) => {
+    internalMenuRef.current = node;
+    menuRef(node);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        isMenuOpen &&
+        internalMenuRef.current &&
+        !internalMenuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        onToggleMenu();
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen, onToggleMenu]);
+
+  // ESC 누르면 메뉴 닫기
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape" && isMenuOpen) {
+        onToggleMenu();
+        buttonRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isMenuOpen, onToggleMenu]);
 
   // createdAt 기준으로 현재 시점과의 상대 시간을 표시
   // date-fns 라이브러리로 formatDistanceToNow 함수 사용, addSuffix 옵션으로 'ago' 추가
@@ -150,18 +216,31 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
     addSuffix: true,
   });
 
-  const toggleMenu = () => setMenuOpen((prev) => !prev);
-  const onEdit = () => {
-    setMenuOpen(false);
-    alert("수정하기 클릭됨");
+  // 카드 클릭 시 새 탭 열기
+  const handleClick = () => {
+    window.open(link.url, "_blank", "noopener,noreferrer");
   };
-  const handleDelete = () => {
-    setMenuOpen(false);
-    onDelete(link.id);
+
+  // 케밥 메뉴 토글 시 이벤트 버블링 차단
+  const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onToggleMenu();
+  };
+
+  const handleEdit = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.stopPropagation();
+    onToggleMenu();
+    onEdit(link);
+  };
+
+  const handleDelete = (e: React.MouseEvent<HTMLLIElement>) => {
+    e.stopPropagation();
+    onToggleMenu();
+    onDeleteRequest(link);
   };
 
   return (
-    <Card key={id}>
+    <Card onClick={handleClick}>
       <CardThumbnail>
         <ThumbnailImage $hasImageSource={!!imageSource}>
           {imageSource ? (
@@ -176,10 +255,20 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
           )}
         </ThumbnailImage>
 
-        <FavoritesIcon>
+        <FavoritesIcon
+          isFavorite={isFavorite}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(link);
+          }}
+        >
           <Image
-            src="/images/ic_favorites.svg"
-            alt="favorites icon"
+            src={
+              isFavorite
+                ? "/images/ic_bg_favorites.svg"
+                : "/images/ic_favorites.svg"
+            }
+            alt={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
             width={32}
             height={32}
           />
@@ -193,12 +282,22 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
         <span>{new Date(createdAt).toLocaleDateString()}</span>
 
         <KebabWrapper>
-          <KebabButton onClick={toggleMenu} aria-label="옵션 메뉴 열기">
-            <img src="/images/ic_kebab.svg" alt="메뉴 버튼" />
+          <KebabButton
+            ref={buttonRef}
+            aria-haspopup="true"
+            aria-expanded={isMenuOpen}
+            aria-controls="kebab-menu"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleMenu();
+            }}
+            aria-label="옵션 메뉴 열기"
+          >
+            <IconImg src="/images/ic_kebab.svg" alt="메뉴 버튼" />
           </KebabButton>
-          {menuOpen && (
-            <KebabMenu>
-              <KebabMenuItem onClick={onEdit}>수정하기</KebabMenuItem>
+          {isMenuOpen && (
+            <KebabMenu ref={combinedMenuRef}>
+              <KebabMenuItem onClick={handleEdit}>수정하기</KebabMenuItem>
               <KebabMenuItem onClick={handleDelete}>삭제하기</KebabMenuItem>
             </KebabMenu>
           )}

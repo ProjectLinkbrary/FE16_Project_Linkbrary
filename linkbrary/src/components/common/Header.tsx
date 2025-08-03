@@ -83,7 +83,7 @@ export default function Header({ isLoggedIn }: HeaderProps) {
         <NavMenu>
           {isLoggedIn ? (
             <>
-              <FavoriteButton as="a" href="/favorite">
+              <FavoriteButton as="a" href="/favorites">
                 ⭐ 즐겨찾기
               </FavoriteButton>
               <UserInfo>
