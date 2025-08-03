@@ -1,0 +1,51 @@
+// 회원가입 요청 만들기
+POST https://linkbrary-api.vercel.app/16-6/auth/sign-up
+Content-Type: application/json
+
+{
+  "email": "test0001@email.com",
+  "password": "Test0001!",
+  "name": "테스트1"
+}
+
+### 로그인 요청
+POST https://linkbrary-api.vercel.app/16-6/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "test0001@email.com",
+  "password": "Test0001!",
+  "name": "테스트1"
+}
+
+### 내 정보 조회 (토큰 검증용)
+GET https://linkbrary-api.vercel.app/16-6/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
+
+### 폴더 생성
+POST https://linkbrary-api.vercel.app/16-6/folders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
+Content-Type: application/json
+
+{
+  "name": "테스트 폴더"
+}
+
+### 폴더 조회
+GET https://linkbrary-api.vercel.app/16-6/folders/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
+
+{
+  "name": "테스트 폴더"
+}
+
+
+### 폴더 삭제
+DELETE https://linkbrary-api.vercel.app/16-6/folders/1350
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNzc0MDM3LCJleHAiOjE3NTM3ODEyMzd9.go4oWQQw7LY4rasTfHlqn4hV8PcbRnrql5wLtlBXyAw
+
+
+localStorage.setItem(
+  "LinkbraryData",
+  JSON.stringify({ accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjU3OSwiaWF0IjoxNzUzNDkzMTAyLCJleHAiOjE3NTM1MDAzMDJ9.CIXWVrAuGT4yBgSIQuHTEC8JZZ4sbmswFyG40qU3yF8" })
+)
