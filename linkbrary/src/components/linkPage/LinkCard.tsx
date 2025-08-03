@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Link } from "../../pages/api/types";
 import { formatDistanceToNow } from "date-fns";
+import { instance } from "../../pages/api/instance";
 
 const Card = styled.div`
   display: flex;
@@ -138,14 +139,16 @@ const KebabMenuItem = styled.li`
 interface LinkCardProps {
   link: Link;
   onDelete: (id: number) => void;
+  onFavoriteToggle: (id: number, favorite: boolean) => void; // 즐겨찾기 토글 이벤트 전달용 함수
 }
 
-export default function LinkCard({ link, onDelete }: LinkCardProps) {
+export default function LinkCard({ link, onFavoriteToggle }: LinkCardProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(link.favorite); // 즐겨찾기 상태 로컬 관리
+
   const { id, imageSource, title, description, createdAt } = link;
 
   // createdAt 기준으로 현재 시점과의 상대 시간을 표시
-  // date-fns 라이브러리로 formatDistanceToNow 함수 사용, addSuffix 옵션으로 'ago' 추가
   const relativeTime = formatDistanceToNow(new Date(createdAt), {
     addSuffix: true,
   });
@@ -157,7 +160,14 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
   };
   const handleDelete = () => {
     setMenuOpen(false);
-    onDelete(link.id);
+    onFavoriteToggle(id, false);
+  };
+
+  // 즐겨찾기 버튼 클릭 핸들러
+  const handleFavoriteClick = () => {
+    const newFavoriteState = !isFavorite;
+    setIsFavorite(newFavoriteState);
+    onFavoriteToggle(id, newFavoriteState);
   };
 
   return (
@@ -168,20 +178,18 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
             <Img src={imageSource} alt={title} />
           ) : (
             <DefaultThumbnail>
-              <LinkIcon
-                src="/images/ic_default_thumbnail.svg"
-                alt="기본 썸네일"
-              />
+              <LinkIcon src="/images/ic_default_thumbnail.svg" alt="기본 썸네일" />
             </DefaultThumbnail>
           )}
         </ThumbnailImage>
 
-        <FavoritesIcon>
+        <FavoritesIcon onClick={handleFavoriteClick} aria-label="즐겨찾기 토글">
           <Image
             src="/images/ic_favorites.svg"
             alt="favorites icon"
             width={32}
             height={32}
+            style={{ cursor: "pointer" }}
           />
         </FavoritesIcon>
       </CardThumbnail>
@@ -194,12 +202,7 @@ export default function LinkCard({ link, onDelete }: LinkCardProps) {
 
         <KebabWrapper>
           <KebabButton onClick={toggleMenu} aria-label="옵션 메뉴 열기">
-            <Image
-              src="/images/ic_kebab.svg"
-              alt="메뉴 버튼"
-              width={24}
-              height={24}
-            />
+            <Image src="/images/ic_kebab.svg" alt="메뉴 버튼" width={24} height={24} />
           </KebabButton>
           {menuOpen && (
             <KebabMenu>

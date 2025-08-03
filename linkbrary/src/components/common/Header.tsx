@@ -8,6 +8,22 @@ interface HeaderProps {
   isLoggedIn: boolean;
 }
 
+const LoginButton = styled.div`
+  background-color: #2c2c2c;
+  color: #fff;
+  width: 95px;
+  height: 49px;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  backdrop-filter: blur(8px);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  margin-right: 10px;
+`;
+
 const HeaderContainer = styled.header`
   width: 100%;
   position: absolute;
@@ -81,6 +97,9 @@ export default function Header({ isLoggedIn }: HeaderProps) {
       <Nav>
         <Logo />
         <NavMenu>
+   <Link href="/login" passHref>
+    <LoginButton as="div">로그인</LoginButton>
+     </Link>
           {isLoggedIn ? (
             <>
               <FavoriteButton as="a" href="/favorite">
