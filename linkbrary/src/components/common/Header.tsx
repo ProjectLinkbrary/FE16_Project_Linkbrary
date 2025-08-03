@@ -65,17 +65,21 @@ const UserInfo = styled.div`
 `;
 
 const FavoriteButton = styled(SecondaryButton)`
-  margin-right: 10px;
+  margin-right: 15px;
 
   ${({ theme }) => theme.media.tablet} {
-    margin-right: 24px;
+    margin-right: 8px; // 너무 붙지 않게만 최소 간격
+  
+
   }
 `;
 
+// 사용자 아이콘 (로그인 시 오른쪽 상단에 표시됨)
+// background-image 속성은 현재 비활성화됨
 const UserIcon = styled.div`
   width: 20px;
   height: 20px;
-  background-image: url("/images/ic_user.svg");
+  /* background-image: url("/images/ic_user.svg"); */
   background-size: contain;
   background-repeat: no-repeat;
 `;
@@ -97,25 +101,25 @@ export default function Header({ isLoggedIn }: HeaderProps) {
       <Nav>
         <Logo />
         <NavMenu>
-   <Link href="/login" passHref>
-    <LoginButton as="div">로그인</LoginButton>
-     </Link>
-          {isLoggedIn ? (
-            <>
-              <FavoriteButton as="a" href="/favorite">
-                ⭐ 즐겨찾기
-              </FavoriteButton>
-              <UserInfo>
-                <UserIcon />
-                <UserName>이용섭</UserName>
-              </UserInfo>
-            </>
-          ) : (
-            <SecondaryButton as="a" href="/login">
-              로그인
-            </SecondaryButton>
-          )}
-        </NavMenu>
+  {isLoggedIn ? (
+    <>
+      <FavoriteButton as="a" href="/favorite">
+        ⭐ 즐겨찾기
+      </FavoriteButton>
+      <Link href="/login" passHref>
+        <LoginButton as="div">로그인</LoginButton>
+      </Link>
+      <UserInfo>
+        <UserIcon />
+        {/* <UserName>이용섭</UserName> */}
+      </UserInfo>
+    </>
+  ) : (
+    <SecondaryButton as="a" href="/login">
+      로그인
+    </SecondaryButton>
+  )}
+</NavMenu>
       </Nav>
     </HeaderContainer>
   );
