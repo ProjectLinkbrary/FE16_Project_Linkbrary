@@ -1,24 +1,32 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import Image from "next/image";
-import { useState, useEffect } from "react";
 import ContentList from "./ContentList";
 import NoLinks from "./Nolinks";
 import CategoryFilter from "./CategoryFilter";
 import SearchBar from "./SearchBar";
-
+import SearchNoResult from "./SearchNoResult";
 import { Folder, Link } from "../../pages/api/types";
 import FolderTopSection from "./FolderTopSection";
 import LoadingSpinner from "../common/Spinner";
-import FolderModals from "./FolderModals";
-import {
-  addFolder,
-  updateFolder,
-  deleteFolder,
-  fetchFolders,
-} from "../../pages/api/folder";
-const ContentSectionWrapper = styled.section`
-  /* margin: 24px 0; */
+import { useState } from "react";
+
+const ContentSectionWrapper = styled.section``;
+
+const SearchSummary = styled.div`
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #b3b3b3;
+
+  ${({ theme }) => theme.media.tablet} {
+    font-size: 1.5rem;
+  }
+`;
+
+const Highlight = styled.span`
+  color: #1e1e1e;
+  font-weight: 600;
 `;
 
 const CategoryContainer = styled.div``;
@@ -37,19 +45,6 @@ const ContentWrapper = styled.div`
   }
 `;
 
-const Pagination = styled.div`
-  width: 100%;
-  height: 50px;
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-
-  margin: 4rem 0 4rem 0;
-`;
-
-const defaultPageNumbers: Array<string | number> = ["<", 1, 2, 3, 4, 5, ">"];
-
 interface ContentSectionProps {
   list: Link[];
   loading: boolean;
@@ -59,12 +54,11 @@ interface ContentSectionProps {
   folders: Folder[];
   selectedCategoryId: number | null;
   onSelectCategory: (folderId: number) => void;
-
   onAddFolder: () => void;
   onEditFolder: () => void;
   onDeleteFolder: () => void;
   onRefreshFolders: () => void;
-
+  onShareFolder: (folder: Folder) => void;
   onToggleFavorite: (link: Link) => void;
 }
 
@@ -82,76 +76,26 @@ export default function ContentSection({
   onDeleteFolder,
   onRefreshFolders,
   onToggleFavorite,
+  onShareFolder,
 }: ContentSectionProps) {
-  const [openMenuCardId, setOpenMenuCardId] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // 모달 상태 관리
-  const [isAddFolderModalOpen, setIsAddFolderModalOpen] = useState(false);
-  const [isEditFolderModalOpen, setIsEditFolderModalOpen] = useState(false);
-  const [isDeleteFolderModalOpen, setIsDeleteFolderModalOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const filteredList = (list ?? []).filter((link) => {
+    const lowerSearch = searchTerm.toLowerCase();
+    return (
+      link.title?.toLowerCase().includes(lowerSearch) ||
+      link.description?.toLowerCase().includes(lowerSearch) ||
+      link.url?.toLowerCase().includes(lowerSearch)
+    );
+  });
 
-  // 검색 필터링
-  const filteredList = list.filter(
-    (link) =>
-      link.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      link.description.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // 선택된 폴더 정보
   const selectedFolder =
     folders.find((folder) => folder.id === selectedCategoryId) || null;
 
-  // 폴더 추가 핸들러
-  const addFolderHandler = async (name: string) => {
-    try {
-      const newFolder = await addFolder(name);
-      console.log("폴더 추가 성공:", newFolder);
-      setIsAddFolderModalOpen(false);
-      onRefreshFolders();
-      onSelectCategory(newFolder.id);
-    } catch (error) {
-      console.error("폴더 추가 실패:", error);
+  const handleShareFolder = () => {
+    if (selectedFolder) {
+      onShareFolder(selectedFolder);
     }
-  };
-
-  // 폴더 수정 핸들러
-  const editFolderHandler = async (updatedName: string) => {
-    if (!selectedFolder) return;
-    try {
-      const updatedFolder = await updateFolder(selectedFolder.id, updatedName);
-      console.log("폴더 수정 성공:", updatedFolder);
-      setIsEditFolderModalOpen(false);
-      onRefreshFolders(); // 🔥 폴더 이름 변경된 걸 반영
-      onSelectCategory(updatedFolder.id);
-    } catch (error) {
-      console.error("폴더 수정 실패:", error);
-    }
-  };
-
-  // 폴더 삭제 핸들러
-  const deleteFolderHandler = async () => {
-    if (!selectedFolder) return;
-    setIsDeleting(true);
-    try {
-      await deleteFolder(selectedFolder.id);
-      console.log("폴더 삭제 성공");
-      setIsDeleteFolderModalOpen(false);
-      onRefreshFolders(); // 🔥 목록 갱신
-      onSelectCategory(-1); // 전체로 이동
-    } catch (e) {
-      console.error("폴더 삭제 실패:", e);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  const handleEditFolderOpen = () => setIsEditFolderModalOpen(true);
-  const handleDeleteFolderOpen = () => setIsDeleteFolderModalOpen(true);
-
-  const handleToggleMenu = (id: number) => {
-    setOpenMenuCardId((prev) => (prev === id ? null : id));
   };
 
   return (
@@ -161,6 +105,12 @@ export default function ContentSection({
         onChange={(e) => setSearchTerm(e.target.value)}
         onClear={() => setSearchTerm("")}
       />
+
+      {searchTerm && (
+        <SearchSummary>
+          <Highlight>{searchTerm}</Highlight>으로 검색한 결과입니다.
+        </SearchSummary>
+      )}
 
       <CategoryContainer>
         <CategoryFilter
@@ -179,13 +129,15 @@ export default function ContentSection({
             onDeleteFolder={
               selectedCategoryId === -1 ? undefined : onDeleteFolder
             }
-            onShareFolder={() => alert("공유 기능 준비 중")}
+            onShareFolder={handleShareFolder}
           />
         </ContentWrapper>
       )}
 
       {loading ? (
         <LoadingSpinner />
+      ) : searchTerm && filteredList.length === 0 ? (
+        <SearchNoResult />
       ) : filteredList.length > 0 ? (
         <ContentList
           list={filteredList}

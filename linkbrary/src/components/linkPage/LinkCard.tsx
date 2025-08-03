@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "../../pages/api/types";
 import { formatDistanceToNow } from "date-fns";
-import { instance } from "../../pages/api/instance";
 
 const Card = styled.div`
   display: flex;
@@ -75,6 +74,15 @@ const FavoritesIcon = styled.button<{ isFavorite: boolean }>`
   img {
     filter: ${(props) =>
       props.isFavorite ? "drop-shadow(0 0 3px #FFD700)" : "none"};
+  }
+
+  &:focus-visible {
+    outline: 2px solid #ffd700;
+    outline-offset: 2px;
+  }
+  &:active {
+    filter: drop-shadow(0 0 5px #ffd700);
+    transform: scale(0.95);
   }
 `;
 
@@ -149,17 +157,6 @@ const KebabMenuItem = styled.li`
 
 interface LinkCardProps {
   link: Link;
-<<<<<<< HEAD
-  onDelete: (id: number) => void;
-  onFavoriteToggle: (id: number, favorite: boolean) => void; // 즐겨찾기 토글 이벤트 전달용 함수
-}
-
-export default function LinkCard({ link, onFavoriteToggle }: LinkCardProps) {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(link.favorite); // 즐겨찾기 상태 로컬 관리
-
-  const { id, imageSource, title, description, createdAt } = link;
-=======
   onDeleteRequest: (link: Link) => void;
   onEdit: (link: Link) => void;
   isMenuOpen: boolean;
@@ -183,8 +180,8 @@ export default function LinkCard({
   const { imageSource, title, description, createdAt } = link;
   const buttonRef = useRef<HTMLButtonElement>(null);
   const internalMenuRef = useRef<HTMLUListElement | null>(null);
+  const favoriteBtnRef = useRef<HTMLButtonElement>(null);
 
-  // menuRef 콜백과 internalMenuRef 연결
   const combinedMenuRef = (node: HTMLUListElement | null) => {
     internalMenuRef.current = node;
     menuRef(node);
@@ -208,7 +205,6 @@ export default function LinkCard({
     };
   }, [isMenuOpen, onToggleMenu]);
 
-  // ESC 누르면 메뉴 닫기
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape" && isMenuOpen) {
@@ -221,31 +217,15 @@ export default function LinkCard({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isMenuOpen, onToggleMenu]);
->>>>>>> aa8c8bc21b221b84dbed9918b3b9e632aab15d73
 
-  // createdAt 기준으로 현재 시점과의 상대 시간을 표시
   const relativeTime = formatDistanceToNow(new Date(createdAt), {
     addSuffix: true,
   });
 
-  // 카드 클릭 시 새 탭 열기
   const handleClick = () => {
     window.open(link.url, "_blank", "noopener,noreferrer");
   };
-<<<<<<< HEAD
-  const handleDelete = () => {
-    setMenuOpen(false);
-    onFavoriteToggle(id, false);
-  };
 
-  // 즐겨찾기 버튼 클릭 핸들러
-  const handleFavoriteClick = () => {
-    const newFavoriteState = !isFavorite;
-    setIsFavorite(newFavoriteState);
-    onFavoriteToggle(id, newFavoriteState);
-=======
-
-  // 케밥 메뉴 토글 시 이벤트 버블링 차단
   const toggleMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     onToggleMenu();
@@ -261,7 +241,6 @@ export default function LinkCard({
     e.stopPropagation();
     onToggleMenu();
     onDeleteRequest(link);
->>>>>>> aa8c8bc21b221b84dbed9918b3b9e632aab15d73
   };
 
   return (
@@ -272,22 +251,22 @@ export default function LinkCard({
             <Img src={imageSource} alt={title} />
           ) : (
             <DefaultThumbnail>
-              <LinkIcon src="/images/ic_default_thumbnail.svg" alt="기본 썸네일" />
+              <LinkIcon
+                src="/images/ic_default_thumbnail.svg"
+                alt="기본 썸네일"
+              />
             </DefaultThumbnail>
           )}
         </ThumbnailImage>
 
-<<<<<<< HEAD
-        <FavoritesIcon onClick={handleFavoriteClick} aria-label="즐겨찾기 토글">
-=======
         <FavoritesIcon
           isFavorite={isFavorite}
           onClick={(e) => {
             e.stopPropagation();
+            console.log("즐겨찾기 클릭!", link);
             onToggleFavorite(link);
           }}
         >
->>>>>>> aa8c8bc21b221b84dbed9918b3b9e632aab15d73
           <Image
             src={
               isFavorite
@@ -297,7 +276,6 @@ export default function LinkCard({
             alt={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
             width={32}
             height={32}
-            style={{ cursor: "pointer" }}
           />
         </FavoritesIcon>
       </CardThumbnail>
@@ -310,7 +288,12 @@ export default function LinkCard({
 
         <KebabWrapper>
           <KebabButton onClick={toggleMenu} aria-label="옵션 메뉴 열기">
-            <Image src="/images/ic_kebab.svg" alt="메뉴 버튼" width={24} height={24} />
+            <Image
+              src="/images/ic_kebab.svg"
+              alt="메뉴 버튼"
+              width={24}
+              height={24}
+            />
           </KebabButton>
           {isMenuOpen && (
             <KebabMenu ref={combinedMenuRef}>

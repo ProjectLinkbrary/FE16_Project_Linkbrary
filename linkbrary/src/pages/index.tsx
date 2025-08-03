@@ -2,11 +2,11 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Header from "../../components/common/Header";
-import Footer from "../../components/common/Footer";
-import NoLinks from "../../components/linkPage/Nolinks";
-import LoadingSpinner from "../../components/common/Spinner";
-import { fetchFolders } from "../api/folder";
+import Header from "../components/common/Header";
+import Footer from "../components/common/Footer";
+import NoLinks from "../components/linkPage/Nolinks";
+import LoadingSpinner from "../components/common/Spinner";
+import { fetchFolders } from "../pages/api/folder";
 
 const CenterWrapper = styled.div`
   display: flex;

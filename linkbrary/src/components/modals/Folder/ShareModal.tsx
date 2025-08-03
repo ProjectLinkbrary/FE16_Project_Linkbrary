@@ -2,13 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import Image from "next/image";
 
-interface ShareModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  folderName: string;
-  folderUrl: string;
-}
-
 const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -81,6 +74,13 @@ const OptionLabel = styled.span`
   font-size: 13px;
   color: #333;
 `;
+
+interface ShareModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  folderName: string;
+  folderUrl: string;
+}
 
 const ShareModal = ({
   isOpen,
