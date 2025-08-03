@@ -21,3 +21,10 @@ export interface UpdateLinkPayload {
   description?: string;
   folderId?: number;
 }
+
+export interface ToggleFavoritePayload {
+  id: number;
+  isFavorite: boolean;
+  favorite: boolean;
+  folderId?: number;
+}

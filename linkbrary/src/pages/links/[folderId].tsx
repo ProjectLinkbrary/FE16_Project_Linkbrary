@@ -7,7 +7,7 @@ import TopSection from "../../components/linkPage/TopSection";
 import ContentSection from "../../components/linkPage/ContentSection";
 import LinkModals from "../../components/linkPage/LinkModals";
 import FolderModals from "../../components/linkPage/FolderModals";
-
+import { fetchFavoriteLinksFromServer, toggleFavorite } from "../api/link";
 import {
   fetchLinksFromServer,
   deleteLink,
@@ -251,12 +251,45 @@ export default function FolderLinksPage() {
   };
 
   // 즐겨찾기 토글 핸들러
-  const handleToggleFavorite = (link: Link) => {
-    setLinks((prev) =>
-      prev.map((l) =>
-        l.id === link.id ? { ...l, isFavorite: !l.isFavorite } : l
-      )
-    );
+  const handleToggleFavorite = async (link: Link) => {
+    try {
+      // UI에서 바로 즐겨찾기 상태 토글 (optimistic update)
+      setLinks((prev) =>
+        prev.map((l) =>
+          l.id === link.id ? { ...l, isFavorite: !l.isFavorite } : l
+        )
+      );
+
+      // 서버에 변경 요청 보내고 변경된 링크 정보 받기
+      const updatedLink = await toggleFavorite({
+        id: link.id,
+        favorite: !link.isFavorite,
+        folderId: link.folderId,
+      });
+
+      // 서버가 제대로 변경된 링크를 반환했으면 상태 업데이트
+      if (updatedLink && updatedLink.id) {
+        setLinks((prev) =>
+          prev.map((l) => (l.id === updatedLink.id ? updatedLink : l))
+        );
+      } else {
+        // 반환값이 이상하면 원래 상태로 롤백
+        setLinks((prev) =>
+          prev.map((l) =>
+            l.id === link.id ? { ...l, isFavorite: link.isFavorite } : l
+          )
+        );
+      }
+    } catch (error) {
+      console.error("즐겨찾기 토글 실패:", error);
+
+      // 실패 시 원래 상태로 롤백
+      setLinks((prev) =>
+        prev.map((l) =>
+          l.id === link.id ? { ...l, isFavorite: link.isFavorite } : l
+        )
+      );
+    }
   };
 
   // 페이지 첫 로딩 시 폴더 및 전체 링크 로드
@@ -276,7 +309,7 @@ export default function FolderLinksPage() {
         isModalOpen={isAddLinkModalOpen}
         selectedCategoryId={selectedFolderId}
         onSelectCategory={handleSelectCategory}
-        onAddFolder={openAddFolderModal} // 모달 열기만 처리
+        onAddFolder={openAddFolderModal}
       />
 
       <PageContainer>

@@ -34,6 +34,8 @@ interface ContentListProps {
   onDeleteRequest: (link: Link) => void;
   onEdit: (link: Link) => void;
   onToggleFavorite: (link: Link) => void;
+  loading?: boolean;
+  error?: string | null;
 }
 
 export default function ContentList({
@@ -41,6 +43,8 @@ export default function ContentList({
   onDeleteRequest,
   onEdit,
   onToggleFavorite,
+  loading = false,
+  error = null,
 }: ContentListProps) {
   const [openMenuCardId, setOpenMenuCardId] = useState<number | null>(null);
   const kebabRefs = useRef<Record<number, HTMLUListElement | null>>({});
