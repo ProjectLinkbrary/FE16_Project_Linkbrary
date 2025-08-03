@@ -22,7 +22,7 @@ export const fetchLinksFromServer = async (
   }
 };
 
-// ✅ 전체 링크 목록 불러오기
+// 전체 링크 목록 불러오기
 export const fetchAllLinksFromServer = async (): Promise<Link[]> => {
   console.log("fetchAllLinksFromServer 호출");
   try {
