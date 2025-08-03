@@ -5,8 +5,13 @@ import LoginFormLayout from "../components/membership/LoginFormLayout";
 import MembershipInput from "../components/membership/MembershipInput";
 import { theme } from "../styles/theme";
 import { instance } from "../pages/api/instance";
+<<<<<<< HEAD
 import { saveToStorage } from "../utils/storage";
 import Image from "next/image";
+=======
+import { saveToStorage } from "../utils/storage"; // 토큰 저장 함수
+import KakaoLoginButton from "../components/signupPage/KakaoLogin";
+>>>>>>> 2f5adc4b7baa2bfcecff82c92236ac8e06cb7c06
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -98,12 +103,16 @@ const LoginPage = () => {
         placeholder="비밀번호를 입력해주세요"
       />
       <LoginButton type="submit">로그인</LoginButton>
+<<<<<<< HEAD
 
       {/* ✅ 소셜 로그인 버튼 */}
       <SocialLoginButton type="button">
         <SocialLoginText>소셜 로그인</SocialLoginText>
         <Image src="/images/bt_kakao.svg" alt="카카오 로그인" width={42} height={42} />
       </SocialLoginButton>
+=======
+      <KakaoLoginButton />
+>>>>>>> 2f5adc4b7baa2bfcecff82c92236ac8e06cb7c06
     </LoginFormLayout>
   );
 };

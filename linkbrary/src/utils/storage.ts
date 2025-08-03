@@ -7,6 +7,7 @@ const STORAGE_KEY = "LinkbraryData";
 
 interface StorageData {
   accessToken?: string;
+  nameId?: string;
 }
 
 export function saveToStorage(data: StorageData) {

@@ -56,7 +56,11 @@ const MembershipInput: React.FC<MembershipInputProps> = ({
         {isPasswordField && hasToggle && (
           <ToggleButton type="button" onClick={handleToggle}>
             <Image
-              src={showPassword ? "/images/ic_eyes_on.svg" : "/images/ic_eyes_off.svg"}
+              src={
+                showPassword
+                  ? "/images/ic_eyes_on.svg"
+                  : "/images/ic_eyes_off.svg"
+              }
               alt={showPassword ? "비밀번호 숨기기" : "비밀번호 보이기"}
               width={24}
               height={24}
@@ -102,14 +106,16 @@ const StyledInput = styled.input<{ hasError?: boolean }>`
   width: 100%;
   height: 56px;
   padding: 0 100px 0 16px;
-  border: 1px solid ${(props) => (props.hasError ? "#ff3235" : theme.color.gray60)};
+  border: 1px solid
+    ${(props) => (props.hasError ? "#ff3235" : theme.color.gray60)};
   border-radius: 8px;
   background-color: ${theme.color.gray80};
   color: ${theme.color.white};
   font-size: ${theme.fontSize.fz16};
 
   &:focus {
-    border-color: ${(props) => (props.hasError ? "#ff3235" : theme.color.white)};
+    border-color: ${(props) =>
+      props.hasError ? "#ff3235" : theme.color.white};
     outline: none;
   }
 
