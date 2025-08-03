@@ -176,7 +176,7 @@ const LoginForm = () => {
             hasError={!!passwordError}
             errorMessage={passwordError}
             required
-            hasToggle // 비밀번호 토글 버튼 활성화
+            hasToggle
           />
 
           <SubmitButton type="submit">로그인</SubmitButton>

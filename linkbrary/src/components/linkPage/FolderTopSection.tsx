@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
+import Image from "next/image";
 
 const FolderTag = styled.div`
   width: 100%;
@@ -19,6 +20,7 @@ const FolderTitle = styled.h2`
 
 const FolderActions = styled.div`
   display: flex;
+  gap: 8px;
 `;
 
 const IconButton = styled.button`
@@ -26,6 +28,8 @@ const IconButton = styled.button`
   border: none;
   padding: 4px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const IconItem = styled.img`
