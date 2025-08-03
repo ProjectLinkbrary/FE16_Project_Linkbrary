@@ -8,12 +8,12 @@ import Footer from "../../components/common/Footer";
 import TopSection from "../../components/linkPage/TopSection";
 import ContentSection from "../../components/linkPage/ContentSection";
 import AddLinkModal from "../../components/linkPage/AddlinkModal";
+import ShareModal from "../../components/linkPage/ShareModal";
 
 import { fetchLinksFromServer, deleteLink } from "../api/link";
 import { Link } from "../api/types";
 import { fetchFolders } from "../api/folder";
 import { Folder } from "../api/types";
-
 
 const PageContainer = styled.div`
   width: 100%;
@@ -40,7 +40,8 @@ export default function FolderLinksPage() {
   const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
   const [folders, setFolders] = useState<Folder[]>([]);
-  const [selectedFolderId, setSelectedFolderId] = useState(0);
+
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadFolders() {
@@ -56,12 +57,13 @@ export default function FolderLinksPage() {
   }, []);
 
   useEffect(() => {
-    if (!folderId) return;
+    if (!router.isReady) return; // router.query가 준비될 때까지 기다립니다.
 
     async function loadLinks() {
       try {
         setLoading(true);
-        const list = await fetchLinksFromServer(Number(folderId));
+        const currentFolderId = folderId ? Number(folderId) : 0;
+        const list = await fetchLinksFromServer(currentFolderId);
         setLinks(list);
         setError(null);
       } catch (err) {
@@ -72,16 +74,24 @@ export default function FolderLinksPage() {
       }
     }
     loadLinks();
-  }, [folderId]);
+  }, [router.isReady, folderId]);
 
   const handleRequestAddLink = (url: string) => {
     setPendingUrl(url);
     setIsAddLinkModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeAddLinkModal = () => {
     setPendingUrl(null);
     setIsAddLinkModalOpen(false);
+  };
+
+  const handleShareClick = () => {
+    setIsShareModalOpen(true);
+  };
+
+  const closeShareModal = () => {
+    setIsShareModalOpen(false);
   };
 
   const handleDelete = async (id: number) => {
@@ -95,6 +105,11 @@ export default function FolderLinksPage() {
     }
   };
 
+  // 현재 선택된 폴더 정보를 찾습니다.
+  const currentFolder = folders.find(
+    (f) => f.id === (folderId ? Number(folderId) : 0)
+  );
+
   return (
     <>
       <Header isLoggedIn={true} />
@@ -104,22 +119,33 @@ export default function FolderLinksPage() {
           list={links}
           loading={loading}
           onDelete={handleDelete}
-          folderTitle="전체"
+          folderTitle={currentFolder?.name ?? "폴더"}
           folders={folders}
+          onShareClick={handleShareClick}
         />
       </PageContainer>
       <Footer />
 
-      {isAddLinkModalOpen && pendingUrl && typeof folderId === "string" && (
+      {isAddLinkModalOpen && pendingUrl && (
         <AddLinkModal
-          folderId={Number(folderId) ?? 0}
+          folderId={folderId ? Number(folderId) : 0}
           url={pendingUrl}
           folders={folders}
-          onClose={closeModal}
+          onClose={closeAddLinkModal}
           onSuccess={() => {
-            closeModal();
-            fetchLinksFromServer(Number(folderId)).then(setLinks);
+            closeAddLinkModal();
+            const currentFolderId = folderId ? Number(folderId) : 0;
+            fetchLinksFromServer(currentFolderId).then(setLinks);
           }}
+        />
+      )}
+
+      {currentFolder && (
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={closeShareModal}
+          folderName={currentFolder.name}
+          folderUrl={typeof window !== "undefined" ? window.location.href : ""}
         />
       )}
     </>
