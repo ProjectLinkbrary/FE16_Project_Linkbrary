@@ -42,6 +42,32 @@ const NolinkImg = styled.img`
 
 interface ContentListProps {
   list: Link[];
+<<<<<<< HEAD
+  onDelete: (id: number) => void;
+  onFavoriteToggle?: (id: number) => void; // 물음표 추가
+}
+
+export default function ContentList({ list, onDelete, onFavoriteToggle }: ContentListProps) {
+  return (
+   <ContentListSection>
+  <CardList>
+    {list.length > 0 ? (
+      list.map((link) => (
+        <LinkCard
+          key={link.id}
+          link={link}
+          onDelete={onDelete}
+          onFavoriteToggle={onFavoriteToggle ?? (() => {})} // 이벤트 꼭 전달
+        />
+      ))
+    ) : (
+      <NoFavortiesTitle>등록된 즐겨찾기가 없습니다.</NoFavortiesTitle>
+    )}
+  </CardList>
+  </ContentListSection>
+)
+};
+=======
   onDeleteRequest: (link: Link) => void;
   onEdit: (link: Link) => void;
   onToggleFavorite: (link: Link) => void;
@@ -109,3 +135,4 @@ export default function ContentList({
     </ContentListSection>
   );
 }
+>>>>>>> aa8c8bc21b221b84dbed9918b3b9e632aab15d73

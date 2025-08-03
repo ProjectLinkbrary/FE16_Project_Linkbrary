@@ -1,12 +1,18 @@
 /** @jsxImportSource @emotion/react */
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import ContentList from "../components/linkPage/ContentList";
+<<<<<<< HEAD
+import { instance } from "../pages/api/instance";
+import { Link } from "../pages/api/types";
+=======
 
 import {
   toggleFavorite,
   fetchFavoriteLinksFromServer,
   deleteLink,
 } from "../pages/api/link";
+>>>>>>> aa8c8bc21b221b84dbed9918b3b9e632aab15d73
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import { Link } from "../pages/api/types";
@@ -59,6 +65,43 @@ const Pagination = styled.div`
 
 const defaultPageNumbers: (string | number)[] = ["<", 1, 2, 3, 4, 5, ">"];
 
+<<<<<<< HEAD
+interface FavoritesProps {
+  initialList: Link[]; // 처음에 서버에서 받은 즐겨찾기 리스트 초기값
+  onFavoriteToggle: (id: number) => void; // 즐겨찾기 토글 이벤트 전달용 함수
+}
+
+export default function Favorites({ initialList, onFavoriteToggle }: FavoritesProps) {
+  const [favoriteList, setFavoriteList] = useState<Link[]>(initialList);
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+
+  // 페이지 변경 핸들러
+  const onPageClick = (pageNum: number) => {
+    setPage(pageNum);
+  };
+
+ const fetchFavorites = async () => {
+  try {
+    const res = await instance.get<Link[]>("/favorites", {
+      params: { page, pageSize },
+    });
+    setFavoriteList(res.data);
+  } catch (error) {
+    console.error("즐겨찾기 리스트 조회 실패", error);
+  }
+};
+
+  const handleFavoriteToggle = async (id: number) => {
+    try {
+      await instance.post("/favorite", { id });
+      setFavoriteList((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("즐겨찾기 토글 실패", error);
+    }
+  };
+
+=======
 export default function Favorites() {
   const [links, setLinks] = useState<Link[]>([]);
   const [loading, setLoading] = useState(false);
@@ -149,6 +192,7 @@ export default function Favorites() {
     setEditingLink(null);
   };
 
+>>>>>>> aa8c8bc21b221b84dbed9918b3b9e632aab15d73
   return (
     <>
       <Header isLoggedIn={true} />
@@ -160,6 +204,14 @@ export default function Favorites() {
 
       <FavoriteListWrapper>
         <ContentList
+<<<<<<< HEAD
+          list={favoriteList}
+          onDelete={(id) => {
+            handleFavoriteToggle(id);
+            onFavoriteToggle(id);
+          }}
+          onFavoriteToggle={handleFavoriteToggle}
+=======
           list={links}
           onToggleFavorite={handleToggleFavorite}
           onDeleteRequest={handleDeleteRequest}
@@ -180,14 +232,21 @@ export default function Favorites() {
           onCloseDeleteModal={closeDeleteModal}
           onConfirmDelete={handleDeleteConfirm}
           deleteLoading={deleteLoading}
+>>>>>>> aa8c8bc21b221b84dbed9918b3b9e632aab15d73
         />
 
         <Pagination>
-          {defaultPageNumbers.map((num) => (
-            <button key={String(num)} type="button" disabled>
-              {num}
-            </button>
-          ))}
+          {defaultPageNumbers.map((num) =>
+            typeof num === "number" ? (
+              <button key={num} onClick={() => onPageClick(num)}>
+                {num}
+              </button>
+            ) : (
+              <button key={num} disabled>
+                {num}
+              </button>
+            )
+          )}
         </Pagination>
       </FavoriteListWrapper>
 

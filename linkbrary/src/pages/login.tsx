@@ -1,3 +1,4 @@
+/** @jsxImportSource @emotion/react */
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import LoginFormLayout from "../components/membership/LoginFormLayout";
@@ -93,7 +94,7 @@ const LoginPage = () => {
         onBlur={handlePasswordBlur}
         hasError={!!passwordError}
         errorMessage={passwordError}
-        hasToggle={true} // 여기에 true 넣어야 눈 아이콘 나옵니다.
+        hasToggle={true}
         placeholder="비밀번호를 입력해주세요"
       />
       <LoginButton type="submit">로그인</LoginButton>

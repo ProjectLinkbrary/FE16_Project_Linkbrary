@@ -156,3 +156,14 @@ const ErrorMessage = styled.p`
   align-self: flex-start;
   padding: 0 16px;
 `;
+
+
+const SocialLoginText = styled.span`
+  font-family: "Pretendard", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 140%;
+  letter-spacing: 0%;
+  color: white;
+`;
