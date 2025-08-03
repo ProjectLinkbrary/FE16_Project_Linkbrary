@@ -127,6 +127,22 @@ export default function Header({}: HeaderProps) {
       <Nav>
         <Logo />
         <NavMenu>
+          {isLoggedIn ? (
+            <>
+              <FavoriteButton as="a" href="/favorites">
+                ⭐ 즐겨찾기
+              </FavoriteButton>
+              <UserInfo>
+                <UserIcon />
+                <UserName>{nameId}</UserName>
+              </UserInfo>
+            </>
+          ) : (
+            <SecondaryButton as="a" href="/login">
+              로그인
+            </SecondaryButton>
+          )}
+        </NavMenu>
   {isLoggedIn ? (
     <>
       <FavoriteButton as="a" href="/favorite">

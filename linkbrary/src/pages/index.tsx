@@ -1,35 +1,55 @@
-import Link from "next/link";
-import Footer from "../components/common/Footer";
-import Header from "../components/common/Header";
-import MainVisualWrapper from "../components/landingPage/MainVisualSection";
-import LandingContent from "../components/landingPage/LandingContent";
+/** @jsxImportSource @emotion/react */
+import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import Header from "../../components/common/Header";
+import Footer from "../../components/common/Footer";
+import NoLinks from "../../components/linkPage/Nolinks";
+import LoadingSpinner from "../../components/common/Spinner";
+import { fetchFolders } from "../api/folder";
 
-export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const CenterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+export default function LinksHome() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasFolders, setHasFolders] = useState(false);
 
   useEffect(() => {
-    // 클라이언트에서만 localStorage 접근 가능
-    if (typeof window !== "undefined") {
-      const data = localStorage.getItem("LinkbraryData");
-      if (data) {
-        try {
-          const parsed = JSON.parse(data);
-          if (parsed.accessToken) {
-            setIsLoggedIn(true);
-          }
-        } catch (err) {
-          console.error("❌ localStorage 데이터 파싱 실패:", err);
+    async function checkFolders() {
+      try {
+        const folders = await fetchFolders();
+        if (folders.length > 0) {
+          router.replace(`/links/${folders[0].id}`);
+        } else {
+          setHasFolders(false);
         }
+      } catch (error) {
+        setHasFolders(false);
+      } finally {
+        setIsLoading(false);
       }
     }
-  }, []);
+    checkFolders();
+  }, [router]);
+
+  if (isLoading) {
+    return (
+      <CenterWrapper>
+        <LoadingSpinner />
+      </CenterWrapper>
+    );
+  }
+
   return (
     <>
-      <Header isLoggedIn={isLoggedIn} />
-      <MainVisualWrapper />
-      <LandingContent />
+      <Header isLoggedIn />
+      {!hasFolders && <NoLinks />}
       <Footer />
     </>
   );

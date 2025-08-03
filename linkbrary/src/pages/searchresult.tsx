@@ -10,7 +10,8 @@ import TopSection from "../components/linkPage/TopSection";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import SearchNoResult from "../components/linkPage/SearchNoResult";
-import { Folder } from "./api/types";
+import { Folder, Link } from "./api/types";
+import { useState } from "react";
 
 const PageWrapper = styled.div`
   width: 100%;
@@ -69,68 +70,92 @@ type LinkItem = {
 };
 
 type Props = {
-  list: LinkItem[];
+  list: Link[];
+  folders: Folder[];
 };
-const dummyFolders: Folder[] = [
-  { id: 0, name: "전체", count: 0 },
-  { id: 1, name: "유튜브", count: 0 },
-  { id: 2, name: "코딩 팁", count: 0 },
-];
+export default function SearchResult({ list, folders }: Props) {
+  const [searchTerm, setSearchTerm] = useState("");
 
-export default function SearchResult({ list }: Props) {
-  const dummyList: LinkItem[] = [];
+  const handleClear = () => setSearchTerm("");
+
+  // 안전하게 필터링
+  const filteredList = (list ?? []).filter(
+    (link) =>
+      link.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      link.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  console.log("searchTerm:", searchTerm);
+  console.log("list length:", list?.length ?? 0);
+  console.log("filteredList length:", filteredList.length);
 
   return (
-    <PageWrapper>
-      <Header isLoggedIn={false} />
-      <TopSection onRequestAddLink={(url) => console.log(url)} />
+  <PageWrapper>
+    <Header isLoggedIn={false} />
+    <TopSection
+      onRequestAddLink={(url) => console.log(url)}
+      folders={folders}
+      selectedCategoryId={0}
+      onSelectCategory={(id) => console.log("선택된 폴더 ID:", id)}
+      onAddFolder={() => console.log("폴더 추가")}
+      isModalOpen={false}
+    />
 
-      <ContentListWrapper>
-        <SearchBar />
+    <ContentListWrapper>
+      <SearchBar
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onClear={handleClear}
+      />
 
-        <SearchSummary>코드잇으로 검색한 결과입니다.</SearchSummary>
+      <SearchSummary>코드잇으로 검색한 결과입니다.</SearchSummary>
 
-        <CategoryFilter
-          folders={dummyFolders}
-          selectedCategoryId={0} // "전체" 선택
-          onSelectCategory={(id) => console.log("선택된 폴더 ID:", id)}
-          onAddFolder={() => console.log("폴더 추가")}
+      <CategoryFilter
+        folders={folders}
+        selectedCategoryId={0}
+        onSelectCategory={(id) => console.log("선택된 폴더 ID:", id)}
+        onAddFolder={() => console.log("폴더 추가")}
+      />
+
+      <ContentWrapper>
+        <FolderTag>
+          <FolderTitle>전체</FolderTitle>
+          <FolderActions>
+            <IconButton type="button">
+              <Image
+                src="./images/ic_share.svg"
+                alt="공유"
+                width={30}
+                height={30}
+              />
+            </IconButton>
+            <IconButton type="button">
+              <Image
+                src="/images/ic_btn.svg"
+                alt="폴더 수정하기"
+                width={30}
+                height={30}
+              />
+            </IconButton>
+            <IconButton type="button">
+              <TrashIcon src="/images/ic_trash.svg" alt="폴더 삭제" />
+            </IconButton>
+          </FolderActions>
+        </FolderTag>
+      </ContentWrapper>
+
+      {filteredList.length > 0 ? (
+        <ContentList
+          list={filteredList}
+          onDeleteRequest={(link) => console.log("삭제:", link)}
+          onEdit={(link) => console.log("수정:", link)}
+          onToggleFavorite={(link) => console.log("즐겨찾기 토글:", link)}
         />
-        <ContentWrapper>
-          <FolderTag>
-            <FolderTitle>전체</FolderTitle>
-            <FolderActions>
-              <IconButton type="button">
-                <Image
-                  src="./images/ic_share.svg"
-                  alt="공유"
-                  width={30}
-                  height={30}
-                />
-              </IconButton>
-              <IconButton type="button">
-                <Image
-                  src="/images/ic_btn.svg"
-                  alt="폴더 수정하기"
-                  width={30}
-                  height={30}
-                />
-              </IconButton>
-              <IconButton type="button">
-                <TrashIcon src="/images/ic_trash.svg" alt="폴더 삭제" />
-              </IconButton>
-            </FolderActions>
-          </FolderTag>
-        </ContentWrapper>
+      ) : (
+        <SearchNoResult />
+      )}
+    </ContentListWrapper>
 
-        {dummyList.length > 0 ? (
-          <ContentList list={[]} onDelete={(id) => console.log("삭제:", id)} />
-        ) : (
-          <SearchNoResult />
-        )}
-      </ContentListWrapper>
-
-      <Footer />
-    </PageWrapper>
-  );
+    <Footer />
+  </PageWrapper>
+);
 }

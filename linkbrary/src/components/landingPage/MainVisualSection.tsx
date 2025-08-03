@@ -3,9 +3,7 @@ import styled from "@emotion/styled";
 import Image from "next/image";
 import { PrimaryButton } from "../common/Button";
 import { useRouter } from "next/router";
-
-import { fetchFolders, addFolder } from "../../pages/api/folder";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const MainVisualWrapper = styled.div`
   width: 100%;
@@ -66,31 +64,28 @@ const MainVisual = styled.div`
     }
   }
 `;
+type MainVisualSectionProps = {
+  onAddLink: () => void;
+  loading: boolean;
+};
 
-export default function MainVisualSection() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
-  const handleAddLink = () => {
-    setLoading(true);
-    router.push("/links");
-  };
-
+export default function MainVisualSection({
+  onAddLink,
+  loading,
+}: MainVisualSectionProps) {
   return (
-    <>
-      <MainVisualWrapper>
-        <MainVisual>
-          <h1>
-            <strong>세상의 모든 정보</strong>를 <br />
-            쉽게 저장하고
-            <span></span>
-            관리해 보세요
-          </h1>
-          <PrimaryButton onClick={handleAddLink} disabled={loading}>
-            링크 추가하기
-          </PrimaryButton>
-        </MainVisual>
-      </MainVisualWrapper>
-    </>
+    <MainVisualWrapper>
+      <MainVisual>
+        <h1>
+          <strong>세상의 모든 정보</strong>를 <br />
+          쉽게 저장하고
+          <span></span>
+          관리해 보세요
+        </h1>
+        <PrimaryButton onClick={onAddLink} disabled={loading}>
+          링크 추가하기
+        </PrimaryButton>
+      </MainVisual>
+    </MainVisualWrapper>
   );
 }
