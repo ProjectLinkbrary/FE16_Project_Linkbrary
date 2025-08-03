@@ -154,7 +154,6 @@ interface LinkCardProps {
   onToggleMenu: () => void;
   menuRef: (node: HTMLUListElement | null) => void;
 
-  isFavorite: boolean;
   onToggleFavorite: (link: Link) => void;
 }
 
@@ -165,7 +164,6 @@ export default function LinkCard({
   isMenuOpen,
   onToggleMenu,
   menuRef,
-  isFavorite,
   onToggleFavorite,
 }: LinkCardProps) {
   const { imageSource, title, description, createdAt } = link;
@@ -256,19 +254,20 @@ export default function LinkCard({
         </ThumbnailImage>
 
         <FavoritesIcon
-          isFavorite={isFavorite}
+          isFavorite={link.isFavorite}
           onClick={(e) => {
+            console.log("즐겨찾기 토글 요청:", link.id);
             e.stopPropagation();
             onToggleFavorite(link);
           }}
         >
           <Image
             src={
-              isFavorite
+              link.isFavorite
                 ? "/images/ic_bg_favorites.svg"
                 : "/images/ic_favorites.svg"
             }
-            alt={isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
+            alt={link.isFavorite ? "즐겨찾기 해제" : "즐겨찾기 추가"}
             width={32}
             height={32}
           />

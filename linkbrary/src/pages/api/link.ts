@@ -92,3 +92,30 @@ export const deleteLink = async (linkId: number): Promise<void> => {
     throw error;
   }
 };
+
+// 즐겨찾기 토글
+export const toggleFavorite = async (
+  linkId: number,
+  favorite: boolean
+): Promise<void> => {
+  try {
+    await instance.put(`/links/${linkId}/favorite`, { favorite });
+  } catch (error: any) {
+    console.error(
+      "즐겨찾기 토글 실패:",
+      error.response?.data?.message || error.message
+    );
+    throw error;
+  }
+};
+
+// 즐겨찾기된 링크만 불러오기
+export const fetchFavoriteLinks = async (): Promise<{ list: Link[] }> => {
+  try {
+    const res = await instance.get<{ list: Link[] }>("/links?favorite=true");
+    return res.data;
+  } catch (error: any) {
+    console.error("즐겨찾기 목록 불러오기 실패:", error);
+    throw error;
+  }
+};

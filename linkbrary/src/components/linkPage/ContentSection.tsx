@@ -56,16 +56,18 @@ interface ContentSectionProps {
   folderTitle?: string;
   onDelete: (link: Link) => void;
   onEdit: (link: Link) => void;
+  onToggleFavorite: (link: Link) => void;
+
   folders: Folder[];
   selectedCategoryId: number | null;
   onSelectCategory: (folderId: number) => void;
-
   onAddFolder: () => void;
   onEditFolder: () => void;
   onDeleteFolder: () => void;
   onRefreshFolders: () => void;
 
-  onToggleFavorite: (link: Link) => void;
+  kebabMenuOpenId: string | null;
+  toggleKebabMenu: (linkId: string) => void;
 }
 
 export default function ContentSection({
@@ -82,6 +84,8 @@ export default function ContentSection({
   onDeleteFolder,
   onRefreshFolders,
   onToggleFavorite,
+  kebabMenuOpenId,
+  toggleKebabMenu,
 }: ContentSectionProps) {
   const [openMenuCardId, setOpenMenuCardId] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");

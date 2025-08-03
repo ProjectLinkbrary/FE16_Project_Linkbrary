@@ -22,11 +22,22 @@ const CardList = styled.div`
   }
 `;
 
-const NoFavortiesTitle = styled.h1`
+const NoFavortiesTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   width: 100%;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 8rem 0;
+  padding: 2rem 0 8rem 0;
+
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+`;
+const Images = styled.img`
+  width: 45%;
 `;
 
 interface ContentListProps {
@@ -73,7 +84,6 @@ export default function ContentList({
             <LinkCard
               key={link.id}
               link={link}
-              isFavorite={link.isFavorite}
               onDeleteRequest={onDeleteRequest}
               onEdit={onEdit}
               isMenuOpen={openMenuCardId === link.id}
@@ -83,7 +93,10 @@ export default function ContentList({
             />
           ))
         ) : (
-          <NoFavortiesTitle>등록된 즐겨찾기가 없습니다.</NoFavortiesTitle>
+          <NoFavortiesTitle>
+            <Images src="/images/nolink.png" alt="비어있음" />
+            <h2>등록된 즐겨찾기가 없습니다.</h2>
+          </NoFavortiesTitle>
         )}
       </CardList>
     </ContentListSection>
