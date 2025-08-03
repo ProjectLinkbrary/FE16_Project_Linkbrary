@@ -5,13 +5,8 @@ import LoginFormLayout from "../components/membership/LoginFormLayout";
 import MembershipInput from "../components/membership/MembershipInput";
 import { theme } from "../styles/theme";
 import { instance } from "../pages/api/instance";
-<<<<<<< HEAD
-import { saveToStorage } from "../utils/storage";
-import Image from "next/image";
-=======
 import { saveToStorage } from "../utils/storage"; // 토큰 저장 함수
 import KakaoLoginButton from "../components/signupPage/KakaoLogin";
->>>>>>> 2f5adc4b7baa2bfcecff82c92236ac8e06cb7c06
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -103,19 +98,12 @@ const LoginPage = () => {
         placeholder="비밀번호를 입력해주세요"
       />
       <LoginButton type="submit">로그인</LoginButton>
-<<<<<<< HEAD
-
-      {/* ✅ 소셜 로그인 버튼 */}
-      <SocialLoginButton type="button">
-        <SocialLoginText>소셜 로그인</SocialLoginText>
-        <Image src="/images/bt_kakao.svg" alt="카카오 로그인" width={42} height={42} />
-      </SocialLoginButton>
-=======
       <KakaoLoginButton />
->>>>>>> 2f5adc4b7baa2bfcecff82c92236ac8e06cb7c06
     </LoginFormLayout>
   );
 };
+
+export default LoginPage;
 
 const LoginButton = styled.button`
   width: 100%;
@@ -135,31 +123,3 @@ const LoginButton = styled.button`
     cursor: not-allowed;
   }
 `;
-
-/* ✅ 소셜 로그인 버튼 스타일 */
-const SocialLoginButton = styled.button`
-  width: 400px;
-  height: 66px;
-  background-color: rgba(30, 30, 30, 0.8);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  margin-top: 20px;
-`;
-
-/* ✅ 텍스트 스타일 따로 */
-const SocialLoginText = styled.span`
-  font-family: "Pretendard", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 14px;
-  line-height: 140%;
-  letter-spacing: 0%;
-  color: white;
-`;
-
-export default LoginPage;
