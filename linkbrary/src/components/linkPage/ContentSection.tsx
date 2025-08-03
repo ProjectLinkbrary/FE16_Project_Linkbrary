@@ -50,6 +50,7 @@ interface ContentSectionProps {
   folderTitle?: string;
   onDelete: (id: number) => void;
   folders: Folder[];
+  onShareClick: () => void;
 }
 export default function ContentSection({
   list,
@@ -57,6 +58,7 @@ export default function ContentSection({
   folderTitle,
   onDelete,
   folders,
+  onShareClick,
 }: ContentSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
@@ -80,7 +82,10 @@ export default function ContentSection({
           />
 
           <ContentWrapper>
-            <FolderTopSection folderTitle={folderTitle} />
+            <FolderTopSection
+              folderTitle={folderTitle}
+              onShareClick={onShareClick}
+            />
           </ContentWrapper>
 
           <ContentList list={list} onDelete={onDelete} />
