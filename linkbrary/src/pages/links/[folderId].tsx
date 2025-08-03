@@ -93,7 +93,15 @@ export default function FolderLinksPage() {
     setFolderOperationLoading(true);
     try {
       await addFolder(trimmedName);
-      await refreshFolders();
+      const updatedFolders = await fetchFolders();
+      setFolders(updatedFolders);
+
+      const newFolder = updatedFolders.find((f) => f.name === trimmedName);
+      if (newFolder) {
+        setSelectedFolderId(newFolder.id);
+        await handleSelectCategory(newFolder.id);
+      }
+
       setIsAddFolderModalOpen(false);
     } catch (err) {
       console.error(err);
@@ -113,10 +121,11 @@ export default function FolderLinksPage() {
   // 폴더 수정 처리 (중복 체크 포함)
   const handleEditFolder = async (newName: string) => {
     if (!editingFolder) return;
+
     const trimmedName = newName.trim();
     if (!trimmedName) return;
 
-    // 중복 폴더명 체크 (자기 자신 제외)
+    // 중복 폴더명 체크
     if (
       folders.some(
         (folder) =>

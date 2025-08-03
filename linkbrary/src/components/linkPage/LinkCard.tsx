@@ -282,18 +282,13 @@ export default function LinkCard({
         <span>{new Date(createdAt).toLocaleDateString()}</span>
 
         <KebabWrapper>
-          <KebabButton
-            ref={buttonRef}
-            aria-haspopup="true"
-            aria-expanded={isMenuOpen}
-            aria-controls="kebab-menu"
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggleMenu();
-            }}
-            aria-label="옵션 메뉴 열기"
-          >
-            <IconImg src="/images/ic_kebab.svg" alt="메뉴 버튼" />
+          <KebabButton onClick={toggleMenu} aria-label="옵션 메뉴 열기">
+            <Image
+              src="/images/ic_kebab.svg"
+              alt="메뉴 버튼"
+              width={24}
+              height={24}
+            />
           </KebabButton>
           {isMenuOpen && (
             <KebabMenu ref={combinedMenuRef}>

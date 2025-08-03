@@ -2,6 +2,8 @@
 import styled from "@emotion/styled";
 import Image from "next/image";
 import { PrimaryButton } from "../common/Button";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const MainVisualWrapper = styled.div`
   width: 100%;
