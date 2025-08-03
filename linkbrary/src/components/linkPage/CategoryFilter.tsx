@@ -33,19 +33,14 @@ const CategoryItem = styled("li", {
   background-color: ${({ theme, active }) =>
     active ? theme.color.gray30 : "transparent"};
   border-radius: 50px;
-  padding: 8px 12px;
+  padding: 8px 16px;
   cursor: pointer;
 
   ${({ theme }) => theme.media.tablet} {
     display: flex;
     align-items: center;
     height: 50px;
-  }
-
-  ${({ theme }) => theme.media.desktop} {
-    display: flex;
-    align-items: center;
-    height: 50px;
+    padding: 8px 20px;
   }
 `;
 
@@ -55,9 +50,17 @@ const SecondaryButton = styled.button`
   height: 50px;
   padding: 8px 20px;
   border-radius: 50px;
-
+  font-weight: 600;
+  font-size: 1rem;
   margin-top: 0.375rem;
   cursor: pointer;
+`;
+
+const Count = styled.span`
+  margin-left: 8px;
+  font-size: 1rem;
+  color: #b3b3b3;
+  user-select: none;
 `;
 
 interface CategoryFilterProps {
@@ -73,11 +76,18 @@ export default function CategoryFilter({
   onSelectCategory,
   onAddFolder,
 }: CategoryFilterProps) {
+  // 전체 개수 계산
+  const totalCount = folders.reduce(
+    (sum, folder) => sum + (folder.count ?? 0),
+    0
+  );
+  // "전체" 카테고리를 UI에서만 추가
+  const categories = [{ id: -1, name: "전체", count: totalCount }, ...folders];
   return (
     <CategorySection>
       <CategoryWrapper>
         <CategoryItems>
-          {folders.map(({ id, name }) => (
+          {categories.map(({ id, name, count }) => (
             <CategoryItem
               key={id}
               active={selectedCategoryId === id}
@@ -91,10 +101,13 @@ export default function CategoryFilter({
               }}
             >
               {name}
+              <Count>{count ?? 0}</Count>
             </CategoryItem>
           ))}
         </CategoryItems>
-        <SecondaryButton onClick={onAddFolder}>+ 폴더 추가하기</SecondaryButton>
+        <SecondaryButton onClick={() => onAddFolder()}>
+          + 폴더 추가하기
+        </SecondaryButton>
       </CategoryWrapper>
     </CategorySection>
   );

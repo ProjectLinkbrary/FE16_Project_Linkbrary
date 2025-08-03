@@ -1,19 +1,27 @@
 /** @jsxImportSource @emotion/react */
 import styled from "@emotion/styled";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-
 import Header from "../../components/common/Header";
 import Footer from "../../components/common/Footer";
 import TopSection from "../../components/linkPage/TopSection";
 import ContentSection from "../../components/linkPage/ContentSection";
-import AddLinkModal from "../../components/linkPage/AddlinkModal";
-import ShareModal from "../../components/linkPage/ShareModal";
+import LinkModals from "../../components/linkPage/LinkModals";
+import FolderModals from "../../components/linkPage/FolderModals";
+import { fetchFavoriteLinksFromServer, toggleFavorite } from "../api/link";
+import {
+  fetchLinksFromServer,
+  deleteLink,
+  fetchAllLinksFromServer,
+} from "../api/link";
 
-import { fetchLinksFromServer, deleteLink } from "../api/link";
-import { Link } from "../api/types";
-import { fetchFolders } from "../api/folder";
-import { Folder } from "../api/types";
+import {
+  fetchFolders,
+  addFolder,
+  updateFolder,
+  deleteFolder,
+} from "../api/folder";
+
+import { Link, Folder } from "../api/types";
 
 const PageContainer = styled.div`
   width: 100%;
@@ -32,122 +40,340 @@ const PageContainer = styled.div`
 `;
 
 export default function FolderLinksPage() {
-  const router = useRouter();
-  const { folderId } = router.query;
+  // 링크 상태
   const [links, setLinks] = useState<Link[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   const [isAddLinkModalOpen, setIsAddLinkModalOpen] = useState(false);
   const [pendingUrl, setPendingUrl] = useState<string | null>(null);
+
+  const [editingLink, setEditingLink] = useState<Link | null>(null);
+  const [deletingLink, setDeletingLink] = useState<Link | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
+  // 폴더 상태
   const [folders, setFolders] = useState<Folder[]>([]);
+  const [selectedFolderId, setSelectedFolderId] = useState<number>(-1);
 
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  const [isAddFolderModalOpen, setIsAddFolderModalOpen] = useState(false);
+  const [isEditFolderModalOpen, setIsEditFolderModalOpen] = useState(false);
+  const [isDeleteFolderModalOpen, setIsDeleteFolderModalOpen] = useState(false);
 
-  useEffect(() => {
-    async function loadFolders() {
-      try {
-        const apiFolders = await fetchFolders();
-        const withAll = [{ id: 0, name: "전체", count: 0 }, ...apiFolders];
-        setFolders(withAll);
-      } catch (err) {
-        console.error("폴더 목록 불러오기 실패:", err);
-      }
+  // 폴더 수정, 삭제 대상
+  const [folderOperationLoading, setFolderOperationLoading] = useState(false);
+  const [editingFolder, setEditingFolder] = useState<Folder | null>(null);
+  const [deletingFolder, setDeletingFolder] = useState<Folder | null>(null);
+
+  // 폴더 API 갱신 함수
+  const refreshFolders = async () => {
+    try {
+      const apiFolders = await fetchFolders();
+      setFolders(apiFolders);
+    } catch (err) {
+      console.error("폴더 목록 불러오기 실패:", err);
     }
-    loadFolders();
-  }, []);
+  };
+  // 폴더 추가 모달 열기
+  const openAddFolderModal = () => {
+    setIsAddFolderModalOpen(true);
+  };
 
-  useEffect(() => {
-    if (!router.isReady) return; // router.query가 준비될 때까지 기다립니다.
+  // 폴더 추가 처리 (중복 체크 포함)
+  const handleConfirmAddFolder = async (name: string) => {
+    const trimmedName = name.trim();
+    if (!trimmedName) return;
 
-    async function loadLinks() {
-      try {
-        setLoading(true);
-        const currentFolderId = folderId ? Number(folderId) : 0;
-        const list = await fetchLinksFromServer(currentFolderId);
-        setLinks(list);
-        setError(null);
-      } catch (err) {
-        console.error("링크 로드 실패:", err);
-        setError("링크를 불러오지 못했습니다.");
-      } finally {
-        setLoading(false);
-      }
+    // 중복 폴더명 체크
+    if (folders.some((folder) => folder.name === trimmedName)) {
+      alert(`"${trimmedName}" 폴더가 이미 존재합니다.`);
+      return;
     }
-    loadLinks();
-  }, [router.isReady, folderId]);
 
+    setFolderOperationLoading(true);
+    try {
+      await addFolder(trimmedName);
+      const updatedFolders = await fetchFolders();
+      setFolders(updatedFolders);
+
+      const newFolder = updatedFolders.find((f) => f.name === trimmedName);
+      if (newFolder) {
+        setSelectedFolderId(newFolder.id);
+        await handleSelectCategory(newFolder.id);
+      }
+
+      setIsAddFolderModalOpen(false);
+    } catch (err) {
+      console.error(err);
+      alert("폴더 추가 실패");
+    } finally {
+      setFolderOperationLoading(false);
+    }
+  };
+
+  // 폴더 수정 모달 열기
+  const openEditFolderModal = () => {
+    const folder = folders.find((f) => f.id === selectedFolderId) || null;
+    setEditingFolder(folder);
+    setIsEditFolderModalOpen(true);
+  };
+
+  // 폴더 수정 처리 (중복 체크 포함)
+  const handleEditFolder = async (newName: string) => {
+    if (!editingFolder) return;
+
+    const trimmedName = newName.trim();
+    if (!trimmedName) return;
+
+    // 중복 폴더명 체크
+    if (
+      folders.some(
+        (folder) =>
+          folder.name === trimmedName && folder.id !== editingFolder.id
+      )
+    ) {
+      alert(`"${trimmedName}" 폴더명이 이미 존재합니다.`);
+      return;
+    }
+
+    setFolderOperationLoading(true);
+    try {
+      const updated = await updateFolder(editingFolder.id, trimmedName);
+      setFolders((prev) =>
+        prev.map((f) => (f.id === updated.id ? updated : f))
+      );
+      setIsEditFolderModalOpen(false);
+      setEditingFolder(null);
+    } catch (err) {
+      console.error(err);
+      alert("폴더 수정 실패");
+    } finally {
+      setFolderOperationLoading(false);
+    }
+  };
+
+  // 폴더 삭제 모달 열기
+  const openDeleteFolderModal = () => {
+    const folder = folders.find((f) => f.id === selectedFolderId) || null;
+    setDeletingFolder(folder);
+    setIsDeleteFolderModalOpen(true);
+  };
+
+  // 폴더 삭제 처리
+  const handleDeleteFolder = async () => {
+    if (!deletingFolder) return;
+
+    if ((deletingFolder.count ?? 0) > 0) {
+      alert("현재 폴더에 모든 링크를 삭제한 후에 폴더를 삭제할 수 있습니다.");
+      setIsDeleteFolderModalOpen(false);
+      return;
+    }
+
+    setFolderOperationLoading(true);
+    try {
+      await deleteFolder(deletingFolder.id);
+      setFolders((prev) => prev.filter((f) => f.id !== deletingFolder.id));
+      setSelectedFolderId(-1);
+      setIsDeleteFolderModalOpen(false);
+      setDeletingFolder(null);
+    } catch (err) {
+      console.error(err);
+      alert("폴더 삭제 실패");
+    } finally {
+      setFolderOperationLoading(false);
+    }
+  };
+
+  // 링크 관련
+  const handleSelectCategory = async (folderId: number) => {
+    setSelectedFolderId(folderId);
+    setLoading(true);
+    try {
+      if (folderId === -1) {
+        const allLinks = await fetchAllLinksFromServer();
+        setLinks(allLinks);
+      } else {
+        const folderLinks = await fetchLinksFromServer(folderId);
+        setLinks(folderLinks);
+      }
+      setError(null);
+    } catch (err) {
+      console.error("링크 로드 실패:", err);
+      setError("링크를 불러오지 못했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 링크 삭제 요청
+  const handleDeleteRequest = (link: Link) => {
+    setDeletingLink(link);
+  };
+
+  // 링크 삭제 실제 수행
+  const handleDeleteConfirm = async () => {
+    if (!deletingLink) return;
+    setDeleteLoading(true);
+    try {
+      await deleteLink(deletingLink.id);
+      setLinks((prev) => prev.filter((l) => l.id !== deletingLink.id));
+      await refreshFolders();
+      await handleSelectCategory(selectedFolderId);
+      setDeletingLink(null);
+    } catch (err) {
+      console.error(err);
+      alert("삭제 실패");
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  // 링크 편집
+  const handleEdit = (link: Link) => setEditingLink(link);
+  const handleCloseEditModal = () => setEditingLink(null);
+  const handleEditSuccess = (updatedLink: Link) => {
+    setLinks((prev) =>
+      prev.map((l) => (l.id === updatedLink.id ? updatedLink : l))
+    );
+    setEditingLink(null);
+  };
+
+  // 링크 추가 모달 열기
   const handleRequestAddLink = (url: string) => {
     setPendingUrl(url);
     setIsAddLinkModalOpen(true);
   };
 
-  const closeAddLinkModal = () => {
+  // 링크 추가 모달 닫기
+  const closeModal = () => {
     setPendingUrl(null);
     setIsAddLinkModalOpen(false);
   };
 
-  const handleShareClick = () => {
-    setIsShareModalOpen(true);
-  };
-
-  const closeShareModal = () => {
-    setIsShareModalOpen(false);
-  };
-
-  const handleDelete = async (id: number) => {
+  // 즐겨찾기 토글 핸들러
+  const handleToggleFavorite = async (link: Link) => {
     try {
-      await deleteLink(id);
-      setLinks((prev) => prev.filter((link) => link.id !== id));
-      alert("삭제 성공");
+      // UI에서 바로 즐겨찾기 상태 토글 (optimistic update)
+      setLinks((prev) =>
+        prev.map((l) =>
+          l.id === link.id ? { ...l, isFavorite: !l.isFavorite } : l
+        )
+      );
+
+      // 서버에 변경 요청 보내고 변경된 링크 정보 받기
+      const updatedLink = await toggleFavorite({
+        id: link.id,
+        favorite: !link.isFavorite,
+        folderId: link.folderId,
+      });
+
+      // 서버가 제대로 변경된 링크를 반환했으면 상태 업데이트
+      if (updatedLink && updatedLink.id) {
+        setLinks((prev) =>
+          prev.map((l) => (l.id === updatedLink.id ? updatedLink : l))
+        );
+      } else {
+        // 반환값이 이상하면 원래 상태로 롤백
+        setLinks((prev) =>
+          prev.map((l) =>
+            l.id === link.id ? { ...l, isFavorite: link.isFavorite } : l
+          )
+        );
+      }
     } catch (error) {
-      console.error("삭제 실패:", error);
-      alert("삭제 실패");
+      console.error("즐겨찾기 토글 실패:", error);
+
+      // 실패 시 원래 상태로 롤백
+      setLinks((prev) =>
+        prev.map((l) =>
+          l.id === link.id ? { ...l, isFavorite: link.isFavorite } : l
+        )
+      );
     }
   };
 
-  // 현재 선택된 폴더 정보를 찾습니다.
-  const currentFolder = folders.find(
-    (f) => f.id === (folderId ? Number(folderId) : 0)
-  );
+  // 페이지 첫 로딩 시 폴더 및 전체 링크 로드
+  useEffect(() => {
+    (async () => {
+      await refreshFolders();
+      await handleSelectCategory(-1);
+    })();
+  }, []);
 
   return (
     <>
       <Header isLoggedIn={true} />
-      <TopSection onRequestAddLink={handleRequestAddLink} />
+      <TopSection
+        onRequestAddLink={handleRequestAddLink}
+        folders={folders}
+        isModalOpen={isAddLinkModalOpen}
+        selectedCategoryId={selectedFolderId}
+        onSelectCategory={handleSelectCategory}
+        onAddFolder={openAddFolderModal}
+      />
+
       <PageContainer>
         <ContentSection
+          onToggleFavorite={handleToggleFavorite}
           list={links}
           loading={loading}
-          onDelete={handleDelete}
-          folderTitle={currentFolder?.name ?? "폴더"}
+          onDelete={handleDeleteRequest}
+          onEdit={handleEdit}
+          folderTitle={
+            selectedFolderId === -1
+              ? "전체"
+              : folders.find((f) => f.id === selectedFolderId)?.name || ""
+          }
           folders={folders}
-          onShareClick={handleShareClick}
+          selectedCategoryId={selectedFolderId}
+          onSelectCategory={handleSelectCategory}
+          onAddFolder={openAddFolderModal}
+          onEditFolder={openEditFolderModal}
+          onDeleteFolder={openDeleteFolderModal}
+          onRefreshFolders={refreshFolders}
         />
       </PageContainer>
+
       <Footer />
 
-      {isAddLinkModalOpen && pendingUrl && (
-        <AddLinkModal
-          folderId={folderId ? Number(folderId) : 0}
-          url={pendingUrl}
-          folders={folders}
-          onClose={closeAddLinkModal}
-          onSuccess={() => {
-            closeAddLinkModal();
-            const currentFolderId = folderId ? Number(folderId) : 0;
-            fetchLinksFromServer(currentFolderId).then(setLinks);
-          }}
-        />
-      )}
+      <LinkModals
+        isAddLinkModalOpen={isAddLinkModalOpen}
+        pendingUrl={pendingUrl}
+        folders={folders}
+        selectedFolderId={selectedFolderId}
+        onCloseAddModal={closeModal}
+        onAddSuccess={async (newLink) => {
+          closeModal();
+          setLinks((prev) => [newLink, ...prev]);
+          await refreshFolders();
+        }}
+        editingLink={editingLink}
+        onCloseEditModal={handleCloseEditModal}
+        onEditSuccess={handleEditSuccess}
+        deletingLink={deletingLink}
+        onCloseDeleteModal={() => setDeletingLink(null)}
+        onConfirmDelete={handleDeleteConfirm}
+        deleteLoading={deleteLoading}
+      />
 
-      {currentFolder && (
-        <ShareModal
-          isOpen={isShareModalOpen}
-          onClose={closeShareModal}
-          folderName={currentFolder.name}
-          folderUrl={typeof window !== "undefined" ? window.location.href : ""}
-        />
-      )}
+      <FolderModals
+        isAddFolderModalOpen={isAddFolderModalOpen}
+        onCloseAddModal={() => setIsAddFolderModalOpen(false)}
+        onAddFolder={handleConfirmAddFolder}
+        editingFolder={editingFolder}
+        onCloseEditModal={() => {
+          setIsEditFolderModalOpen(false);
+          setEditingFolder(null);
+        }}
+        onEditFolder={handleEditFolder}
+        deletingFolder={deletingFolder}
+        onCloseDeleteModal={() => {
+          setIsDeleteFolderModalOpen(false);
+          setDeletingFolder(null);
+        }}
+        onConfirmDelete={handleDeleteFolder}
+        deleteLoading={folderOperationLoading}
+      />
     </>
   );
 }

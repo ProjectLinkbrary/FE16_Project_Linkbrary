@@ -13,7 +13,7 @@ const SpinnerWrapper = styled.div`
   align-items: center;
   padding: 60px 0;
   width: 100%;
-  height: 100vh;
+  height: 30vh;
 `;
 
 const Spinner = styled.div`

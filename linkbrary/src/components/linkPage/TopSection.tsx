@@ -2,6 +2,8 @@
 import styled from "@emotion/styled";
 import theme from "../../styles/theme";
 import { useState } from "react";
+import { Folder } from "../../pages/api/types";
+import CategoryFilter from "./CategoryFilter";
 
 const TopSectionWrapper = styled.section`
   background: url("/images/bg_linkpage.png") no-repeat center center / cover;
@@ -114,11 +116,28 @@ const LightButton = styled.button`
   }
 `;
 
+const CategoryContainer = styled.div`
+  width: 100%;
+  max-width: 66.25rem;
+`;
+
+interface TopSectionProps {
+  onRequestAddLink: (url: string) => void;
+  folders: Folder[];
+  selectedCategoryId: number;
+  onSelectCategory: (folderId: number) => void;
+  onAddFolder: () => void;
+  isModalOpen: boolean;
+}
+
 export default function TopSection({
   onRequestAddLink,
-}: {
-  onRequestAddLink: (url: string) => void;
-}) {
+  folders,
+  selectedCategoryId,
+  isModalOpen,
+  onSelectCategory,
+  onAddFolder = () => {},
+}: TopSectionProps) {
   const [url, setUrl] = useState("");
 
   const handleClick = async () => {
@@ -144,11 +163,14 @@ export default function TopSection({
         <InputWrapper>
           <LinkIcon src="/images/ic_link.svg" alt="링크 아이콘" />
           <LinkInput
+            disabled={isModalOpen}
             type="text"
             placeholder="링크를 추가해 보세요"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={(e) => {
+              if (!isModalOpen) handleKeyDown(e);
+            }}
           />
           <LightButton onClick={handleClick}>추가하기</LightButton>
         </InputWrapper>
