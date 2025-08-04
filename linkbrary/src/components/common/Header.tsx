@@ -80,7 +80,6 @@ export default function Header({}: HeaderProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [nameId, setNameId] = useState<string>("");
 
-  /*토큰에서 이름 꺼내서 넣기*/
   useEffect(() => {
     const stored = localStorage.getItem("LinkbraryData");
     if (stored) {
@@ -102,6 +101,7 @@ export default function Header({}: HeaderProps) {
       console.error("로컬스토리지 파싱 오류:", err);
     }
   }, []);
+
   return (
     <HeaderContainer>
       <Nav>
