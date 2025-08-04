@@ -176,7 +176,7 @@ export default function AddLinkModal({
     } else if (filteredFolders.length > 0) {
       setSelectedFolderId(filteredFolders[0].id);
     }
-  }, []);
+  }, [folderId, filteredFolders]);
 
   const handleAdd = async () => {
     console.log("추가할 폴더ID, URL:", selectedFolderId, url);
