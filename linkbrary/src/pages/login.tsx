@@ -4,7 +4,7 @@ import LoginFormLayout from "../components/membership/LoginFormLayout";
 import MembershipInput from "../components/membership/MembershipInput";
 import { theme } from "../styles/theme";
 import { instance } from "../pages/api/instance";
-import { saveToStorage } from "../utils/storage"; // 토큰 저장 함수
+import { saveToStorage } from "../utils/storage";
 import KakaoLoginButton from "../components/signupPage/KakaoLogin";
 
 const LoginPage = () => {
